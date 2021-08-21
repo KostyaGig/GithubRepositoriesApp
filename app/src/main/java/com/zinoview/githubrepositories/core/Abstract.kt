@@ -3,6 +3,7 @@ package com.zinoview.githubrepositories.core
 import android.view.View
 import com.zinoview.githubrepositories.R
 import com.zinoview.githubrepositories.data.users.DataGithubUser
+import com.zinoview.githubrepositories.data.users.cache.CacheGithubUser
 import com.zinoview.githubrepositories.domain.users.DomainGithubUser
 import com.zinoview.githubrepositories.ui.users.UiGithubUser
 
@@ -18,15 +19,19 @@ abstract class Abstract {
         fun map(mapper: M) : T
 
         interface Data : Object<DataGithubUser,UserMapper<DataGithubUser>> {
-            //todo for дальнейшем такая же иерархия будет и для домена, и для юай
+            // for дальнейшем такая же иерархия будет и для домена, и для юай
 
 //            interface GithubUser<T,M> : Data<T,M>
 //            interface GithubRepository : Data<T,M>
         }
 
+        interface Cache<T> : Data {
+            fun map(mapper: UserMapper<T>) : T
+        }
+
         interface Domain : Object<DomainGithubUser,UserMapper<DomainGithubUser>>
 
-        interface Ui : Object<UiGithubUser,UserMapper<UiGithubUser>>
+        interface Ui<T> : Object<T,UserMapper<T>>
     }
 
     interface Mapper
@@ -35,8 +40,8 @@ abstract class Abstract {
         fun map(name: String,bio: String,imageUrl: String) : T
     }
 
-    interface Factory<S,R> {
+    interface FactoryMapper<S,R> {
 
-        fun fetch(src: S) : R
+        fun map(src: S) : R
     }
 }

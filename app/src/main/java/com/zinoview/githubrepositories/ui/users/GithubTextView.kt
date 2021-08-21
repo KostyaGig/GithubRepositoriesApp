@@ -2,7 +2,7 @@ package com.zinoview.githubrepositories.ui.users
 
 import android.content.Context
 import android.util.AttributeSet
-import com.zinoview.githubrepositories.ui.view.AbstractView
+import com.zinoview.githubrepositories.ui.core.AbstractView
 
 
 /**

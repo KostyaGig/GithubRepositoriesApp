@@ -2,14 +2,10 @@ package com.zinoview.githubrepositories.ui.users
 
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
 import com.zinoview.githubrepositories.R
 import com.zinoview.githubrepositories.core.Abstract
-import com.zinoview.githubrepositories.ui.view.AbstractView
-import java.lang.IllegalStateException
+import com.zinoview.githubrepositories.ui.message
 
 
 /**
@@ -17,8 +13,8 @@ import java.lang.IllegalStateException
  * k.gig@list.ru
  */
 class GithubUserAdapter(
-    private val githubUserItemViewTypeFactory: Abstract.Factory<UiGithubUserState,Int>,
-    private val githubUserViewHolderFactory: Abstract.Factory<Pair<Int,ViewGroup>,GithubUserViewHolder>
+    private val githubUserItemViewTypeFactory: Abstract.FactoryMapper<UiGithubUserState,Int>,
+    private val githubUserViewHolderFactory: Abstract.FactoryMapper<Pair<Int,ViewGroup>,GithubUserViewHolder>
 ) : RecyclerView.Adapter<GithubUserAdapter.GithubUserViewHolder>() {
 
     private val list = ArrayList<UiGithubUserState>()
@@ -30,12 +26,12 @@ class GithubUserAdapter(
     }
 
     override fun getItemViewType(position: Int): Int =
-        githubUserItemViewTypeFactory.fetch(list[position])
+        githubUserItemViewTypeFactory.map(list[position])
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): GithubUserViewHolder = githubUserViewHolderFactory.fetch(Pair(viewType, parent))
+    ): GithubUserViewHolder = githubUserViewHolderFactory.map(Pair(viewType, parent))
 
     override fun onBindViewHolder(holder: GithubUserViewHolder, position: Int) =
         holder.bind(list[position])
@@ -59,6 +55,15 @@ class GithubUserAdapter(
                     bioTextView,
                     profileImage
                 ))
+        }
+
+        class Empty(itemView: View) : GithubUserViewHolder(itemView) {
+            private val emptyDataTextView = itemView.findViewById<GithubUserNameTextView>(R.id.empty_data)
+
+            override fun bind(state: UiGithubUserState) {
+                message("Adapter Empty holder bind")
+                state.map(listOf(emptyDataTextView))
+            }
         }
 
         class Failure(itemView: View) : GithubUserViewHolder(itemView) {

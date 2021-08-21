@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zinoview.githubrepositories.ui.users.GithubErrorTextView
+<com.zinoview.githubrepositories.ui.users.GithubUserNameTextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/error"
+    android:id="@+id/empty_data"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:text ="Error"
     android:textSize="20sp"
     android:textStyle="bold"
     android:textColor="@android:color/black"
-    android:gravity="center|end"
+    android:gravity="center"
     >
 
-</com.zinoview.githubrepositories.ui.users.GithubErrorTextView>
+</com.zinoview.githubrepositories.ui.users.GithubUserNameTextView>

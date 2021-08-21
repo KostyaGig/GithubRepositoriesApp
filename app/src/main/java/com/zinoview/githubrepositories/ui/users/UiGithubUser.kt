@@ -1,7 +1,7 @@
 package com.zinoview.githubrepositories.ui.users
 
 import com.zinoview.githubrepositories.core.Abstract
-import com.zinoview.githubrepositories.ui.view.AbstractView
+import com.zinoview.githubrepositories.ui.core.AbstractView
 
 
 /**
@@ -12,8 +12,13 @@ data class UiGithubUser(
     private val name: String,
     private val bio: String,
     private val profileImageUrl: String
-)  {
+) : Abstract.Object.Ui<UiGithubUserState>,
+    Abstract.FactoryMapper<List<AbstractView>,Unit> {
 
-    fun map(mapper: List<AbstractView>)
-        = mapper.forEach { view -> view.map(name,bio,profileImageUrl) }
+    override fun map(mapper: Abstract.UserMapper<UiGithubUserState>): UiGithubUserState
+        = mapper.map(name,bio,profileImageUrl)
+
+    override fun map(src: List<AbstractView>)
+        = src.forEach { view -> view.map(name,bio,profileImageUrl) }
+
 }

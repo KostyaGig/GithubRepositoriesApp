@@ -1,40 +1,52 @@
 package com.zinoview.githubrepositories.ui.users
 
-import com.zinoview.githubrepositories.ui.view.AbstractView
+import com.zinoview.githubrepositories.core.Abstract
+import com.zinoview.githubrepositories.ui.core.AbstractView
 
 
 /**
  * @author Zinoview on 19.08.2021
  * k.gig@list.ru
  */
-sealed class UiGithubUserState {
+sealed class UiGithubUserState : Shell<UiGithubUserState>, Abstract.FactoryMapper<List<AbstractView>,Unit> {
 
-    //todo implements interface for overriding this methods
-    open fun map(views: List<AbstractView>) = Unit
+    override fun map(src: List<AbstractView>) = Unit
 
-    open fun wrapToList() : List<UiGithubUserState> = listOf(Empty)
+    override fun wrap(): List<UiGithubUserState>
+        = listOf(Default)
 
-    object Empty : UiGithubUserState()
+    object Default : UiGithubUserState()
 
     object Progress : UiGithubUserState() {
-        override fun wrapToList(): List<UiGithubUserState> = listOf(this)
+
+        override fun wrap(): List<UiGithubUserState>
+            = listOf(this)
     }
 
-    class Base(
+    data class Base(
         private val githubUiUser: UiGithubUser
     ) : UiGithubUserState() {
 
-        override fun map(views: List<AbstractView>) = githubUiUser.map(views)
+        override fun map(src: List<AbstractView>) = githubUiUser.map(src)
 
-        override fun wrapToList(): List<UiGithubUserState> = listOf(this)
+        override fun wrap(): List<UiGithubUserState>
+            = listOf(this)
+    }
+
+    //if our local data empty
+    object Empty : UiGithubUserState() {
+
+        override fun map(src: List<AbstractView>)
+            = src.forEach { view -> view.map("Empty data", "", "") }
     }
 
     class Fail(private val message: String) : UiGithubUserState() {
 
-        override fun map(views: List<AbstractView>) =
-            views.forEach { view-> view.map(message,"","") }
+        override fun map(src: List<AbstractView>) =
+            src.forEach { view-> view.map(message,"","") }
 
-        override fun wrapToList(): List<UiGithubUserState> = listOf(this)
+        override fun wrap(): List<UiGithubUserState>
+            = listOf(this)
     }
 }
 

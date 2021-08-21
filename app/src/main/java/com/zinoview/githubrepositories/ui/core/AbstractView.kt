@@ -1,4 +1,4 @@
-package com.zinoview.githubrepositories.ui.view
+package com.zinoview.githubrepositories.ui.core
 
 import com.zinoview.githubrepositories.core.Abstract
 

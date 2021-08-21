@@ -3,10 +3,13 @@ package com.zinoview.githubrepositories.core
 import android.app.Application
 import com.zinoview.githubrepositories.data.users.DataGithubUserMapper
 import com.zinoview.githubrepositories.data.users.GithubUserRepository
+import com.zinoview.githubrepositories.data.users.cache.*
+import com.zinoview.githubrepositories.data.users.cloud.GithubCloudDataSource
 import com.zinoview.githubrepositories.data.users.cloud.GithubService
 import com.zinoview.githubrepositories.domain.users.DomainGithubUserMapper
 import com.zinoview.githubrepositories.domain.users.GithubUserInteractor
 import com.zinoview.githubrepositories.ui.users.*
+import com.zinoview.githubrepositories.ui.users.cache.Local
 import io.reactivex.disposables.CompositeDisposable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -22,6 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class GAApp : Application() {
 
     lateinit var githubUserViewModel: GithubUserViewModel
+    lateinit var githubUserInteractor: GithubUserInteractor
 
     override fun onCreate() {
         super.onCreate()
@@ -44,28 +48,52 @@ class GAApp : Application() {
 
         val githubUserService = retrofit.create(GithubService::class.java)
 
+        val githubUsersDao = WrapDatabase.GithubUser(this).daoDatabase()
+
         val githubUserRepository = GithubUserRepository.Base(
-            githubUserService,
-            DataGithubUserMapper()
+            GithubCloudDataSource.Base(githubUserService),
+            GithubCacheDataSource.Base(githubUsersDao),
+            DataGithubUserMapper(),
+            CacheGithubUserMapper()
         )
-        val githubUserInteractor = GithubUserInteractor.Base(
+
+        githubUserInteractor = GithubUserInteractor.Base(
             githubUserRepository,
             DomainGithubUserMapper()
         )
 
         val githubUserCommunication = GithubUserCommunication.Base()
-        val githubUserDisposableStore = GithubUserDisposableStore.Base(
+        val githubUserDisposableStore = GithubDisposableStore.Base(
             CompositeDisposable()
         )
-        val githubUserRequest = GithubUserRequest.Base(
+
+        val uiGithubExceptionMapper = UiGithubExceptionMapper(resource)
+
+        val githubUserRemoteRequest = Remote(
             githubUserInteractor,
             githubUserCommunication,
             githubUserDisposableStore,
             UiGithubUserMapper(),
-            UiGithubExceptionMapper(resource)
+            uiGithubExceptionMapper
         )
+
+        val mappers = Triple(
+            UiGithubUserMapper(),
+            UiGithubUserStateMapper(),
+            uiGithubExceptionMapper
+        )
+
+        val githubUserLocalRequest = Local(
+            githubUserInteractor,
+            githubUserCommunication,
+            githubUserDisposableStore,
+            resource,
+            mappers
+        )
+
         githubUserViewModel = GithubUserViewModel.Base(
-            githubUserRequest,
+            githubUserRemoteRequest,
+            githubUserLocalRequest,
             githubUserDisposableStore,
             githubUserCommunication,
         )

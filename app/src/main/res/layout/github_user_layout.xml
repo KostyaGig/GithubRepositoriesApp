@@ -1,42 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_10dp"
+    android:layout_marginStart="@dimen/margin_10dp"
+    android:layout_marginEnd="@dimen/margin_10dp"
+    app:cardCornerRadius="@dimen/margin_10dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    >
 
-    <com.zinoview.githubrepositories.ui.users.GithubUserProfileImageView
-        android:id="@+id/image"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        tools:src="@drawable/ic_launcher_background"
-        android:layout_marginStart="@dimen/margin_10dp"
-        android:layout_marginTop="@dimen/margin_10dp"
-        />
+  <LinearLayout
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
 
-    <com.zinoview.githubrepositories.ui.users.GithubUserNameTextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Name"
-        android:layout_marginStart="@dimen/margin_10dp"
-        android:layout_marginTop="@dimen/margin_10dp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/size_16sp"/>
+      <com.zinoview.githubrepositories.ui.users.GithubUserProfileImageView
+          android:id="@+id/image"
+          android:layout_width="50dp"
+          android:layout_height="50dp"
+          tools:src="@drawable/ic_launcher_background"
+          android:layout_marginStart="@dimen/margin_10dp"
+          android:layout_marginTop="@dimen/margin_10dp"
+          />
 
-    <com.zinoview.githubrepositories.ui.users.GithubUserBioTextView
-        android:id="@+id/bio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="This is bio"
-        android:layout_marginStart="@dimen/margin_10dp"
-        android:layout_marginTop="@dimen/margin_10dp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/size_12sp"
-        android:layout_gravity="end"
-        android:layout_marginEnd="@dimen/margin_10dp"/>
+      <com.zinoview.githubrepositories.ui.users.GithubUserNameTextView
+          android:id="@+id/name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          tools:text="Name"
+          android:layout_marginStart="@dimen/margin_10dp"
+          android:layout_marginTop="@dimen/margin_10dp"
+          android:textStyle="bold"
+          android:textColor="@android:color/black"
+          android:textSize="@dimen/size_16sp"/>
 
-</LinearLayout>
+      <com.zinoview.githubrepositories.ui.users.GithubUserBioTextView
+          android:id="@+id/bio"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          tools:text="This is bio"
+          android:layout_marginStart="@dimen/margin_10dp"
+          android:layout_marginTop="@dimen/margin_10dp"
+          android:textStyle="bold"
+          android:textColor="@android:color/black"
+          android:textSize="@dimen/size_12sp"
+          android:layout_marginEnd="@dimen/margin_10dp"/>
+
+  </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
