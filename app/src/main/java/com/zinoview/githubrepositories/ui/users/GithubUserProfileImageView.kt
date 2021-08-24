@@ -3,6 +3,7 @@ package com.zinoview.githubrepositories.ui.users
 import android.content.Context
 import android.util.AttributeSet
 import com.squareup.picasso.Picasso
+import com.zinoview.githubrepositories.R
 import com.zinoview.githubrepositories.ui.core.AbstractView
 
 
@@ -24,5 +25,10 @@ class GithubUserProfileImageView : androidx.appcompat.widget.AppCompatImageView,
     override fun map(name: String, bio: String, imageUrl: String)
         = Picasso.get().load(imageUrl).into(this)
 
+    override fun map(name: String, private: Boolean, language: String) = if (private) {
+        setImageResource(R.drawable.ic_private)
+    } else {
+        setImageResource(R.drawable.ic_public)
+    }
 
 }

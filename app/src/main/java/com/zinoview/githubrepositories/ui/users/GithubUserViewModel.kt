@@ -3,7 +3,10 @@ package com.zinoview.githubrepositories.ui.users
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import com.zinoview.githubrepositories.ui.users.cache.Local
+import com.zinoview.githubrepositories.ui.core.BaseGithubUserRequest
+import com.zinoview.githubrepositories.ui.core.BaseViewModel
+import com.zinoview.githubrepositories.ui.core.Observe
+import com.zinoview.githubrepositories.ui.core.message
 import com.zinoview.githubrepositories.ui.users.cache.LocalGithubUserRequest
 
 
@@ -11,7 +14,7 @@ import com.zinoview.githubrepositories.ui.users.cache.LocalGithubUserRequest
  * @author Zinoview on 19.08.2021
  * k.gig@list.ru
  */
-interface GithubUserViewModel {
+interface GithubUserViewModel : Observe<UiGithubUserState> {
 
     fun remoteUser(query: String)
 
@@ -19,14 +22,12 @@ interface GithubUserViewModel {
 
     fun users()
 
-    fun observe(owner: LifecycleOwner,observer: Observer<List<UiGithubUserState>>)
-
     class Base(
         private val githubUserRemoteRequest: BaseGithubUserRequest,
         private val githubUserLocalRequest: LocalGithubUserRequest,
         private val githubUserDisposableStore: GithubDisposableStore,
-        private val communication: GithubUserCommunication
-    ) : ViewModel(), GithubUserViewModel {
+        communication: GithubUserCommunication
+    ) : BaseViewModel<UiGithubUserState>(communication), GithubUserViewModel {
 
         override fun remoteUser(query: String)
             = githubUserRemoteRequest.request(query)
@@ -37,11 +38,8 @@ interface GithubUserViewModel {
         override fun users()
             = githubUserLocalRequest.request()
 
-        override fun observe(owner: LifecycleOwner, observer: Observer<List<UiGithubUserState>>) {
-            communication.observe(owner,observer)
-        }
-
         override fun onCleared() {
+            message("githubUserViewModel onCleared")
             githubUserDisposableStore.dispose()
             super.onCleared()
         }

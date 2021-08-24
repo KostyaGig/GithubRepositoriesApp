@@ -3,4 +3,5 @@
     <dimen name="margin_10dp">10dp</dimen>
     <dimen name="size_16sp">16sp</dimen>
     <dimen name="size_12sp">12sp</dimen>
+    <dimen name="margin_7dp">7dp</dimen>
 </resources>

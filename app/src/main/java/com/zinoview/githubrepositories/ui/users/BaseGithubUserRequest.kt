@@ -1,7 +1,14 @@
 package com.zinoview.githubrepositories.ui.users
 
 import com.zinoview.githubrepositories.core.Abstract
+import com.zinoview.githubrepositories.domain.core.GithubInteractor
+import com.zinoview.githubrepositories.domain.repositories.DomainGithubRepository
+import com.zinoview.githubrepositories.domain.users.DomainGithubUser
 import com.zinoview.githubrepositories.domain.users.GithubUserInteractor
+import com.zinoview.githubrepositories.ui.core.Communication
+import com.zinoview.githubrepositories.ui.core.CommunicationModel
+import com.zinoview.githubrepositories.ui.repositories.UiGithubRepository
+import com.zinoview.githubrepositories.ui.repositories.UiGithubRepositoryState
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -13,35 +20,46 @@ import io.reactivex.schedulers.Schedulers
  * k.gig@list.ru
  */
 
-abstract class BaseGithubUserRequest (
-    private val githubUserInteractor: GithubUserInteractor,
-    private val communication: GithubUserCommunication,
+abstract class GithubRequest<D, M : CommunicationModel,U>(
+    private val githubInteractor: GithubInteractor<D>,
+    private val communication: Communication<M>,
     private val githubUserDisposableStore: GithubDisposableStore,
-    private val uiGithubUserMapper: Abstract.UserMapper<UiGithubUser>,
     private val exceptionMapper: Abstract.FactoryMapper<Throwable,String>
 ) : GithubUserRequest<String>, CleanDisposable {
 
+    abstract fun progress() : List<M>
+
+    abstract fun base(uiModel: U) : List<M>
+
+    abstract fun failure(messageError: String) : List<M>
+
+    abstract fun uiModel(domainModel: D) : U
+
     override fun request(param: String) {
-        communication.changeValue(UiGithubUserState.Progress.wrap())
-        githubUserInteractor
-            .user(param)
+        communication.changeValue(progress())
+        githubInteractor
+            .data(param)
             .subscribeOn(Schedulers.io())
-            .flatMap { domainGithubUser ->
-                Single.just(domainGithubUser.map(uiGithubUserMapper))
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ uiGithubUser ->
-                uiGithubUser?.let { user ->
-                    communication.changeValue(UiGithubUserState.Base(user).wrap())
+            .flatMap { domainModel ->
+                Single.just(uiModel(domainModel))
+            }.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ uiModel ->
+                uiModel?.let { ui ->
+                    communication.changeValue(base(ui))
                 }
             }, { error ->
                 error?.let { throwable ->
                     val messageError = exceptionMapper.map(throwable)
-                    communication.changeValue(UiGithubUserState.Fail(messageError).wrap())
+                    communication.changeValue(failure(messageError))
                 }
             }).addToDisposableStore(githubUserDisposableStore)
     }
 
     override fun Disposable.addToDisposableStore(store: GithubDisposableStore)
-            = store.add(this)
+        = githubUserDisposableStore.add(this)
 }
+
+
+
+
+

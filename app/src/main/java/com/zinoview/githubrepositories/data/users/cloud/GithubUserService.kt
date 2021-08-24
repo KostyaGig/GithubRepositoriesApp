@@ -10,9 +10,8 @@ import retrofit2.http.Query
  * @author Zinoview on 19.08.2021
  * k.gig@list.ru
  * BASE URL https://api.github.com/
- *
  */
-interface GithubService {
+interface GithubUserService {
 
     @GET("users/{username}")
     fun user(@Path("username") query: String) : Single<CloudGithubUser>

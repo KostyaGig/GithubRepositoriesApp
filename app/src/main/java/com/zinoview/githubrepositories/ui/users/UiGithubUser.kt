@@ -12,7 +12,7 @@ data class UiGithubUser(
     private val name: String,
     private val bio: String,
     private val profileImageUrl: String
-) : Abstract.Object.Ui<UiGithubUserState>,
+) : Abstract.Object.Ui.GithubUser<UiGithubUserState>,
     Abstract.FactoryMapper<List<AbstractView>,Unit> {
 
     override fun map(mapper: Abstract.UserMapper<UiGithubUserState>): UiGithubUserState
@@ -21,4 +21,6 @@ data class UiGithubUser(
     override fun map(src: List<AbstractView>)
         = src.forEach { view -> view.map(name,bio,profileImageUrl) }
 
+    //todo make inetrface for this class and UiGithubUserState,maybe will be jeneric with listener
+    fun map(listener: GithubOnItemClickListener) = listener.onItemClick(name)
 }

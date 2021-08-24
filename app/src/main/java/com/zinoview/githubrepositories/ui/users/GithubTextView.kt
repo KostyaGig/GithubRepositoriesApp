@@ -26,5 +26,11 @@ abstract class GithubTextView : androidx.appcompat.widget.AppCompatTextView, Abs
         setText(bio)
     }
 
+    override fun map(name: String, private: Boolean, language: String) = if (isName()) {
+        setText(name)
+    } else {
+        setText(language)
+    }
+
     abstract fun isName(): Boolean
 }

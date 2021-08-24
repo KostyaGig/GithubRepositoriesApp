@@ -1,10 +1,8 @@
 package com.zinoview.githubrepositories.data.users.cache
 
-import android.util.Log
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
 import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.data.users.DataGithubUser
 
@@ -23,7 +21,7 @@ data class CacheGithubUser(
     val bio: String,
     @ColumnInfo(name = "profileImageUrl")
     val profileImageUrl: String
-) : Abstract.Object.Data {
+) : Abstract.Object.Data.GithubUser {
 
     override fun map(mapper: Abstract.UserMapper<DataGithubUser>): DataGithubUser
         = mapper.map(name,bio,profileImageUrl)

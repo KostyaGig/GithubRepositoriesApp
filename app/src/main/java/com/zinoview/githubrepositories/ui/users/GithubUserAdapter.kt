@@ -5,7 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zinoview.githubrepositories.R
 import com.zinoview.githubrepositories.core.Abstract
-import com.zinoview.githubrepositories.ui.message
+import com.zinoview.githubrepositories.ui.core.GithubAdapter
+import com.zinoview.githubrepositories.ui.core.message
 
 
 /**
@@ -14,12 +15,13 @@ import com.zinoview.githubrepositories.ui.message
  */
 class GithubUserAdapter(
     private val githubUserItemViewTypeFactory: Abstract.FactoryMapper<UiGithubUserState,Int>,
-    private val githubUserViewHolderFactory: Abstract.FactoryMapper<Pair<Int,ViewGroup>,GithubUserViewHolder>
-) : RecyclerView.Adapter<GithubUserAdapter.GithubUserViewHolder>() {
+    private val githubUserViewHolderFactory: Abstract.FactoryMapper<Pair<Int,ViewGroup>,GithubUserViewHolder>,
+    ) : RecyclerView.Adapter<GithubUserAdapter.GithubUserViewHolder>(),
+        GithubAdapter<UiGithubUserState> {
 
     private val list = ArrayList<UiGithubUserState>()
 
-    fun update(list: List<UiGithubUserState>) {
+    override fun update(list: List<UiGithubUserState>) {
         this.list.clear()
         this.list.addAll(list)
         notifyDataSetChanged()
@@ -43,25 +45,29 @@ class GithubUserAdapter(
 
         class Progress(itemView: View) : GithubUserViewHolder(itemView)
 
-        class Base(itemView: View) : GithubUserViewHolder(itemView) {
+        class Base(itemView: View, private val listener: GithubOnItemClickListener) : GithubUserViewHolder(itemView) {
 
             private val nameTextView = itemView.findViewById<GithubUserNameTextView>(R.id.name)
             private val bioTextView = itemView.findViewById<GithubUserBioTextView>(R.id.bio)
             private val profileImage = itemView.findViewById<GithubUserProfileImageView>(R.id.image)
 
-            override fun bind(state: UiGithubUserState)
-                = state.map(listOf(
+            override fun bind(state: UiGithubUserState) {
+                state.map(listOf(
                     nameTextView,
                     bioTextView,
                     profileImage
                 ))
+
+                itemView.setOnClickListener {
+                    state.map(listener)
+                }
+            }
         }
 
         class Empty(itemView: View) : GithubUserViewHolder(itemView) {
             private val emptyDataTextView = itemView.findViewById<GithubUserNameTextView>(R.id.empty_data)
 
             override fun bind(state: UiGithubUserState) {
-                message("Adapter Empty holder bind")
                 state.map(listOf(emptyDataTextView))
             }
         }
@@ -72,5 +78,9 @@ class GithubUserAdapter(
             override fun bind(state: UiGithubUserState) = state.map(listOf(errorTextView))
         }
     }
+}
+
+interface GithubOnItemClickListener {
+    fun onItemClick(githubUserName: String)
 }
 

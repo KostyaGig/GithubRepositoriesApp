@@ -12,7 +12,7 @@ data class DataGithubUser(
     private val name: String,
     private val bio: String,
     private val profileImageUrl: String
-) : Abstract.Object.Domain {
+) : Abstract.Object.Domain.GithubUser {
 
     override fun map(mapper: Abstract.UserMapper<DomainGithubUser>): DomainGithubUser
         = mapper.map(name,bio,profileImageUrl)

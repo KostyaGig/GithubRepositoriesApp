@@ -2,7 +2,7 @@
     <string name="app_name">GithubRepositories</string>
     <string name="search_text">Search</string>
     <string name="no_connection_error">No connection</string>
-    <string name="github_user_not_found_error">User not found</string>
+    <string name="github_not_found_error">Not found</string>
     <string name="github_user_generic_error">Some went wrong</string>
     <string name="local_error">Local error</string>
 </resources>

@@ -3,6 +3,7 @@ package com.zinoview.githubrepositories.ui.users
 import com.zinoview.githubrepositories.R
 import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.core.Resource
+import com.zinoview.githubrepositories.ui.core.message
 import retrofit2.adapter.rxjava2.HttpException
 import java.net.UnknownHostException
 
@@ -17,8 +18,11 @@ class UiGithubExceptionMapper(
 
     override fun map(src: Throwable): String = when(src) {
         is UnknownHostException -> resource.string(R.string.no_connection_error)
-        is HttpException -> resource.string(R.string.github_user_not_found_error)
-        else -> resource.string(R.string.github_user_generic_error)
+        is HttpException -> resource.string(R.string.github_not_found_error)
+        else -> {
+            message("Some went wrong exc: ${src::class.java}")
+            resource.string(R.string.github_user_generic_error)
+        }
     }
 
 }

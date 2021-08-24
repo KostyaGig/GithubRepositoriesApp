@@ -4,6 +4,7 @@ import com.zinoview.githubrepositories.R
 import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.core.Resource
 import com.zinoview.githubrepositories.domain.users.GithubUserInteractor
+import com.zinoview.githubrepositories.ui.core.BaseGithubUserRequest
 import com.zinoview.githubrepositories.ui.users.*
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
