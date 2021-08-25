@@ -1,6 +1,7 @@
 package com.zinoview.githubrepositories.core
 
 import android.view.View
+import androidx.room.Ignore
 import com.zinoview.githubrepositories.R
 import com.zinoview.githubrepositories.data.repositories.DataGithubRepository
 import com.zinoview.githubrepositories.data.repositories.cache.CacheGithubRepository
@@ -65,5 +66,6 @@ abstract class Abstract {
     interface FactoryMapper<S,R> {
 
         fun map(src: S) : R
+
     }
 }

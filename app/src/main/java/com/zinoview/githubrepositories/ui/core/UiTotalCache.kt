@@ -64,22 +64,5 @@ interface UiTotalCache<T : CommunicationModel> {
             }
             return totalListBase
         }
-
-        //todo rewrite test
-        //    class Test(private val list: MutableList<String>) : GithubUserTotalCache<String> {
-//
-//        override fun add(items: List<String>) {
-//            list.addAll(items)
-//        }
-//
-//        fun actual() = list
-//
-//        override fun updateAdapter()
-//            = throw IllegalStateException("Not use for test implements")
-//
-//        override fun addAdapter(adapter: GithubUserAdapter)
-//            = throw IllegalStateException("Not use for test implements")
-//
-//    }
     }
 }

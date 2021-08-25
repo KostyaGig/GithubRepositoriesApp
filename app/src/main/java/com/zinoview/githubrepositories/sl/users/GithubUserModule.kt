@@ -1,6 +1,5 @@
 package com.zinoview.githubrepositories.sl.users
 
-import com.zinoview.githubrepositories.data.core.Text
 import com.zinoview.githubrepositories.data.users.DataGithubUserMapper
 import com.zinoview.githubrepositories.data.users.GithubUserRepository
 import com.zinoview.githubrepositories.data.users.cache.CacheGithubUserMapper
@@ -12,11 +11,8 @@ import com.zinoview.githubrepositories.domain.users.GithubUserInteractor
 import com.zinoview.githubrepositories.sl.core.BaseModule
 import com.zinoview.githubrepositories.sl.core.CoreModule
 import com.zinoview.githubrepositories.ui.core.BaseViewModel
-import com.zinoview.githubrepositories.ui.repositories.GithubRepositoryViewModel
-import com.zinoview.githubrepositories.ui.repositories.UiGithubRepositoryState
 import com.zinoview.githubrepositories.ui.users.*
 import com.zinoview.githubrepositories.ui.users.cache.Local
-import com.zinoview.githubrepositories.ui.users.cache.LocalGithubUserRequest
 import io.reactivex.disposables.CompositeDisposable
 
 

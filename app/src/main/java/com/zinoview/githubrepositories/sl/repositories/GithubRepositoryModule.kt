@@ -1,6 +1,5 @@
 package com.zinoview.githubrepositories.sl.repositories
 
-import com.zinoview.githubrepositories.data.core.Text
 import com.zinoview.githubrepositories.data.repositories.DataGithubRepositoryMapper
 import com.zinoview.githubrepositories.data.repositories.GithubRepositoryRepository
 import com.zinoview.githubrepositories.data.repositories.cache.CacheGithubRepositoryMapper
@@ -28,6 +27,12 @@ class GithubRepositoryModule(
     override fun viewModel(): BaseViewModel<UiGithubRepositoryState> {
         val communication = GithubRepositoryCommunication()
         val disposableStore = GithubDisposableStore.Base(CompositeDisposable())
+
+        val mappers = Triple(
+            UiGithubRepositoryMapper(),
+            UiGithubRepositoryStateMapper(),
+            coreModule.exceptionMapper
+        )
         return GithubRepositoryViewModel.Base(
             Remote.Base(
                 GithubRepositoryInteractor.Base(
@@ -45,9 +50,7 @@ class GithubRepositoryModule(
                 )
                 ,communication,
                 disposableStore,
-                UiGithubRepositoryMapper(),
-                UiGithubRepositoryStateMapper(),
-                coreModule.exceptionMapper
+                mappers
             ),
             communication,
             disposableStore

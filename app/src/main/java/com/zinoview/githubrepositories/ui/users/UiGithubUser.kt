@@ -2,6 +2,7 @@ package com.zinoview.githubrepositories.ui.users
 
 import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.ui.core.AbstractView
+import com.zinoview.githubrepositories.ui.core.Listener
 
 
 /**
@@ -13,7 +14,8 @@ data class UiGithubUser(
     private val bio: String,
     private val profileImageUrl: String
 ) : Abstract.Object.Ui.GithubUser<UiGithubUserState>,
-    Abstract.FactoryMapper<List<AbstractView>,Unit> {
+    Abstract.FactoryMapper<List<AbstractView>,Unit>,
+    Listener<GithubOnItemClickListener> {
 
     override fun map(mapper: Abstract.UserMapper<UiGithubUserState>): UiGithubUserState
         = mapper.map(name,bio,profileImageUrl)
@@ -21,6 +23,7 @@ data class UiGithubUser(
     override fun map(src: List<AbstractView>)
         = src.forEach { view -> view.map(name,bio,profileImageUrl) }
 
-    //todo make inetrface for this class and UiGithubUserState,maybe will be jeneric with listener
-    fun map(listener: GithubOnItemClickListener) = listener.onItemClick(name)
+    override fun notify(listener: GithubOnItemClickListener)
+        = listener.onItemClick(name)
+
 }

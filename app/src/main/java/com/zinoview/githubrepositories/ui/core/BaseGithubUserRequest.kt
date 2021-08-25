@@ -21,7 +21,7 @@ abstract class BaseGithubUserRequest (
     private val exceptionMapper: Abstract.FactoryMapper<Throwable,String>
 ) : GithubUserRequest<String>, CleanDisposable {
 
-    override fun request(param: String) {
+    override fun data(param: String) {
         communication.changeValue(UiGithubUserState.Progress.wrap())
         githubUserInteractor
             .data(param)

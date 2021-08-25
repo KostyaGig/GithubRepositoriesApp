@@ -23,6 +23,4 @@ data class UiGithubRepository(
         src.map { view -> view.map(name, private, language) }
     }
 
-    //todo remove
-    fun repoName() = message("Name $name")
 }

@@ -9,5 +9,5 @@ import io.reactivex.disposables.Disposable
  */
 interface GithubUserRequest<T> {
 
-    fun request(param: T)
+    fun data(param: T)
 }

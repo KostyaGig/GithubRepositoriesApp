@@ -5,7 +5,6 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
 import com.zinoview.githubrepositories.R
-import com.zinoview.githubrepositories.core.GAApp
 import com.zinoview.githubrepositories.ui.core.BaseFragment
 import com.zinoview.githubrepositories.ui.repositories.*
 import com.zinoview.githubrepositories.ui.users.*
@@ -58,7 +57,7 @@ class GithubRepositoriesFragment : BaseFragment(R.layout.github_repository_fragm
             recyclerView.adapter = adapter
 
             userName?.let { name ->
-                githubRepositoryViewModel.repositories(name)
+                githubRepositoryViewModel.data(name)
             }
 
             githubRepositoryViewModel.observe(this) { uiGithubRepositoryState ->

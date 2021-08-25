@@ -42,7 +42,7 @@ sealed class UiGithubUserState :
             = listOf(this)
 
         override fun map(listener: GithubOnItemClickListener)
-            = uiGithubUser.map(listener)
+            = uiGithubUser.notify(listener)
 
         override fun isBase(): Boolean = true
     }

@@ -35,7 +35,7 @@ abstract class GithubRequest<D, M : CommunicationModel,U>(
 
     abstract fun uiModel(domainModel: D) : U
 
-    override fun request(param: String) {
+    override fun data(param: String) {
         communication.changeValue(progress())
         githubInteractor
             .data(param)
