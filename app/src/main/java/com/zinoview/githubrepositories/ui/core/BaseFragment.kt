@@ -6,7 +6,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelStoreOwner
 import com.zinoview.githubrepositories.R
+import com.zinoview.githubrepositories.core.GAApp
+import com.zinoview.githubrepositories.ui.repositories.fragment.MockBaseFragment
 
 
 /**
@@ -15,22 +19,18 @@ import com.zinoview.githubrepositories.R
  */
 abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId) {
 
-     class MockBaseFragment: BaseFragment(R.layout.failure) {
-        override fun searchByQuery(searchView: androidx.appcompat.widget.SearchView)
-            = throw IllegalStateException("MockBaseFragment not use this method")
-
-        override fun collapseState()
-            = throw IllegalStateException("MockBaseFragment not use this method")
-
-        override fun previousFragment()
-            = throw IllegalStateException("MockBaseFragment not use this method")
-    }
-
     abstract fun searchByQuery(searchView: androidx.appcompat.widget.SearchView)
 
     abstract fun collapseState()
 
     abstract fun previousFragment() : BaseFragment
+
+    private val activity by lazy {
+        requireActivity() as MainActivity
+    }
+
+    protected fun <T : ViewModel> viewModel(clazz: Class<T>,owner: ViewModelStoreOwner)
+        = (activity.application as GAApp).viewModel(clazz,owner)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,9 +55,9 @@ abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
     }
 
     protected fun changeTitleToolbar(title: String) {
-        val toolbar = (requireActivity() as MainActivity).toolbar
-        toolbar?.let { toolbar ->
-            toolbar.title = title
+        val toolbar = activity.toolbar
+        toolbar?.let {
+            it.title = title
         }
     }
 

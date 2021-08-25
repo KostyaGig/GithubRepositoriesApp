@@ -22,15 +22,15 @@ import io.reactivex.disposables.CompositeDisposable
 
 class GithubRepositoriesFragment : BaseFragment(R.layout.github_repository_fragment) {
 
-    private val githubRepositoryViewModel by lazy {
-        (requireActivity().application as GAApp).githubRepositoryViewModel
-    }
-
     private lateinit var adapter: GithubRepositoryAdapter
     private lateinit var githubQueryDisposableStore: GithubDisposableStore
-    lateinit var githubRepositoryTotalCache: UiTotalCache<UiGithubRepositoryState>
+    private lateinit var githubRepositoryTotalCache: UiTotalCache<UiGithubRepositoryState>
 
     private val githubUserName: Name = Name.GithubUserName()
+
+    private val githubRepositoryViewModel by lazy  {
+        viewModel(GithubRepositoryViewModel.Base::class.java,this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

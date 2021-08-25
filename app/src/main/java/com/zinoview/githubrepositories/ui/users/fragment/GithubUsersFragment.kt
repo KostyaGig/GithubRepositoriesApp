@@ -5,11 +5,11 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
 import com.zinoview.githubrepositories.R
-import com.zinoview.githubrepositories.core.GAApp
 import com.zinoview.githubrepositories.ui.core.BaseFragment
 import com.zinoview.githubrepositories.ui.repositories.fragment.GithubRepositoriesFragment
 import com.zinoview.githubrepositories.ui.users.*
 import com.zinoview.githubrepositories.ui.core.UiTotalCache
+import com.zinoview.githubrepositories.ui.repositories.fragment.MockBaseFragment
 import io.reactivex.disposables.CompositeDisposable
 
 
@@ -20,12 +20,12 @@ import io.reactivex.disposables.CompositeDisposable
 class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
 
     private val githubUserViewModel by lazy {
-        (requireActivity().application as GAApp).githubUserViewModel
+        viewModel(GithubUserViewModel.Base::class.java,this)
     }
 
-    lateinit var githubUserTotalCache: UiTotalCache<UiGithubUserState>
-    lateinit var adapter: GithubUserAdapter
-    lateinit var githubQueryDisposableStore: GithubDisposableStore
+    private lateinit var githubUserTotalCache: UiTotalCache<UiGithubUserState>
+    private lateinit var adapter: GithubUserAdapter
+    private lateinit var githubQueryDisposableStore: GithubDisposableStore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
