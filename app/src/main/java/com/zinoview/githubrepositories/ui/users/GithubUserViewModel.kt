@@ -1,8 +1,8 @@
 package com.zinoview.githubrepositories.ui.users
 
-import com.zinoview.githubrepositories.ui.core.BaseGithubUserRequest
-import com.zinoview.githubrepositories.ui.core.BaseViewModel
-import com.zinoview.githubrepositories.ui.core.Observe
+import com.zinoview.githubrepositories.core.GithubDisposableStore
+import com.zinoview.githubrepositories.ui.core.*
+import com.zinoview.githubrepositories.ui.repositories.UiGithubRepositoryState
 import com.zinoview.githubrepositories.ui.users.cache.LocalGithubUserRequest
 
 
@@ -10,7 +10,7 @@ import com.zinoview.githubrepositories.ui.users.cache.LocalGithubUserRequest
  * @author Zinoview on 19.08.2021
  * k.gig@list.ru
  */
-interface GithubUserViewModel : Observe<UiGithubUserState> {
+interface GithubUserViewModel<T : CommunicationModel> : ViewModel<T> {
 
     fun cachedUser(query: String)
 
@@ -20,12 +20,14 @@ interface GithubUserViewModel : Observe<UiGithubUserState> {
         githubUserRemoteRequest: BaseGithubUserRequest,
         private val githubUserLocalRequest: LocalGithubUserRequest,
         githubUserDisposableStore: GithubDisposableStore,
-        communication: GithubUserCommunication
+        communication: GithubUserCommunication,
+        saveCache: SaveCache<UiGithubUserState>
     ) : BaseViewModel<UiGithubUserState>(
         communication,
         githubUserDisposableStore,
-        githubUserRemoteRequest
-    ), GithubUserViewModel {
+        githubUserRemoteRequest,
+        saveCache
+    ), GithubUserViewModel<UiGithubUserState> {
 
         override fun cachedUser(query: String)
             = githubUserLocalRequest.data(query)

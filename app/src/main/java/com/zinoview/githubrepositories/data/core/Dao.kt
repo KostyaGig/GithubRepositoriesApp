@@ -1,6 +1,5 @@
 package com.zinoview.githubrepositories.data.core
 
-import androidx.room.Dao
 
 
 /**

@@ -1,10 +1,10 @@
 package com.zinoview.githubrepositories.ui.repositories
 
 
-import com.zinoview.githubrepositories.ui.core.BaseViewModel
-import com.zinoview.githubrepositories.ui.core.Observe
-import com.zinoview.githubrepositories.ui.core.message
-import com.zinoview.githubrepositories.ui.users.GithubDisposableStore
+import com.zinoview.githubrepositories.core.GithubDisposableStore
+import com.zinoview.githubrepositories.data.core.Save
+import com.zinoview.githubrepositories.ui.core.*
+import com.zinoview.githubrepositories.ui.users.UiGithubUserState
 
 
 /**
@@ -12,19 +12,21 @@ import com.zinoview.githubrepositories.ui.users.GithubDisposableStore
  * k.gig@list.ru
  */
 
-interface GithubRepositoryViewModel : Observe<UiGithubRepositoryState> {
+interface GithubRepositoryViewModel<T : CommunicationModel> : ViewModel<T> {
 
     fun repository(userName: String,repo: String)
 
     class Base(
         private val githubRepositoryRemoteRequest: Remote,
         communication: GithubRepositoryCommunication,
-        githubRepositoryDisposableStore: GithubDisposableStore
+        githubRepositoryDisposableStore: GithubDisposableStore,
+        saveCache: SaveCache<UiGithubRepositoryState>
     ) : BaseViewModel<UiGithubRepositoryState>(
         communication,
         githubRepositoryDisposableStore,
-        githubRepositoryRemoteRequest
-    ), GithubRepositoryViewModel {
+        githubRepositoryRemoteRequest,
+        saveCache
+    ), GithubRepositoryViewModel<UiGithubRepositoryState> {
 
         override fun repository(userName: String, repo: String)
             = githubRepositoryRemoteRequest.repository(userName, repo)

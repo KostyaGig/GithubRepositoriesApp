@@ -1,17 +1,9 @@
 package com.zinoview.githubrepositories.core
 
-import android.view.View
-import androidx.room.Ignore
-import com.zinoview.githubrepositories.R
 import com.zinoview.githubrepositories.data.repositories.DataGithubRepository
-import com.zinoview.githubrepositories.data.repositories.cache.CacheGithubRepository
-import com.zinoview.githubrepositories.data.repositories.cache.CacheGithubRepositoryMapper
 import com.zinoview.githubrepositories.data.users.DataGithubUser
-import com.zinoview.githubrepositories.data.users.cache.CacheGithubUser
 import com.zinoview.githubrepositories.domain.repositories.DomainGithubRepository
 import com.zinoview.githubrepositories.domain.users.DomainGithubUser
-import com.zinoview.githubrepositories.ui.repositories.UiGithubRepository
-import com.zinoview.githubrepositories.ui.users.UiGithubUser
 
 
 /**
@@ -34,8 +26,8 @@ abstract class Abstract {
             interface GithubUser<T> : Data.GithubUser{
                 fun map(mapper: UserMapper<T>) : T
             }
-            interface GithubRepository<T> : Data.GithubRepository {
-                fun map(mapper: CacheGithubRepositoryMapper,userName: String) : T
+            interface GithubRepository {
+                fun <T> map(mapper: RepositoryMapper<T>,owner: String) : T
             }
         }
 
@@ -55,17 +47,29 @@ abstract class Abstract {
     interface Mapper
 
     interface UserMapper<T> : Mapper {
-        fun map(name: String,bio: String,imageUrl: String) : T
+        fun map(name: String,bio: String,imageUrl: String,isCollapsed: Boolean) : T
     }
 
     interface RepositoryMapper<T> : Mapper {
 
-        fun map(name: String, private: Boolean,language: String) : T
+        fun map(
+            name: String,
+            private: Boolean,
+            language: String,
+            owner: String,
+            urlRepository: String,
+            defaultBranch: String,
+            isCollapsed: Boolean
+        ) : T
     }
 
     interface FactoryMapper<S,R> {
 
         fun map(src: S) : R
 
+    }
+
+    interface UniqueMapper<T,P> {
+        fun mapTo(param: P) : T
     }
 }

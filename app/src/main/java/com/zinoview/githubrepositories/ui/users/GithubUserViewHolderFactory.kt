@@ -5,6 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.zinoview.githubrepositories.R
 import com.zinoview.githubrepositories.core.Abstract
+import com.zinoview.githubrepositories.ui.core.AbstractListener
+import com.zinoview.githubrepositories.ui.core.CollapseOrExpandListener
+import com.zinoview.githubrepositories.ui.core.GithubOnItemClickListener
 
 
 /**
@@ -12,7 +15,8 @@ import com.zinoview.githubrepositories.core.Abstract
  * k.gig@list.ru
  */
 class GithubUserViewHolderFactory(
-    private val listener: GithubOnItemClickListener
+    private val listener: GithubOnItemClickListener,
+    private val collapseOrExpandListener: CollapseOrExpandListener<UiGithubUserState>
 ) : Abstract.FactoryMapper<Pair<Int,ViewGroup>, GithubUserAdapter.GithubUserViewHolder> {
 
     override fun map(src: Pair<Int,ViewGroup>): GithubUserAdapter.GithubUserViewHolder = when(src.first) {
@@ -21,7 +25,8 @@ class GithubUserViewHolderFactory(
         )
         2 -> GithubUserAdapter.GithubUserViewHolder.Base(
             R.layout.github_user_layout.makeView(src.second),
-            listener
+            listener,
+            collapseOrExpandListener
         )
         3 -> GithubUserAdapter.GithubUserViewHolder.Empty(
             R.layout.empty.makeView(src.second)

@@ -1,8 +1,5 @@
 package com.zinoview.githubrepositories.ui.repositories
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.zinoview.githubrepositories.ui.core.Communication
 
 

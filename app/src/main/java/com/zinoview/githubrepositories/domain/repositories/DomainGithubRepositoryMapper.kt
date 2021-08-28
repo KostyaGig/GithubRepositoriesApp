@@ -9,7 +9,16 @@ import com.zinoview.githubrepositories.core.Abstract
  */
 class DomainGithubRepositoryMapper : Abstract.RepositoryMapper<DomainGithubRepository> {
 
-    override fun map(name: String, private: Boolean, language: String): DomainGithubRepository
-        = DomainGithubRepository(name,private, language)
+
+    override fun map(
+        name: String,
+        private: Boolean,
+        language: String,
+        owner: String,
+        urlRepository: String,
+        defaultBranch: String,
+        isCollapsed: Boolean
+    ): DomainGithubRepository
+        = DomainGithubRepository(name, private, language, owner, urlRepository, defaultBranch, isCollapsed)
 
 }

@@ -3,13 +3,12 @@ package com.zinoview.githubrepositories.ui.repositories
 import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.domain.repositories.GithubRepositoryInteractor
 import com.zinoview.githubrepositories.ui.users.CleanDisposable
-import com.zinoview.githubrepositories.ui.users.GithubDisposableStore
+import com.zinoview.githubrepositories.core.GithubDisposableStore
 import com.zinoview.githubrepositories.ui.users.GithubUserRequest
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import java.net.UnknownHostException
 
 
 /**
@@ -18,7 +17,7 @@ import java.net.UnknownHostException
  */
 interface Remote : GithubUserRequest<String> {
 
-    fun repository(userName: String, repo: String)
+    fun repository(owner: String, repo: String)
 
     class Base(
         private val githubRepositoryInteractor: GithubRepositoryInteractor,
@@ -31,10 +30,10 @@ interface Remote : GithubUserRequest<String> {
                 >
         ) : Remote, CleanDisposable {
 
-        override fun data(userName: String) {
+        override fun data(owner: String) {
             communication.changeValue(UiGithubRepositoryState.Progress.wrap())
             githubRepositoryInteractor
-                .data(userName)
+                .data(owner)
                 .subscribeOn(Schedulers.io())
                 .flatMap { domainGithubRepositories ->
                     Single.just(domainGithubRepositories.map { it.map(mappers.first) })
@@ -50,10 +49,10 @@ interface Remote : GithubUserRequest<String> {
                 }).addToDisposableStore(githubRepositoryDisposableStore)
         }
 
-        override fun repository(userName: String, repo: String) {
+        override fun repository(owner: String, repo: String) {
             communication.changeValue(UiGithubRepositoryState.Progress.wrap())
             githubRepositoryInteractor
-                .repository(userName, repo)
+                .repository(owner, repo)
                 .subscribeOn(Schedulers.io())
                 .flatMap { domainGithubRepository ->
                     Single.just(domainGithubRepository.map(mappers.first))

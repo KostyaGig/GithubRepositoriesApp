@@ -1,9 +1,5 @@
 package com.zinoview.githubrepositories.ui.repositories.view
 
-import android.content.Context
-import android.graphics.Color
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import com.zinoview.githubrepositories.R
 import com.zinoview.githubrepositories.core.Abstract

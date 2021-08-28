@@ -1,7 +1,8 @@
-package com.zinoview.githubrepositories.ui.users
+package com.zinoview.githubrepositories.ui.core
 
 import androidx.appcompat.widget.SearchView
-import com.zinoview.githubrepositories.ui.core.message
+import com.zinoview.githubrepositories.ui.users.CleanDisposable
+import com.zinoview.githubrepositories.core.GithubDisposableStore
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

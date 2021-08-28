@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.zinoview.githubrepositories.core.Abstract
+import com.zinoview.githubrepositories.data.core.CacheModel
 import com.zinoview.githubrepositories.data.users.DataGithubUser
 
 
@@ -20,9 +21,11 @@ data class CacheGithubUser(
     @ColumnInfo(name = "bio")
     val bio: String,
     @ColumnInfo(name = "profileImageUrl")
-    val profileImageUrl: String
-) : Abstract.Object.Data.GithubUser {
+    val profileImageUrl: String,
+    @ColumnInfo(name = "collapse")
+    val isCollapsed: Boolean
+) : Abstract.Object.Data.GithubUser, CacheModel {
 
     override fun map(mapper: Abstract.UserMapper<DataGithubUser>): DataGithubUser
-        = mapper.map(name,bio,profileImageUrl)
+        = mapper.map(name,bio,profileImageUrl,isCollapsed)
 }

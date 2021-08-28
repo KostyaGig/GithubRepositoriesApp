@@ -11,9 +11,10 @@ import com.zinoview.githubrepositories.domain.users.DomainGithubUser
 data class DataGithubUser(
     private val name: String,
     private val bio: String,
-    private val profileImageUrl: String
+    private val profileImageUrl: String,
+    private val isCollapsed: Boolean
 ) : Abstract.Object.Domain.GithubUser {
 
     override fun map(mapper: Abstract.UserMapper<DomainGithubUser>): DomainGithubUser
-        = mapper.map(name,bio,profileImageUrl)
+        = mapper.map(name,bio,profileImageUrl,isCollapsed)
 }

@@ -2,6 +2,7 @@ package com.zinoview.githubrepositories.ui.users.cache
 
 import com.zinoview.githubrepositories.R
 import com.zinoview.githubrepositories.core.Abstract
+import com.zinoview.githubrepositories.core.GithubDisposableStore
 import com.zinoview.githubrepositories.core.Resource
 import com.zinoview.githubrepositories.domain.users.GithubUserInteractor
 import com.zinoview.githubrepositories.ui.core.BaseGithubUserRequest
@@ -29,6 +30,7 @@ abstract class LocalGithubUserRequest(
     communication,
     githubUserDisposableStore,
     uiGithubMappers.first,
+    uiGithubMappers.second,
     uiGithubMappers.third
 )  {
 

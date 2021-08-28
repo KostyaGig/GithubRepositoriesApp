@@ -9,7 +9,7 @@ interface Name {
 
     fun addName(name: String?)
 
-    fun searchRepository(repo: String,viewModel: GithubRepositoryViewModel)
+    fun searchRepository(repo: String,viewModel: GithubRepositoryViewModel<UiGithubRepositoryState>)
 
     class GithubUserName : Name {
 
@@ -19,7 +19,7 @@ interface Name {
             this.name = name
         }
 
-        override fun searchRepository(repo: String,viewModel: GithubRepositoryViewModel)
+        override fun searchRepository(repo: String,viewModel: GithubRepositoryViewModel<UiGithubRepositoryState>)
             = viewModel.repository(name.isNull(),repo)
 
         private fun String?.isNull() : String = this ?: throw IllegalStateException(" Name -> GithubUserName -> User name repository is null")

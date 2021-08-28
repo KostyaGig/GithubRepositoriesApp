@@ -1,9 +1,9 @@
 package com.zinoview.githubrepositories.ui.users
 
 import com.zinoview.githubrepositories.core.Abstract
-import com.zinoview.githubrepositories.ui.core.AbstractView
-import com.zinoview.githubrepositories.ui.core.CommunicationModel
-import com.zinoview.githubrepositories.ui.core.Shell
+import com.zinoview.githubrepositories.core.Same
+import com.zinoview.githubrepositories.data.users.cache.CacheGithubUser
+import com.zinoview.githubrepositories.ui.core.*
 
 
 /**
@@ -11,18 +11,43 @@ import com.zinoview.githubrepositories.ui.core.Shell
  * k.gig@list.ru
  */
 sealed class UiGithubUserState :
-    Shell<UiGithubUserState>,
+    Abstract.Object<CacheGithubUser,CacheGithubUserMapper>,
+    Wrapper<UiGithubUserState>,
     Abstract.FactoryMapper<List<AbstractView>,Unit>,
-    CommunicationModel {
+    CommunicationModel,
+    AbstractListener.CollapseOrExpandListener<
+            GithubOnItemClickListener,
+            CollapseOrExpandListener<UiGithubUserState>
+            >,
+    Same<UiGithubUser> {
 
-    override fun map(src: List<AbstractView>) = Unit
+    override fun isBase(): Boolean = false
 
     override fun wrap(): List<UiGithubUserState>
         = listOf(Default)
 
-    open fun map(listener: GithubOnItemClickListener) = Unit
+    override fun map(src: List<AbstractView>) = Unit
 
-    override fun isBase(): Boolean = false
+    override fun map(mapper: CacheGithubUserMapper): CacheGithubUser
+        = mapper.map(
+        true,
+        UiGithubUser.Mock()
+    )
+
+    open fun mapCollapseOrExpandState(src: List<CollapseView>) = Unit
+
+    override fun notifyAboutItemClick(listener: GithubOnItemClickListener) = Unit
+
+    override fun notifyAboutCollapseOrExpand(
+        listener: CollapseOrExpandListener<UiGithubUserState>,
+        position: Int
+    ) = Unit
+
+    override fun matches(model: CommunicationModel): Boolean = false
+
+    override fun same(element: UiGithubUser): Boolean = false
+
+    open fun sameCollapsed(isCollapsed: Boolean) : Boolean = false
 
     object Default : UiGithubUserState()
 
@@ -33,31 +58,68 @@ sealed class UiGithubUserState :
     }
 
     data class Base(
-        private val uiGithubUser: UiGithubUser
+         private val uiGithubUser: UiGithubUser,
+         private val isCollapsed: Boolean
     ) : UiGithubUserState() {
+
+        override fun isBase(): Boolean = true
+
+        override fun wrap(): List<UiGithubUserState> = listOf(this)
+
+        override fun map(mapper: CacheGithubUserMapper): CacheGithubUser
+            = mapper.map(isCollapsed,uiGithubUser)
 
         override fun map(src: List<AbstractView>) = uiGithubUser.map(src)
 
-        override fun wrap(): List<UiGithubUserState>
-            = listOf(this)
+        override fun mapCollapseOrExpandState(src: List<CollapseView>) {
+            src.map {
+                it.map(isCollapsed)
+            }
+        }
 
-        override fun map(listener: GithubOnItemClickListener)
-            = uiGithubUser.notify(listener)
+        override fun notifyAboutItemClick(listener: GithubOnItemClickListener)
+            = uiGithubUser.notifyAboutItemClick(listener)
 
-        override fun isBase(): Boolean = true
+        override fun notifyAboutCollapseOrExpand(
+            listener: CollapseOrExpandListener<UiGithubUserState>,
+            position: Int
+        ) = listener.onChangeCollapseState(newState(), position)
+
+        private fun newState(): Base = Base(uiGithubUser, isCollapsed.not())
+
+        override fun matches(model: CommunicationModel): Boolean =
+            if (model is UiGithubUserState)
+                model.same(uiGithubUser)
+             else
+                false
+
+        override fun same(element: UiGithubUser): Boolean
+            = uiGithubUser.same(element)
+
+        override fun sameCollapsed(isCollapsed: Boolean): Boolean
+            = this.isCollapsed == isCollapsed
+
+        override fun hashCode(): Int {
+            return super.hashCode()
+        }
+
+        override fun equals(other: Any?): Boolean {
+            val oth = other as Base
+            return oth.same(uiGithubUser) && oth.sameCollapsed(isCollapsed)
+        }
     }
 
     //if our local data empty
     object Empty : UiGithubUserState() {
 
         override fun map(src: List<AbstractView>)
-            = src.forEach { view -> view.map("Empty data", "", "") }
+            = src.forEach { view -> view.map("Empty data", "", "",true) }
     }
 
     class Fail(private val message: String) : UiGithubUserState() {
 
         override fun map(src: List<AbstractView>) =
-            src.forEach { view-> view.map(message,"","") }
+            src.forEach { view-> view.map(message,"","",true) }
 
         override fun wrap(): List<UiGithubUserState>
             = listOf(this)

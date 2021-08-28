@@ -1,5 +1,6 @@
 package com.zinoview.githubrepositories.ui.users.cache
 
+import com.zinoview.githubrepositories.ui.core.UiTotalCache
 import com.zinoview.githubrepositories.ui.core.*
 import org.junit.Assert.*
 import org.junit.Test
@@ -45,10 +46,18 @@ class GithubUserTotalCacheTest {
         override fun isBase(): Boolean
             = throw IllegalStateException("TestCommunicationModel not use this method")
 
+        override fun matches(model: CommunicationModel): Boolean
+            = throw IllegalStateException("TestCommunicationModel not use this method")
+
+        fun same(model: TestCommunicationModel) = model.sameByData(data)
+
+        private fun sameByData(data: String) = this.data == data
+
         fun data() = data
     }
 
-    private inner class TestTotalCache(private val stringList: MutableList<String>) : UiTotalCache<TestCommunicationModel> {
+    private inner class TestTotalCache(private val stringList: MutableList<String>) :
+        UiTotalCache<TestCommunicationModel> {
 
         private val list = ArrayList<TestCommunicationModel>()
 
@@ -59,12 +68,18 @@ class GithubUserTotalCacheTest {
             stringList.addAll(stringData)
         }
 
+        override fun add(item: TestCommunicationModel)
+            = TODO("make test")
+
         fun actual() = stringList
 
         override fun updateAdapter()
             = throw IllegalStateException("Not use for test implements")
 
         override fun addAdapter(adapter: GithubAdapter<TestCommunicationModel>)
+            = throw IllegalStateException("Not use for test implements")
+
+        override fun saveTotalCache(viewModel: BaseViewModel<TestCommunicationModel>)
             = throw IllegalStateException("Not use for test implements")
     }
 }

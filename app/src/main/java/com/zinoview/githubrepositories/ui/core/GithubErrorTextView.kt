@@ -1,15 +1,16 @@
-package com.zinoview.githubrepositories.ui.users
+package com.zinoview.githubrepositories.ui.core
 
 import android.content.Context
 import android.util.AttributeSet
-
+import com.zinoview.githubrepositories.core.GithubTextView
 
 
 /**
  * @author Zinoview on 20.08.2021
  * k.gig@list.ru
  */
-class GithubUserNameTextView : GithubTextView {
+
+class GithubErrorTextView : GithubTextView {
     //region constructors
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)

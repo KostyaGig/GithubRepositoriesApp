@@ -9,6 +9,6 @@ import com.zinoview.githubrepositories.core.Abstract
  */
 class CacheGithubUserMapper : Abstract.UserMapper<CacheGithubUser> {
 
-    override fun map(name: String, bio: String, imageUrl: String): CacheGithubUser
-        = CacheGithubUser(name = name,bio = bio,profileImageUrl = imageUrl)
+    override fun map(name: String, bio: String, imageUrl: String,isCollapsed: Boolean): CacheGithubUser
+        = CacheGithubUser(name,bio,imageUrl,isCollapsed)
 }

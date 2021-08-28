@@ -5,11 +5,13 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
 import com.zinoview.githubrepositories.R
-import com.zinoview.githubrepositories.ui.core.BaseFragment
-import com.zinoview.githubrepositories.ui.repositories.*
-import com.zinoview.githubrepositories.ui.users.*
+import com.zinoview.githubrepositories.core.GithubDisposableStore
 import com.zinoview.githubrepositories.ui.core.UiTotalCache
-import com.zinoview.githubrepositories.ui.repositories.cache.Repository
+import com.zinoview.githubrepositories.ui.core.BaseFragment
+import com.zinoview.githubrepositories.ui.core.CollapseOrExpandListener
+import com.zinoview.githubrepositories.ui.core.GithubObservableQuery
+import com.zinoview.githubrepositories.ui.repositories.*
+import com.zinoview.githubrepositories.ui.repositories.cache.RepositoriesTotalCache
 import com.zinoview.githubrepositories.ui.users.fragment.GithubUsersFragment
 import io.reactivex.disposables.CompositeDisposable
 
@@ -38,18 +40,26 @@ class GithubRepositoriesFragment : BaseFragment(R.layout.github_repository_fragm
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        githubRepositoryTotalCache = Repository(ArrayList())
+        githubRepositoryTotalCache = RepositoriesTotalCache(ArrayList()) { replacedItem ->
+            githubRepositoryViewModel.saveData(replacedItem.wrap())
+        }
 
         arguments?.let {
             val userName = it.getString(GITHUB_USER_NAME_EXTRA)
             githubUserName.addName(userName)
 
-            changeTitleToolbar("$userName/repos")
+            changeTitleToolbar(R.string.repos, userName)
 
             adapter = GithubRepositoryAdapter(
                 GithubRepositoryItemViewTypeFactory(),
-                GithubRepositoryViewHolderFactory()
-            )
+                GithubRepositoryViewHolderFactory(
+                    object : CollapseOrExpandListener<UiGithubRepositoryState> {
+                        override fun onChangeCollapseState(item: UiGithubRepositoryState, position: Int) {
+                            githubRepositoryTotalCache.add(item)
+                            adapter.update(item,position)
+                        }
+                    })
+                )
 
             githubRepositoryTotalCache.addAdapter(adapter)
 
@@ -61,6 +71,11 @@ class GithubRepositoriesFragment : BaseFragment(R.layout.github_repository_fragm
             }
 
             githubRepositoryViewModel.observe(this) { uiGithubRepositoryState ->
+
+                //На этапе прихода нам стейта Base нужно проверять empty он или нет
+                //Если empty: отдать в коммуникации Empty state
+                //todo handle state,which our sent empty list
+                //todo which repo already cached and we search repo by name sometimes maybe не быть такого препозитория,у мен ыскакиевет somewentwrong task: watching class exception and correctly handle error
                 githubRepositoryTotalCache.add(uiGithubRepositoryState)
                 adapter.update(uiGithubRepositoryState)
             }

@@ -4,7 +4,6 @@ import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.data.repositories.cache.CacheGithubRepositoryMapper
 import com.zinoview.githubrepositories.data.repositories.cache.GithubRepositoryCacheDataSource
 import com.zinoview.githubrepositories.data.repositories.cloud.GithubRepositoryCloudDataSource
-import com.zinoview.githubrepositories.ui.core.message
 import io.reactivex.Single
 
 
@@ -25,38 +24,35 @@ interface GithubRepositoryRepository {
         private val dataGithubRepositoryMapper: Abstract.RepositoryMapper<DataGithubRepository>
     ) : GithubRepositoryRepository {
 
-        override fun repository(userName: String, repo: String): Single<DataGithubRepository> {
-            message("Repository repository")
-            return githubRepositoryCacheDataSource.fetchRepository(userName, repo)
+        override fun repository(owner: String, repo: String): Single<DataGithubRepository> {
+            return githubRepositoryCacheDataSource.fetchRepository(owner, repo)
                 .flatMap { cacheGithubRepository ->
-                    message("repository repository cache repo by name")
                     Single.just(cacheGithubRepository.map(dataGithubRepositoryMapper))
                 }.onErrorResumeNext {
-                    message("repository repository null repo by name")
                 val cloudGithubRepository =
-                    githubRepositoryCloudDataSource.repository(userName, repo)
+                    githubRepositoryCloudDataSource.repository(owner, repo)
                 cloudGithubRepository.flatMap { cloudRepo ->
-                    val cacheRepo = cloudRepo.map(cacheGithubRepositoryMapper,userName)
+                    val cacheRepo = cloudRepo.map(cacheGithubRepositoryMapper,owner)
                     githubRepositoryCacheDataSource.saveData(cacheRepo)
-                    Single.just(cloudRepo.map(dataGithubRepositoryMapper))
+                    Single.just(cloudRepo.map(dataGithubRepositoryMapper,owner))
                 }
             }
         }
 
         override fun repositories(
-            userName: String
+            owner: String
         ): Single<List<DataGithubRepository>> {
-            return githubRepositoryCacheDataSource.fetchData(userName)
+            return githubRepositoryCacheDataSource.fetchData(owner)
                 .flatMap { cacheGithubRepositories ->
                     if (cacheGithubRepositories.isEmpty()) {
                         val cloudGithubRepositories =
-                            githubRepositoryCloudDataSource.fetchData(userName)
+                            githubRepositoryCloudDataSource.fetchData(owner)
                         cloudGithubRepositories.flatMap { cloudRepos ->
                             val cacheRepos = cloudRepos.map {
-                                cloudRepo -> cloudRepo.map(cacheGithubRepositoryMapper,userName)
+                                cloudRepo -> cloudRepo.map(cacheGithubRepositoryMapper,owner)
                             }
                             githubRepositoryCacheDataSource.saveListData(cacheRepos)
-                            Single.just(cloudRepos.map { it.map(dataGithubRepositoryMapper) })
+                            Single.just(cloudRepos.map { it.map(dataGithubRepositoryMapper,owner) })
                         }
                     } else {
                         val dataGithubRepositories =

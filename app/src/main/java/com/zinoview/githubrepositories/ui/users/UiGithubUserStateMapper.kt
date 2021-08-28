@@ -9,8 +9,8 @@ import com.zinoview.githubrepositories.core.Abstract
  */
 class UiGithubUserStateMapper : Abstract.UserMapper<UiGithubUserState> {
 
-    override fun map(name: String, bio: String, imageUrl: String): UiGithubUserState
+    override fun map(name: String, bio: String, imageUrl: String,isCollapsed: Boolean): UiGithubUserState
         = UiGithubUserState.Base(
-            UiGithubUser(name,bio,imageUrl)
-         )
+            UiGithubUser(name,bio,imageUrl,isCollapsed),
+            isCollapsed)
 }

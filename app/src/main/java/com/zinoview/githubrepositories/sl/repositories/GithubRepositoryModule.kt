@@ -12,7 +12,8 @@ import com.zinoview.githubrepositories.sl.core.BaseModule
 import com.zinoview.githubrepositories.sl.core.CoreModule
 import com.zinoview.githubrepositories.ui.core.BaseViewModel
 import com.zinoview.githubrepositories.ui.repositories.*
-import com.zinoview.githubrepositories.ui.users.GithubDisposableStore
+import com.zinoview.githubrepositories.core.GithubDisposableStore
+import com.zinoview.githubrepositories.ui.core.SaveCache
 import io.reactivex.disposables.CompositeDisposable
 
 
@@ -43,7 +44,7 @@ class GithubRepositoryModule(
                         GithubRepositoryCloudDataSource.Base(
                             coreModule.service(GithubRepositoryService::class.java)
                         ),
-                        CacheGithubRepositoryMapper.Base(),
+                        CacheGithubRepositoryMapper(),
                         DataGithubRepositoryMapper(coreModule.text)
                     ),
                     DomainGithubRepositoryMapper(),
@@ -53,7 +54,8 @@ class GithubRepositoryModule(
                 mappers
             ),
             communication,
-            disposableStore
+            disposableStore,
+            SaveCache.Repository(coreModule.githubDao,com.zinoview.githubrepositories.ui.repositories.CacheGithubRepositoryMapper.Base())
         )
     }
 }

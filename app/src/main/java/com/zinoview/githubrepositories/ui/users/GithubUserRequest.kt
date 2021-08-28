@@ -1,6 +1,5 @@
 package com.zinoview.githubrepositories.ui.users
 
-import io.reactivex.disposables.Disposable
 
 
 /**

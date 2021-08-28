@@ -2,7 +2,6 @@ package com.zinoview.githubrepositories.data.repositories
 
 import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.domain.repositories.DomainGithubRepository
-import com.zinoview.githubrepositories.ui.core.message
 
 
 /**
@@ -12,11 +11,14 @@ import com.zinoview.githubrepositories.ui.core.message
 class DataGithubRepository(
     private val name: String,
     private val private: Boolean,
-    private val language: String
+    private val language: String,
+    private val owner: String,
+    private val urlRepository: String,
+    private val defaultBranch: String,
+    private val isCollapsed: Boolean
 ) : Abstract.Object.Domain.GithubRepository {
 
     override fun map(mapper: Abstract.RepositoryMapper<DomainGithubRepository>): DomainGithubRepository
-        = mapper.map(name, private, language)
+        = mapper.map(name, private, language,owner,urlRepository,defaultBranch,isCollapsed)
 
-    fun print() = message("Data github repo name $name, language $language")
 }

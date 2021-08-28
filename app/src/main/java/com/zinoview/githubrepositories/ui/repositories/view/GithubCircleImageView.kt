@@ -21,14 +21,22 @@ class GithubCircleImageView : androidx.appcompat.widget.AppCompatImageView, Abst
     )
     //endregion
 
-    override fun map(name: String, bio: String, imageUrl: String)
+    override fun map(name: String, bio: String, imageUrl: String,isCollapsed: Boolean)
         = throw IllegalStateException("GithubCircleImage view not use it")
 
-    override fun map(name: String, private: Boolean, language: String) {
-
+    override fun map(
+        name: String,
+        private: Boolean,
+        language: String,
+        owner: String,
+        urlRepository: String,
+        defaultBranch: String,
+        isCollapsed: Boolean
+    ) {
         val drawableImageFactory = DrawableImageFactory()
         val drawableByLanguage = drawableImageFactory.map(language)
         setImageDrawable(resources.getDrawable(drawableByLanguage))
     }
+
 
 }

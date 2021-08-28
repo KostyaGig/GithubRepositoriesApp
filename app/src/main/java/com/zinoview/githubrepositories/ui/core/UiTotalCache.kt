@@ -12,12 +12,17 @@ interface UiTotalCache<T : CommunicationModel> {
 
     fun add(items: List<T>)
 
+    fun add(item: T)
+
+    fun saveTotalCache(viewModel: BaseViewModel<T>)
+
     fun addAdapter(adapter: GithubAdapter<T>)
 
     fun updateAdapter()
 
-    abstract class UiGithubTotalCache<T : CommunicationModel>(
+    abstract class UiGithubTotalCache2<T : CommunicationModel> (
         private val listTotalCache: MutableList<T>,
+        private val replaceItem: (T) -> Unit
     ) : UiTotalCache<T> {
 
         private var adapter: GithubAdapter<T>? = null
@@ -26,11 +31,26 @@ interface UiTotalCache<T : CommunicationModel> {
 
         override fun add(items: List<T>) {
             //фильтруем до Base
-            val communicationModelBase = items.onlyBase()
+            val communicationModelsBase = items.onlyBase()
 
             //Если наш текущий кеш содержит в себе элементы пришдшего - не добавляем,чтобы избежать одинкавых обЪектов
-            if (!listTotalCache.containsAll(communicationModelBase)) {
-                listTotalCache.addAll(communicationModelBase)
+
+            if (!listTotalCache.containsAll(communicationModelsBase)) {
+                message("Not contains")
+                listTotalCache.addAll(communicationModelsBase)
+            }
+
+            message("AFTER ADD itemS size list ${listTotalCache.size}")
+        }
+
+        override fun add(item: T) {
+            listTotalCache.forEachIndexed {index, element ->
+                if (element.matches(item)) {
+                    listTotalCache[index] = item
+                    message("add by matches")
+                    //if element was replaced call lambda
+                    replaceItem.invoke(item)
+                }
             }
         }
 
@@ -46,14 +66,17 @@ interface UiTotalCache<T : CommunicationModel> {
             }
         }
 
+        override fun saveTotalCache(viewModel: BaseViewModel<T>)
+            = viewModel.saveData(listTotalCache)
+
         private fun repositoryStateEmpty() : List<UiGithubRepositoryState.Empty>
-                = listOf(UiGithubRepositoryState.Empty)
+            = listOf(UiGithubRepositoryState.Empty)
 
         private fun userStateEmpty() : List<UiGithubRepositoryState.Empty>
-                = listOf(UiGithubRepositoryState.Empty)
+            = listOf(UiGithubRepositoryState.Empty)
 
         private fun emptyTotalCache()
-                = listTotalCache.onlyBase().isEmpty()
+            = listTotalCache.onlyBase().isEmpty()
 
         private fun <T : CommunicationModel> List<T>.onlyBase() : List<T> {
             val totalListBase = mutableListOf<T>()

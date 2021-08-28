@@ -12,20 +12,20 @@ import io.reactivex.Single
  */
 interface GithubRepositoryInteractor : GithubInteractor<List<DomainGithubRepository>> {
 
-    fun repository(userName: String,repo: String) : Single<DomainGithubRepository>
+    fun repository(owner: String, repo: String) : Single<DomainGithubRepository>
 
     class Base(
         private val githubRepositoryRepository: GithubRepositoryRepository,
         private val domainGithubRepositoryMapper: Abstract.RepositoryMapper<DomainGithubRepository>
     ) : GithubRepositoryInteractor {
 
-        override fun data(userName: String): Single<List<DomainGithubRepository>>
-            = githubRepositoryRepository.repositories(userName).flatMap { dataGithubRepositories ->
+        override fun data(owner: String): Single<List<DomainGithubRepository>>
+            = githubRepositoryRepository.repositories(owner).flatMap { dataGithubRepositories ->
                 Single.just(dataGithubRepositories.map { it.map(domainGithubRepositoryMapper) })
             }
 
-        override fun repository(userName: String, repo: String) : Single<DomainGithubRepository>
-            = githubRepositoryRepository.repository(userName, repo).flatMap { dataGithubRepository ->
+        override fun repository(owner: String, repo: String) : Single<DomainGithubRepository>
+            = githubRepositoryRepository.repository(owner, repo).flatMap { dataGithubRepository ->
                 Single.just(dataGithubRepository.map(domainGithubRepositoryMapper))
         }
     }

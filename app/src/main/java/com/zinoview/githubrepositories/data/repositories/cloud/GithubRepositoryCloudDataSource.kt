@@ -1,7 +1,6 @@
 package com.zinoview.githubrepositories.data.repositories.cloud
 
 import com.zinoview.githubrepositories.data.core.GithubDataSource
-import com.zinoview.githubrepositories.data.repositories.cache.CacheRepositoryDataSource
 import io.reactivex.Single
 
 

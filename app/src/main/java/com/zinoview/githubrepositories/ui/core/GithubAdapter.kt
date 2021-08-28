@@ -1,7 +1,5 @@
 package com.zinoview.githubrepositories.ui.core
 
-import com.zinoview.githubrepositories.ui.repositories.UiGithubRepositoryState
-
 
 /**
  * @author Zinoview on 24.08.2021
@@ -10,4 +8,16 @@ import com.zinoview.githubrepositories.ui.repositories.UiGithubRepositoryState
 interface GithubAdapter<T : CommunicationModel> {
 
     fun update(list: List<T>)
+
+    fun update(item: T,position: Int)
+}
+
+interface CollapseOrExpandListener<T : CommunicationModel> {
+
+    fun onChangeCollapseState(item: T,position: Int)
+}
+
+interface GithubOnItemClickListener {
+
+    fun onItemClick(githubUserName: String)
 }

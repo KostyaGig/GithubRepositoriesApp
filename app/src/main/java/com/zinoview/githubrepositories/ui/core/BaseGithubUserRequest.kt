@@ -1,6 +1,7 @@
 package com.zinoview.githubrepositories.ui.core
 
 import com.zinoview.githubrepositories.core.Abstract
+import com.zinoview.githubrepositories.core.GithubDisposableStore
 import com.zinoview.githubrepositories.domain.users.GithubUserInteractor
 import com.zinoview.githubrepositories.ui.users.*
 import io.reactivex.Single
@@ -18,6 +19,7 @@ abstract class BaseGithubUserRequest (
     private val communication: GithubUserCommunication,
     private val githubUserDisposableStore: GithubDisposableStore,
     private val uiGithubUserMapper: Abstract.UserMapper<UiGithubUser>,
+    private val uiGithubUserStateMapper: Abstract.UserMapper<UiGithubUserState>,
     private val exceptionMapper: Abstract.FactoryMapper<Throwable,String>
 ) : GithubUserRequest<String>, CleanDisposable {
 
@@ -32,7 +34,7 @@ abstract class BaseGithubUserRequest (
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ uiGithubUser ->
                 uiGithubUser?.let { user ->
-                    communication.changeValue(UiGithubUserState.Base(user).wrap())
+                    communication.changeValue(user.map(uiGithubUserStateMapper).wrap())
                 }
             }, { error ->
                 error?.let { throwable ->

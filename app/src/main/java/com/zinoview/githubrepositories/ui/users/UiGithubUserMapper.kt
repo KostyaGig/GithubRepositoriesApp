@@ -9,7 +9,7 @@ import com.zinoview.githubrepositories.core.Abstract
  */
 class UiGithubUserMapper : Abstract.UserMapper<UiGithubUser> {
 
-    override fun map(name: String, bio: String, imageUrl: String): UiGithubUser
-        = UiGithubUser(name,bio,imageUrl)
+    override fun map(name: String, bio: String, imageUrl: String,isCollapsed: Boolean): UiGithubUser
+        = UiGithubUser(name,bio,imageUrl,isCollapsed)
 
 }

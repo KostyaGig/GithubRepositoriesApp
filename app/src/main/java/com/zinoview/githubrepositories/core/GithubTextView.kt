@@ -1,4 +1,4 @@
-package com.zinoview.githubrepositories.ui.users
+package com.zinoview.githubrepositories.core
 
 import android.content.Context
 import android.util.AttributeSet
@@ -20,13 +20,21 @@ abstract class GithubTextView : androidx.appcompat.widget.AppCompatTextView, Abs
     )
     //endregion
 
-    override fun map(name: String, bio: String, imageUrl: String) = if (isName()) {
+    override fun map(name: String, bio: String, imageUrl: String,isCollapsed: Boolean) = if (isName()) {
         setText(name)
     } else {
         setText(bio)
     }
 
-    override fun map(name: String, private: Boolean, language: String) = if (isName()) {
+    override fun map(
+        name: String,
+        private: Boolean,
+        language: String,
+        owner: String,
+        urlRepository: String,
+        defaultBranch: String,
+        isCollapsed: Boolean
+    ) = if (isName()) {
         setText(name)
     } else {
         setText(language)

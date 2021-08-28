@@ -9,6 +9,14 @@ import com.zinoview.githubrepositories.core.Abstract
  */
 class UiGithubRepositoryMapper : Abstract.RepositoryMapper<UiGithubRepository> {
 
-    override fun map(name: String, private: Boolean, language: String): UiGithubRepository
-        = UiGithubRepository(name, private, language)
+    override fun map(
+        name: String,
+        private: Boolean,
+        language: String,
+        owner: String,
+        urlRepository: String,
+        defaultBranch: String,
+        isCollapsed: Boolean
+    ): UiGithubRepository
+        = UiGithubRepository(name, private, language, owner, urlRepository, defaultBranch, isCollapsed)
 }

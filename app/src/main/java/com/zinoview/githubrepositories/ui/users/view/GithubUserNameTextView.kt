@@ -1,15 +1,15 @@
-package com.zinoview.githubrepositories.ui.users
+package com.zinoview.githubrepositories.ui.users.view
 
 import android.content.Context
 import android.util.AttributeSet
-
+import com.zinoview.githubrepositories.core.GithubTextView
 
 
 /**
  * @author Zinoview on 20.08.2021
  * k.gig@list.ru
  */
-class GithubUserBioTextView : GithubTextView {
+class GithubUserNameTextView : GithubTextView {
     //region constructors
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
@@ -20,5 +20,5 @@ class GithubUserBioTextView : GithubTextView {
     )
     //endregion
 
-    override fun isName(): Boolean = false
+    override fun isName(): Boolean = true
 }

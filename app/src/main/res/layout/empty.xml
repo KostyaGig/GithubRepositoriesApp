@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zinoview.githubrepositories.ui.users.GithubUserNameTextView
+<com.zinoview.githubrepositories.ui.users.view.GithubUserNameTextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/empty_data"
@@ -12,4 +12,4 @@
     android:gravity="center"
     >
 
-</com.zinoview.githubrepositories.ui.users.GithubUserNameTextView>
+</com.zinoview.githubrepositories.ui.users.view.GithubUserNameTextView>

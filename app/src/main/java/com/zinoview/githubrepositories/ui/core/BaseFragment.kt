@@ -54,12 +54,14 @@ abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    protected fun changeTitleToolbar(title: String) {
+    protected fun changeTitleToolbar(stringResId: Int,text: String? = "") {
         val toolbar = activity.toolbar
+        val title = "$text " + activity.resources.getString(stringResId)
         toolbar?.let {
             it.title = title
         }
     }
+
 
     private fun MenuItem.collapseState(collapse: () -> Unit) {
         this.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {

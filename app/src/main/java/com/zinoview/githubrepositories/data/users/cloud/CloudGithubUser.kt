@@ -26,9 +26,9 @@ data class CloudGithubUser(
         conditionMap(mapper)
 
     private fun <T> conditionMap(mapper: Abstract.UserMapper<T>): T = if (bio == null) {
-        mapper.map(name, "Empty bio", profileImageUrl)
+        mapper.map(name, "Empty bio", profileImageUrl,true)
     } else {
-        mapper.map(name, bio, profileImageUrl)
+        mapper.map(name, bio, profileImageUrl,true)
     }
 
 }

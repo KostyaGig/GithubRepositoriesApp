@@ -3,7 +3,6 @@ package com.zinoview.githubrepositories.ui.core
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.zinoview.githubrepositories.ui.repositories.UiGithubRepositoryState
 
 
 /**

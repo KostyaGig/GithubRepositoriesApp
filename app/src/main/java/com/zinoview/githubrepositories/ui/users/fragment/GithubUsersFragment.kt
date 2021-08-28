@@ -5,11 +5,13 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
 import com.zinoview.githubrepositories.R
-import com.zinoview.githubrepositories.ui.core.BaseFragment
+import com.zinoview.githubrepositories.core.GithubDisposableStore
+import com.zinoview.githubrepositories.ui.core.UiTotalCache
+import com.zinoview.githubrepositories.ui.core.*
 import com.zinoview.githubrepositories.ui.repositories.fragment.GithubRepositoriesFragment
 import com.zinoview.githubrepositories.ui.users.*
-import com.zinoview.githubrepositories.ui.core.UiTotalCache
 import com.zinoview.githubrepositories.ui.repositories.fragment.MockBaseFragment
+import com.zinoview.githubrepositories.ui.users.cache.UsersTotalCache
 import io.reactivex.disposables.CompositeDisposable
 
 
@@ -17,6 +19,7 @@ import io.reactivex.disposables.CompositeDisposable
  * @author Zinoview on 22.08.2021
  * k.gig@list.ru
  */
+
 class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
 
     private val githubUserViewModel by lazy {
@@ -32,12 +35,14 @@ class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
         setHasOptionsMenu(true)
 
         githubQueryDisposableStore = GithubDisposableStore.Base(CompositeDisposable())
-        changeTitleToolbar("Github Users")
+        changeTitleToolbar(R.string.users_page)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        githubUserTotalCache = User(ArrayList())
+        githubUserTotalCache = UsersTotalCache(ArrayList()) {replacedItem ->
+            githubUserViewModel.saveData(replacedItem.wrap())
+        }
 
         adapter = GithubUserAdapter(
             GithubUserItemViewTypeFactory(),
@@ -54,7 +59,11 @@ class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
                         replace(R.id.container,githubRepositoriesFragment)
                         commit()
                     }
-
+                }
+            }, object : CollapseOrExpandListener<UiGithubUserState> {
+                override fun onChangeCollapseState(item: UiGithubUserState, position: Int) {
+                    githubUserTotalCache.add(item)
+                    adapter.update(item,position)
                 }
             })
         )
@@ -69,7 +78,13 @@ class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
             adapter.update(githubUserUiState)
         }
 
+
+        //adding to repo layout new info, fix todos
+        //feature: filter by param
+        //listener listen in the onStart()
+
         githubUserViewModel.users()
+
     }
 
     override fun searchByQuery(searchView: SearchView) {
@@ -89,6 +104,8 @@ class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
     }
 
     override fun onStop() {
+        message("onStop")
+        githubUserTotalCache.saveTotalCache(githubUserViewModel)
         githubQueryDisposableStore.dispose()
         super.onStop()
     }

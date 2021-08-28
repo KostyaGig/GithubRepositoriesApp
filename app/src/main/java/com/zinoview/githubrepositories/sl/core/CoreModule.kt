@@ -6,8 +6,6 @@ import com.zinoview.githubrepositories.core.Resource
 import com.zinoview.githubrepositories.data.core.GithubAppDatabase
 import com.zinoview.githubrepositories.data.core.GithubDao
 import com.zinoview.githubrepositories.data.core.Text
-import com.zinoview.githubrepositories.ui.core.Communication
-import com.zinoview.githubrepositories.ui.core.CommunicationModel
 import com.zinoview.githubrepositories.ui.users.UiGithubExceptionMapper
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -59,6 +57,6 @@ class CoreModule {
     fun <T> service(clazz: Class<T>) = retrofit.create(clazz)
 
     private companion object {
-        const val BASE_URL = "https://api.github.com"
+        const val BASE_URL = "https://api.github.com/"
     }
 }

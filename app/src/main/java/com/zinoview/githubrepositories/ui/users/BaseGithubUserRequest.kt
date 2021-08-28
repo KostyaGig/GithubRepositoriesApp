@@ -1,14 +1,10 @@
 package com.zinoview.githubrepositories.ui.users
 
 import com.zinoview.githubrepositories.core.Abstract
+import com.zinoview.githubrepositories.core.GithubDisposableStore
 import com.zinoview.githubrepositories.domain.core.GithubInteractor
-import com.zinoview.githubrepositories.domain.repositories.DomainGithubRepository
-import com.zinoview.githubrepositories.domain.users.DomainGithubUser
-import com.zinoview.githubrepositories.domain.users.GithubUserInteractor
 import com.zinoview.githubrepositories.ui.core.Communication
 import com.zinoview.githubrepositories.ui.core.CommunicationModel
-import com.zinoview.githubrepositories.ui.repositories.UiGithubRepository
-import com.zinoview.githubrepositories.ui.repositories.UiGithubRepositoryState
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

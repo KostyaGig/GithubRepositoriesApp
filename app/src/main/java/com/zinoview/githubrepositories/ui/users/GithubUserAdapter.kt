@@ -5,8 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zinoview.githubrepositories.R
 import com.zinoview.githubrepositories.core.Abstract
-import com.zinoview.githubrepositories.ui.core.GithubAdapter
-import com.zinoview.githubrepositories.ui.core.message
+import com.zinoview.githubrepositories.ui.core.*
+import com.zinoview.githubrepositories.ui.users.view.GithubUserBioTextView
+import com.zinoview.githubrepositories.ui.users.view.GithubUserNameTextView
+import com.zinoview.githubrepositories.ui.users.view.GithubUserProfileImageView
 
 
 /**
@@ -27,6 +29,11 @@ class GithubUserAdapter(
         notifyDataSetChanged()
     }
 
+    override fun update(item: UiGithubUserState,position: Int) {
+        this.list[position] = item
+        notifyItemChanged(position)
+    }
+
     override fun getItemViewType(position: Int): Int =
         githubUserItemViewTypeFactory.map(list[position])
 
@@ -35,8 +42,8 @@ class GithubUserAdapter(
         viewType: Int
     ): GithubUserViewHolder = githubUserViewHolderFactory.map(Pair(viewType, parent))
 
-    override fun onBindViewHolder(holder: GithubUserViewHolder, position: Int) =
-        holder.bind(list[position])
+    override fun onBindViewHolder(holder: GithubUserViewHolder, position: Int)
+        =  holder.bind(list[position])
 
     override fun getItemCount(): Int = list.size
 
@@ -45,11 +52,18 @@ class GithubUserAdapter(
 
         class Progress(itemView: View) : GithubUserViewHolder(itemView)
 
-        class Base(itemView: View, private val listener: GithubOnItemClickListener) : GithubUserViewHolder(itemView) {
+        class Base(
+            itemView: View,
+            private val onItemClickListener: GithubOnItemClickListener,
+            private val collapseOrExpandListener: CollapseOrExpandListener<UiGithubUserState>
+        ) : GithubUserViewHolder(itemView) {
 
             private val nameTextView = itemView.findViewById<GithubUserNameTextView>(R.id.name)
             private val bioTextView = itemView.findViewById<GithubUserBioTextView>(R.id.bio)
             private val profileImage = itemView.findViewById<GithubUserProfileImageView>(R.id.image)
+
+            private val collapseImage = itemView.findViewById<GithubCollapseImage>(R.id.collapse_image)
+            private val subItem = itemView.findViewById<GithubLinearLayout>(R.id.sub_item)
 
             override fun bind(state: UiGithubUserState) {
                 state.map(listOf(
@@ -58,9 +72,21 @@ class GithubUserAdapter(
                     profileImage
                 ))
 
+                state.mapCollapseOrExpandState(
+                    listOf(
+                        collapseImage,
+                        subItem
+                    )
+                )
+
                 itemView.setOnClickListener {
-                    state.map(listener)
+                    state.notifyAboutItemClick(onItemClickListener)
                 }
+
+                collapseImage.setOnClickListener {
+                    state.notifyAboutCollapseOrExpand(collapseOrExpandListener,adapterPosition)
+                }
+
             }
         }
 
@@ -80,7 +106,4 @@ class GithubUserAdapter(
     }
 }
 
-interface GithubOnItemClickListener {
-    fun onItemClick(githubUserName: String)
-}
 

@@ -8,7 +8,7 @@ package com.zinoview.githubrepositories.ui.core
  * From english shell - оболочка
  */
 
-interface Shell<T> {
+interface Wrapper<T> {
 
     fun wrap() : List<T>
 }

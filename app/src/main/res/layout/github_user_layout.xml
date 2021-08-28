@@ -18,7 +18,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 
-      <com.zinoview.githubrepositories.ui.users.GithubUserProfileImageView
+      <com.zinoview.githubrepositories.ui.users.view.GithubUserProfileImageView
           android:id="@+id/image"
           android:layout_width="50dp"
           android:layout_height="50dp"
@@ -27,7 +27,7 @@
           android:layout_marginTop="@dimen/margin_10dp"
           />
 
-      <com.zinoview.githubrepositories.ui.users.GithubUserNameTextView
+      <com.zinoview.githubrepositories.ui.users.view.GithubUserNameTextView
           android:id="@+id/name"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -38,17 +38,40 @@
           android:textColor="@android:color/black"
           android:textSize="@dimen/size_16sp"/>
 
-      <com.zinoview.githubrepositories.ui.users.GithubUserBioTextView
-          android:id="@+id/bio"
+      <com.zinoview.githubrepositories.ui.core.GithubCollapseImage
+          android:id="@+id/collapse_image"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          tools:text="This is bio"
-          android:layout_marginStart="@dimen/margin_10dp"
-          android:layout_marginTop="@dimen/margin_10dp"
-          android:textStyle="bold"
-          android:textColor="@android:color/black"
-          android:textSize="@dimen/size_12sp"
-          android:layout_marginEnd="@dimen/margin_10dp"/>
+          android:tint="@color/black"
+          tools:src="@drawable/ic_collapse"
+          android:layout_gravity="end"
+          />
+
+      <com.zinoview.githubrepositories.ui.core.GithubLinearLayout
+          android:id="@+id/sub_item"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:visibility="gone">
+
+          <com.zinoview.githubrepositories.ui.users.view.GithubUserBioTextView
+              android:id="@+id/bio"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              tools:text="This is bio"
+              android:layout_marginStart="@dimen/margin_10dp"
+              android:layout_marginTop="@dimen/margin_10dp"
+              android:textStyle="bold"
+              android:textColor="@android:color/black"
+              android:textSize="@dimen/size_12sp"
+              android:layout_marginEnd="@dimen/margin_10dp"/>
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="COLLAPSE STATE"/>
+
+      </com.zinoview.githubrepositories.ui.core.GithubLinearLayout>
+
 
   </LinearLayout>
 

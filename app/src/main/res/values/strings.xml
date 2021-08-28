@@ -5,4 +5,6 @@
     <string name="github_not_found_error">Not found</string>
     <string name="github_user_generic_error">Some went wrong</string>
     <string name="local_error">Local error</string>
+    <string name="users_page">Users</string>
+    <string name="repos">/repos</string>
 </resources>

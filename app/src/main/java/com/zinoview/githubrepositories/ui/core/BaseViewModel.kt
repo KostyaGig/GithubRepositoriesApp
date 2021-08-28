@@ -4,7 +4,8 @@ package com.zinoview.githubrepositories.ui.core
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import com.zinoview.githubrepositories.ui.users.GithubDisposableStore
+import com.zinoview.githubrepositories.core.GithubDisposableStore
+import com.zinoview.githubrepositories.data.core.Save
 import com.zinoview.githubrepositories.ui.users.GithubUserRequest
 
 
@@ -15,8 +16,11 @@ import com.zinoview.githubrepositories.ui.users.GithubUserRequest
 abstract class BaseViewModel<T : CommunicationModel> (
     private val communication: Communication.Base<T>,
     private val disposableStore: GithubDisposableStore,
-    private val githubUserRequest: GithubUserRequest<String>
-) : ViewModel(), Observe<T>, GithubUserRequest<String> {
+    private val githubUserRequest: GithubUserRequest<String>,
+    private val saveCache: SaveCache<T>
+) : ViewModel(),
+    com.zinoview.githubrepositories.ui.core.ViewModel<T>,
+    GithubUserRequest<String> {
 
     override fun observe(owner: LifecycleOwner, observer: Observer<List<T>>)
         = communication.observe(owner, observer)
@@ -28,4 +32,7 @@ abstract class BaseViewModel<T : CommunicationModel> (
 
     override fun data(param: String)
         = githubUserRequest.data(param)
+
+    override fun saveData(data: List<T>)
+        = saveCache.saveData(data)
 }
