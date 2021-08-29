@@ -2,6 +2,7 @@ package com.zinoview.githubrepositories.ui.repositories.fragment
 
 import com.zinoview.githubrepositories.R
 import com.zinoview.githubrepositories.ui.core.BaseFragment
+import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
 
 
 /**
@@ -14,6 +15,9 @@ class MockBaseFragment: BaseFragment(R.layout.failure) {
             = throw IllegalStateException("MockBaseFragment not use this method")
 
     override fun collapseState()
+            = throw IllegalStateException("MockBaseFragment not use this method")
+
+    override fun dataByState(state: CollapseOrExpandState)
             = throw IllegalStateException("MockBaseFragment not use this method")
 
     override fun previousFragment()

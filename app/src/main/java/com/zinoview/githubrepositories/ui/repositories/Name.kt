@@ -1,5 +1,8 @@
 package com.zinoview.githubrepositories.ui.repositories
 
+import com.zinoview.githubrepositories.ui.core.message
+import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
+
 
 /**
  * @author Zinoview on 24.08.2021
@@ -11,6 +14,8 @@ interface Name {
 
     fun searchRepository(repo: String,viewModel: GithubRepositoryViewModel<UiGithubRepositoryState>)
 
+    fun repositoriesByState(state: CollapseOrExpandState, viewModel: GithubRepositoryViewModel<UiGithubRepositoryState>)
+
     class GithubUserName : Name {
 
         private var name: String? = null
@@ -20,8 +25,16 @@ interface Name {
         }
 
         override fun searchRepository(repo: String,viewModel: GithubRepositoryViewModel<UiGithubRepositoryState>)
-            = viewModel.repository(name.isNull(),repo)
+            = viewModel.repository(name.isNotNull(),repo)
 
-        private fun String?.isNull() : String = this ?: throw IllegalStateException(" Name -> GithubUserName -> User name repository is null")
+        private fun String?.isNotNull() : String = this ?: throw IllegalStateException(" Name -> GithubUserName -> User name repository is null")
+
+        override fun repositoriesByState(
+            state: CollapseOrExpandState,
+            viewModel: GithubRepositoryViewModel<UiGithubRepositoryState>
+        ) {
+            message("Name $name")
+            viewModel.repositoriesByState(name.isNotNull(),state)
+        }
     }
 }

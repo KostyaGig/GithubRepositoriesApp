@@ -5,6 +5,7 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
 import com.zinoview.githubrepositories.R
+import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.core.GithubDisposableStore
 import com.zinoview.githubrepositories.ui.core.UiTotalCache
 import com.zinoview.githubrepositories.ui.core.*
@@ -34,8 +35,8 @@ class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
-        githubQueryDisposableStore = GithubDisposableStore.Base(CompositeDisposable())
         changeTitleToolbar(R.string.users_page)
+        githubQueryDisposableStore = GithubDisposableStore.Base(CompositeDisposable())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -79,13 +80,16 @@ class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
         }
 
 
-        //adding to repo layout new info, fix todos
-        //feature: filter by param
-        //listener listen in the onStart()
+        //todo add info for repos and users (which expanded state)
+        //todo listener listen in the onStart()
+        //todo refactor добавленные недавно Local inside ui -> repositories -> cache and ui -> users -> LocalGithubReqest -> usersByState()
+        //И вынести общие элементы если такое возможно
 
-        githubUserViewModel.users()
+        githubUserViewModel.usersByState(CollapseOrExpandState.Any)
 
     }
+
+    override fun dataByState(state: CollapseOrExpandState) = githubUserViewModel.usersByState(state)
 
     override fun searchByQuery(searchView: SearchView) {
         val githubObservableQuery = GithubObservableQuery.Base(githubQueryDisposableStore)
@@ -111,4 +115,5 @@ class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
     }
 
     override fun previousFragment(): BaseFragment = MockBaseFragment()
+
 }

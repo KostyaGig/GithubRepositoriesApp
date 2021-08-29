@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
 import com.zinoview.githubrepositories.R
+import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.core.GithubDisposableStore
 import com.zinoview.githubrepositories.ui.core.UiTotalCache
 import com.zinoview.githubrepositories.ui.core.BaseFragment
@@ -12,6 +13,8 @@ import com.zinoview.githubrepositories.ui.core.CollapseOrExpandListener
 import com.zinoview.githubrepositories.ui.core.GithubObservableQuery
 import com.zinoview.githubrepositories.ui.repositories.*
 import com.zinoview.githubrepositories.ui.repositories.cache.RepositoriesTotalCache
+import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
+import com.zinoview.githubrepositories.ui.users.CollapseOrExpandStateFactory
 import com.zinoview.githubrepositories.ui.users.fragment.GithubUsersFragment
 import io.reactivex.disposables.CompositeDisposable
 
@@ -81,6 +84,9 @@ class GithubRepositoriesFragment : BaseFragment(R.layout.github_repository_fragm
             }
         }
     }
+
+    override fun dataByState(state: CollapseOrExpandState)
+        = githubUserName.repositoriesByState(state,githubRepositoryViewModel)
 
     override fun searchByQuery(searchView: SearchView) {
         val githubObservableQuery = GithubObservableQuery.Base(githubQueryDisposableStore)

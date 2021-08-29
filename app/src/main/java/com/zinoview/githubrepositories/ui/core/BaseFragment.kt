@@ -9,8 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import com.zinoview.githubrepositories.R
+import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.core.GAApp
 import com.zinoview.githubrepositories.ui.repositories.fragment.MockBaseFragment
+import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
+import com.zinoview.githubrepositories.ui.users.CollapseOrExpandStateFactory
 
 
 /**
@@ -19,15 +22,11 @@ import com.zinoview.githubrepositories.ui.repositories.fragment.MockBaseFragment
  */
 abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId) {
 
-    abstract fun searchByQuery(searchView: androidx.appcompat.widget.SearchView)
-
-    abstract fun collapseState()
-
-    abstract fun previousFragment() : BaseFragment
-
     private val activity by lazy {
         requireActivity() as MainActivity
     }
+
+    private val collapseOrExpandStateFactory = CollapseOrExpandStateFactory()
 
     protected fun <T : ViewModel> viewModel(clazz: Class<T>,owner: ViewModelStoreOwner)
         = (activity.application as GAApp).viewModel(clazz,owner)
@@ -40,7 +39,7 @@ abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
         val menuInflater = requireActivity().menuInflater
-        menuInflater.inflate(R.menu.search_menu,menu)
+        menuInflater.inflate(R.menu.main_menu,menu)
 
         val searchItem = requireNotNull(menu.findItem(R.id.action_search))
         val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
@@ -54,14 +53,15 @@ abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    protected fun changeTitleToolbar(stringResId: Int,text: String? = "") {
-        val toolbar = activity.toolbar
-        val title = "$text " + activity.resources.getString(stringResId)
-        toolbar?.let {
-            it.title = title
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val itemId = item.itemId
+        if (itemId != R.id.action_filter && itemId != R.id.action_search) {
+            val state = collapseOrExpandStateFactory.map(itemId)
+            dataByState(state)
         }
-    }
 
+        return true
+    }
 
     private fun MenuItem.collapseState(collapse: () -> Unit) {
         this.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
@@ -75,6 +75,16 @@ abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
             }
         })
     }
+
+    protected fun changeTitleToolbar(stringResId: Int,text: String? = "") {
+        val toolbar = activity.toolbar
+        val title = "$text" + activity.resources.getString(stringResId)
+        toolbar?.let {
+            it.title = title
+        }
+    }
+
+
 
     fun onBackPressed() : Boolean {
         val previousFragment = previousFragment()
@@ -93,4 +103,12 @@ abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
     protected companion object {
         const val GITHUB_USER_NAME_EXTRA = "githubUserName"
     }
+
+    abstract fun dataByState(state: CollapseOrExpandState)
+
+    abstract fun searchByQuery(searchView: androidx.appcompat.widget.SearchView)
+
+    abstract fun collapseState()
+
+    abstract fun previousFragment() : BaseFragment
 }

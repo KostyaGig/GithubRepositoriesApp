@@ -1,6 +1,7 @@
 package com.zinoview.githubrepositories.data.repositories.cache
 
 import com.zinoview.githubrepositories.data.core.GithubDao
+import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
 import io.reactivex.Single
 
 
@@ -10,9 +11,11 @@ import io.reactivex.Single
  */
 
 interface  GithubRepositoryCacheDataSource
-    : CacheRepositoryDataSource<List<CacheGithubRepository>,CacheGithubRepository> {
+    : CacheRepositoryDataSource<List<CacheGithubRepository>, CacheGithubRepository> {
 
     fun fetchRepository(param: String,repo: String): Single<CacheGithubRepository?>
+
+    fun repositoriesByState(owner: String,state: CollapseOrExpandState) : Single<List<CacheGithubRepository>>
 
     class Base (
         private val githubDao: GithubDao
@@ -23,6 +26,9 @@ interface  GithubRepositoryCacheDataSource
 
         override fun fetchRepository(param: String,repo: String): Single<CacheGithubRepository?>
             = githubDao.repository(param,repo)
+
+        override fun repositoriesByState(owner: String, state: CollapseOrExpandState): Single<List<CacheGithubRepository>>
+            = githubDao.repositoriesByState(owner,state)
 
         override fun saveListData(listData: List<CacheGithubRepository>)
             = githubDao.insertRepositories(listData)

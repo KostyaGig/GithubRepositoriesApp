@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.zinoview.githubrepositories.data.repositories.cache.CacheGithubRepository
+import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
 import io.reactivex.Single
 
 
@@ -27,4 +28,18 @@ interface UserDao {
 
     @Query("select * from `github_users_table`")
     fun users() : Single<List<CacheGithubUser>>
+
+    @Query("select * from github_users_table where collapse = 1")
+    fun usersByIsCollapsedState() : Single<List<CacheGithubUser>>
+
+    @Query("select * from github_users_table where collapse = 0")
+    fun usersByIsNotCollapsedState() : Single<List<CacheGithubUser>>
+
+    fun usersByState(state: CollapseOrExpandState) : Single<List<CacheGithubUser>> {
+        return when (state) {
+            is CollapseOrExpandState.Collapsed -> usersByIsCollapsedState()
+            is CollapseOrExpandState.Expanded -> usersByIsNotCollapsedState()
+            else -> users()
+        }
+    }
 }

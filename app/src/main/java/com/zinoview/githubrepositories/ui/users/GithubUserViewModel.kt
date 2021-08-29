@@ -1,9 +1,11 @@
 package com.zinoview.githubrepositories.ui.users
 
 import com.zinoview.githubrepositories.core.GithubDisposableStore
+import com.zinoview.githubrepositories.data.users.DataGithubUser
 import com.zinoview.githubrepositories.ui.core.*
 import com.zinoview.githubrepositories.ui.repositories.UiGithubRepositoryState
 import com.zinoview.githubrepositories.ui.users.cache.LocalGithubUserRequest
+import io.reactivex.Single
 
 
 /**
@@ -15,6 +17,9 @@ interface GithubUserViewModel<T : CommunicationModel> : ViewModel<T> {
     fun cachedUser(query: String)
 
     fun users()
+
+    //todo move this method to BaseViewModel later which i add same feature to repository
+    fun usersByState(state: CollapseOrExpandState)
 
     class Base(
         githubUserRemoteRequest: BaseGithubUserRequest,
@@ -34,6 +39,9 @@ interface GithubUserViewModel<T : CommunicationModel> : ViewModel<T> {
 
         override fun users()
             = githubUserLocalRequest.request()
+
+        override fun usersByState(state: CollapseOrExpandState)
+            = githubUserLocalRequest.usersByState(state)
     }
 
 }

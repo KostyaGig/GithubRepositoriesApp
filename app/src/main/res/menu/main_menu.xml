@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:title="@string/search_text"
+        app:showAsAction="always|collapseActionView"
+        android:icon="@drawable/ic_search_white"
+        />
+
+    <item
+        android:id="@+id/action_filter"
+        android:title="@string/filter_text"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_filter">
+
+        <menu>
+            <item
+                android:id="@+id/action_filter_by_collapse_state"
+                android:title="@string/collapse_text"
+                />
+            <item
+                android:id="@+id/action_filter_by_expand_state"
+                android:title="@string/expand_text"
+                />
+            <item
+                android:id="@+id/action_filter_any"
+                android:title="@string/any_text"
+                />
+        </menu>
+
+    </item>
+
+</menu>

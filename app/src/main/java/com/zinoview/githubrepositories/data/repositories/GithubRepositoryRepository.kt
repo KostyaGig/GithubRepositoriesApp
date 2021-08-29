@@ -1,9 +1,11 @@
 package com.zinoview.githubrepositories.data.repositories
 
 import com.zinoview.githubrepositories.core.Abstract
+import com.zinoview.githubrepositories.data.repositories.cache.CacheGithubRepository
 import com.zinoview.githubrepositories.data.repositories.cache.CacheGithubRepositoryMapper
 import com.zinoview.githubrepositories.data.repositories.cache.GithubRepositoryCacheDataSource
 import com.zinoview.githubrepositories.data.repositories.cloud.GithubRepositoryCloudDataSource
+import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
 import io.reactivex.Single
 
 
@@ -16,6 +18,8 @@ interface GithubRepositoryRepository {
     fun repository(userName: String, repo: String): Single<DataGithubRepository>
 
     fun repositories(userName: String): Single<List<DataGithubRepository>>
+
+    fun repositoriesByState(owner: String,state: CollapseOrExpandState) : Single<List<DataGithubRepository>>
 
     class Base(
         private val githubRepositoryCacheDataSource: GithubRepositoryCacheDataSource,
@@ -60,6 +64,15 @@ interface GithubRepositoryRepository {
                         Single.just(dataGithubRepositories)
                     }
                 }
+        }
+
+        override fun repositoriesByState(
+            owner: String,
+            state: CollapseOrExpandState
+        ): Single<List<DataGithubRepository>>
+            = githubRepositoryCacheDataSource
+            .repositoriesByState(owner, state).flatMap { cacheRepos ->
+                Single.just(cacheRepos.map { it.map(dataGithubRepositoryMapper) })
         }
     }
 }

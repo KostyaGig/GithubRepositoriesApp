@@ -5,6 +5,7 @@ import com.zinoview.githubrepositories.data.users.cache.CacheGithubUser
 import com.zinoview.githubrepositories.data.users.cache.GithubUserCacheDataSource
 import com.zinoview.githubrepositories.data.users.cloud.GithubUserCloudDataSource
 import com.zinoview.githubrepositories.ui.core.message
+import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
 import io.reactivex.Single
 
 
@@ -17,6 +18,8 @@ interface GithubUserRepository {
     fun user(query: String): Single<DataGithubUser>
 
     fun users() : Single<List<DataGithubUser>>
+
+    fun usersByState(state: CollapseOrExpandState) : Single<List<DataGithubUser>>
 
     class Base(
         private val githubUserCloudDataSource: GithubUserCloudDataSource,
@@ -41,5 +44,11 @@ interface GithubUserRepository {
             = githubUserCacheDataSource.fetchUsers().flatMap { cacheGithubUsers ->
                 Single.just(cacheGithubUsers.map { it.map(dataGithubUserMapper) })
         }
+
+        //todo handle state which users while is missing in db
+        override fun usersByState(state: CollapseOrExpandState): Single<List<DataGithubUser>>
+            = githubUserCacheDataSource.usersByState(state).flatMap { cacheGithubUsers ->
+                Single.just(cacheGithubUsers.map { it.map(dataGithubUserMapper) })
+            }
     }
 }

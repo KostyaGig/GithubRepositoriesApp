@@ -14,6 +14,7 @@ import com.zinoview.githubrepositories.ui.core.BaseViewModel
 import com.zinoview.githubrepositories.ui.repositories.*
 import com.zinoview.githubrepositories.core.GithubDisposableStore
 import com.zinoview.githubrepositories.ui.core.SaveCache
+import com.zinoview.githubrepositories.ui.repositories.cache.Local
 import io.reactivex.disposables.CompositeDisposable
 
 
@@ -34,24 +35,36 @@ class GithubRepositoryModule(
             UiGithubRepositoryStateMapper(),
             coreModule.exceptionMapper
         )
+
+        val interactor = GithubRepositoryInteractor.Base(
+            GithubRepositoryRepository.Base(
+                GithubRepositoryCacheDataSource.Base(
+                    coreModule.githubDao
+                ),
+                GithubRepositoryCloudDataSource.Base(
+                    coreModule.service(GithubRepositoryService::class.java)
+                ),
+                CacheGithubRepositoryMapper(),
+                DataGithubRepositoryMapper(coreModule.text)
+            ),
+            DomainGithubRepositoryMapper(),
+        )
         return GithubRepositoryViewModel.Base(
             Remote.Base(
-                GithubRepositoryInteractor.Base(
-                    GithubRepositoryRepository.Base(
-                        GithubRepositoryCacheDataSource.Base(
-                            coreModule.githubDao
-                        ),
-                        GithubRepositoryCloudDataSource.Base(
-                            coreModule.service(GithubRepositoryService::class.java)
-                        ),
-                        CacheGithubRepositoryMapper(),
-                        DataGithubRepositoryMapper(coreModule.text)
-                    ),
-                    DomainGithubRepositoryMapper(),
-                )
-                ,communication,
+                interactor,
+                communication,
                 disposableStore,
                 mappers
+            ),
+            Local.Base(
+                interactor,
+                communication,
+                disposableStore,
+                coreModule.resource,
+                Pair(
+                    mappers.first,
+                    mappers.second
+                )
             ),
             communication,
             disposableStore,
