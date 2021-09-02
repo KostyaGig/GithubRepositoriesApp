@@ -4,7 +4,11 @@ import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.core.Same
 import com.zinoview.githubrepositories.data.repositories.cache.CacheGithubRepository
 import com.zinoview.githubrepositories.ui.core.*
-import com.zinoview.githubrepositories.ui.users.UiGithubUserState
+import com.zinoview.githubrepositories.ui.core.adapter.AbstractListener
+import com.zinoview.githubrepositories.ui.core.adapter.CollapseOrExpandStateListener
+import com.zinoview.githubrepositories.ui.core.adapter.GithubOnItemClickListener
+import com.zinoview.githubrepositories.ui.core.view.AbstractView
+import com.zinoview.githubrepositories.ui.core.view.CollapseView
 import java.lang.IllegalStateException
 
 
@@ -14,11 +18,11 @@ import java.lang.IllegalStateException
  */
 sealed class UiGithubRepositoryState :
     Abstract.Object<CacheGithubRepository,CacheGithubRepositoryMapper>,
-    Wrapper<UiGithubRepositoryState>,
+    ListWrapper<UiGithubRepositoryState>,
     Abstract.FactoryMapper<List<AbstractView>,Unit>,
     CommunicationModel,
     AbstractListener.CollapseOrExpandListener<
-            GithubOnItemClickListener, CollapseOrExpandListener<UiGithubRepositoryState>
+            GithubOnItemClickListener, CollapseOrExpandStateListener<UiGithubRepositoryState>
             >,
     Same<UiGithubRepository> {
 
@@ -43,9 +47,11 @@ sealed class UiGithubRepositoryState :
         = throw IllegalStateException("UiGithubRepoState notifyAboutItemClick not use")
 
     override fun notifyAboutCollapseOrExpand(
-        listener: CollapseOrExpandListener<UiGithubRepositoryState>,
+        listener: CollapseOrExpandStateListener<UiGithubRepositoryState>,
         position: Int
     ) = Unit
+
+    override fun isCollapsed(): Boolean = true
 
     open fun mapCollapseOrExpandState(src: List<CollapseView>) = Unit
 
@@ -61,7 +67,7 @@ sealed class UiGithubRepositoryState :
 
     data class Base(
         private val uiGithubRepository: UiGithubRepository,
-        private val isCollapsed: Boolean
+        private val isCollapsedState: Boolean
     ) : UiGithubRepositoryState() {
 
         override fun isBase(): Boolean = true
@@ -74,20 +80,22 @@ sealed class UiGithubRepositoryState :
 
         override fun mapCollapseOrExpandState(src: List<CollapseView>) {
             src.forEach {
-                it.map(isCollapsed)
+                it.map(isCollapsedState)
             }
         }
 
         override fun map(mapper: CacheGithubRepositoryMapper): CacheGithubRepository
-            = mapper.map(isCollapsed,uiGithubRepository)
+            = mapper.map(isCollapsedState,uiGithubRepository)
 
         override fun notifyAboutCollapseOrExpand(
-            listener: CollapseOrExpandListener<UiGithubRepositoryState>,
+            listener: CollapseOrExpandStateListener<UiGithubRepositoryState>,
             position: Int
         ) = listener.onChangeCollapseState(newState(),position)
 
+        override fun isCollapsed(): Boolean = isCollapsedState
+
         private fun newState(): Base =
-            Base(uiGithubRepository, isCollapsed.not())
+            Base(uiGithubRepository, isCollapsedState.not())
 
         override fun matches(model: CommunicationModel): Boolean  =
             if (model is UiGithubRepositoryState)
@@ -99,7 +107,7 @@ sealed class UiGithubRepositoryState :
             = uiGithubRepository.same(element)
 
         override fun sameCollapsed(isCollapsed: Boolean): Boolean
-            = this.isCollapsed == isCollapsed
+            = this.isCollapsedState == isCollapsed
 
         override fun hashCode(): Int {
             return super.hashCode()
@@ -107,16 +115,17 @@ sealed class UiGithubRepositoryState :
 
         override fun equals(other: Any?): Boolean {
             val oth = other as Base
-            return oth.same(uiGithubRepository) && oth.sameCollapsed(isCollapsed)
+            return oth.same(uiGithubRepository) && oth.sameCollapsed(isCollapsedState)
         }
     }
 
     object Empty : UiGithubRepositoryState() {
 
         override fun map(src: List<AbstractView>)
-                = src.forEach { it.map("EmptyData","","",true) }
+            = src.forEach { it.map("EmptyData","","",true) }
 
-        fun list() = listOf(this)
+        override fun wrap(): List<UiGithubRepositoryState>
+            = listOf(this)
     }
 
     class Fail(private val message: String) : UiGithubRepositoryState() {

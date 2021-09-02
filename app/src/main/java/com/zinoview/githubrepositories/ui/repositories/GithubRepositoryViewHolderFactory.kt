@@ -1,11 +1,10 @@
 package com.zinoview.githubrepositories.ui.repositories
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import com.zinoview.githubrepositories.R
 import com.zinoview.githubrepositories.core.Abstract
-import com.zinoview.githubrepositories.ui.core.CollapseOrExpandListener
+import com.zinoview.githubrepositories.ui.core.AbstractViewHolderFactory
+import com.zinoview.githubrepositories.ui.core.adapter.CollapseOrExpandStateListener
 
 
 /**
@@ -13,8 +12,9 @@ import com.zinoview.githubrepositories.ui.core.CollapseOrExpandListener
  * k.gig@list.ru
  */
 class GithubRepositoryViewHolderFactory(
-    private val collapseOrExpandListener: CollapseOrExpandListener<UiGithubRepositoryState>
-) : Abstract.FactoryMapper<Pair<Int,ViewGroup>, GithubRepositoryAdapter.GithubRepositoryViewHolder> {
+    private val collapseOrExpandListener: CollapseOrExpandStateListener<UiGithubRepositoryState>
+) : Abstract.FactoryMapper<Pair<Int,ViewGroup>, GithubRepositoryAdapter.GithubRepositoryViewHolder>,
+    AbstractViewHolderFactory() {
 
     override fun map(src: Pair<Int,ViewGroup>): GithubRepositoryAdapter.GithubRepositoryViewHolder = when(src.first) {
         1 -> GithubRepositoryAdapter.GithubRepositoryViewHolder.Progress(
@@ -25,13 +25,11 @@ class GithubRepositoryViewHolderFactory(
             collapseOrExpandListener
         )
         3 -> GithubRepositoryAdapter.GithubRepositoryViewHolder.Empty(
-            R.layout.empty.makeView(src.second)
-        )
+                R.layout.empty.makeView(src.second)
+            )
         else -> GithubRepositoryAdapter.GithubRepositoryViewHolder.Failure(
             R.layout.failure.makeView(src.second)
         )
     }
+
 }
-//todo compare this file with GithubRepositoryViewHolder and move shared elements
-fun Int.makeView(parent: ViewGroup) : View
-        = LayoutInflater.from(parent.context).inflate(this,parent,false)

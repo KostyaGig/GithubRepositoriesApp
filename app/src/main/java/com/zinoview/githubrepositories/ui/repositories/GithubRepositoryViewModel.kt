@@ -2,13 +2,11 @@ package com.zinoview.githubrepositories.ui.repositories
 
 
 import com.zinoview.githubrepositories.core.GithubDisposableStore
-import com.zinoview.githubrepositories.data.core.Save
-import com.zinoview.githubrepositories.data.repositories.DataGithubRepository
+import com.zinoview.githubrepositories.core.SaveState
 import com.zinoview.githubrepositories.ui.core.*
+import com.zinoview.githubrepositories.ui.core.cache.SaveCache
 import com.zinoview.githubrepositories.ui.repositories.cache.Local
 import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
-import com.zinoview.githubrepositories.ui.users.UiGithubUserState
-import io.reactivex.Single
 
 
 /**
@@ -16,12 +14,9 @@ import io.reactivex.Single
  * k.gig@list.ru
  */
 
-interface GithubRepositoryViewModel<T : CommunicationModel> : ViewModel<T> {
+interface GithubRepositoryViewModel<T : CommunicationModel> : ViewModel<T>, SaveState {
 
     fun repository(userName: String,repo: String)
-
-    fun repositoriesByState(owner: String,state: CollapseOrExpandState)
-
 
     class Base(
         private val githubRepositoryRemoteRequest: Remote,
@@ -39,7 +34,7 @@ interface GithubRepositoryViewModel<T : CommunicationModel> : ViewModel<T> {
         override fun repository(userName: String, repo: String)
             = githubRepositoryRemoteRequest.repository(userName, repo)
 
-        override fun repositoriesByState(owner: String, state: CollapseOrExpandState)
-            = githubRepositoryLocalRequest.repositoriesByState(owner,state)
+        override fun saveState(state: CollapseOrExpandState)
+            = githubRepositoryLocalRequest.saveState(state)
     }
 }

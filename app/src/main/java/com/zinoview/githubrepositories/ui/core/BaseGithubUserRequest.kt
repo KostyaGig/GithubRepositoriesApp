@@ -45,5 +45,5 @@ abstract class BaseGithubUserRequest (
     }
 
     override fun Disposable.addToDisposableStore(store: GithubDisposableStore)
-            = store.add(this)
+        = store.add(this)
 }

@@ -12,7 +12,7 @@ import com.zinoview.githubrepositories.domain.users.GithubUserInteractor
 import com.zinoview.githubrepositories.sl.core.BaseModule
 import com.zinoview.githubrepositories.sl.core.CoreModule
 import com.zinoview.githubrepositories.ui.core.BaseViewModel
-import com.zinoview.githubrepositories.ui.core.SaveCache
+import com.zinoview.githubrepositories.ui.core.cache.SaveCache
 import com.zinoview.githubrepositories.ui.users.*
 import com.zinoview.githubrepositories.ui.users.cache.Local
 import io.reactivex.disposables.CompositeDisposable
@@ -36,8 +36,8 @@ class GithubUserModule(
                     coreModule.githubDao
                 ),
                 DataGithubUserMapper(coreModule.text),
-                CacheGithubUserMapper()
-            ),
+                CacheGithubUserMapper(),
+                coreModule.userCachedState),
             DomainGithubUserMapper()
         )
         val communication = GithubUserCommunication()

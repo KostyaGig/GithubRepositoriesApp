@@ -1,5 +1,6 @@
 package com.zinoview.githubrepositories.data.core
 
+import com.zinoview.githubrepositories.core.Save
 import io.reactivex.Single
 
 

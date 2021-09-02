@@ -18,6 +18,6 @@ interface GithubUserCloudDataSource : GithubDataSource<CloudGithubUser,Unit>{
             = githubService.user(param)
 
         override fun saveData(data: Unit)
-            = throw IllegalStateException("GithubUserCloudDataSource not use it method")
+            = throw IllegalStateException("GithubUserCloudDataSource not use saveData() method")
     }
 }

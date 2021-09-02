@@ -1,6 +1,6 @@
 package com.zinoview.githubrepositories.ui.users.cache
 
-import com.zinoview.githubrepositories.ui.core.UiTotalCache
+import com.zinoview.githubrepositories.ui.core.cache.UiTotalCache
 import com.zinoview.githubrepositories.ui.core.*
 import org.junit.Assert.*
 import org.junit.Test

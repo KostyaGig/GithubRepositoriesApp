@@ -13,7 +13,7 @@ import com.zinoview.githubrepositories.sl.core.CoreModule
 import com.zinoview.githubrepositories.ui.core.BaseViewModel
 import com.zinoview.githubrepositories.ui.repositories.*
 import com.zinoview.githubrepositories.core.GithubDisposableStore
-import com.zinoview.githubrepositories.ui.core.SaveCache
+import com.zinoview.githubrepositories.ui.core.cache.SaveCache
 import com.zinoview.githubrepositories.ui.repositories.cache.Local
 import io.reactivex.disposables.CompositeDisposable
 
@@ -45,7 +45,8 @@ class GithubRepositoryModule(
                     coreModule.service(GithubRepositoryService::class.java)
                 ),
                 CacheGithubRepositoryMapper(),
-                DataGithubRepositoryMapper(coreModule.text)
+                DataGithubRepositoryMapper(coreModule.text),
+                coreModule.repositoryCachedState
             ),
             DomainGithubRepositoryMapper(),
         )
@@ -56,16 +57,7 @@ class GithubRepositoryModule(
                 disposableStore,
                 mappers
             ),
-            Local.Base(
-                interactor,
-                communication,
-                disposableStore,
-                coreModule.resource,
-                Pair(
-                    mappers.first,
-                    mappers.second
-                )
-            ),
+            Local.Base(interactor),
             communication,
             disposableStore,
             SaveCache.Repository(coreModule.githubDao,com.zinoview.githubrepositories.ui.repositories.CacheGithubRepositoryMapper.Base())

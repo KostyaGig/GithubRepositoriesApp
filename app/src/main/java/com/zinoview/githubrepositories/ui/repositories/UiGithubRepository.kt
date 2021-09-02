@@ -3,8 +3,7 @@ package com.zinoview.githubrepositories.ui.repositories
 import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.core.Same
 import com.zinoview.githubrepositories.data.repositories.cache.CacheGithubRepository
-import com.zinoview.githubrepositories.ui.core.AbstractView
-import com.zinoview.githubrepositories.ui.users.UiGithubUser
+import com.zinoview.githubrepositories.ui.core.view.AbstractView
 
 /**
  * @author Zinoview on 21.08.2021

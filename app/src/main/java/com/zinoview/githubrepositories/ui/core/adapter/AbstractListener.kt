@@ -1,4 +1,4 @@
-package com.zinoview.githubrepositories.ui.core
+package com.zinoview.githubrepositories.ui.core.adapter
 
 
 

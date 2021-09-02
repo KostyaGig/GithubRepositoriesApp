@@ -1,6 +1,9 @@
 package com.zinoview.githubrepositories.ui.repositories
 
+import com.zinoview.githubrepositories.ui.core.BaseFragment
+import com.zinoview.githubrepositories.ui.core.BaseViewModel
 import com.zinoview.githubrepositories.ui.core.message
+import com.zinoview.githubrepositories.ui.repositories.fragment.GithubRepositoriesFragment
 import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
 
 
@@ -14,7 +17,9 @@ interface Name {
 
     fun searchRepository(repo: String,viewModel: GithubRepositoryViewModel<UiGithubRepositoryState>)
 
-    fun repositoriesByState(state: CollapseOrExpandState, viewModel: GithubRepositoryViewModel<UiGithubRepositoryState>)
+    fun repositories(viewModel: BaseViewModel<UiGithubRepositoryState>)
+
+    fun currentName() : String
 
     class GithubUserName : Name {
 
@@ -27,14 +32,13 @@ interface Name {
         override fun searchRepository(repo: String,viewModel: GithubRepositoryViewModel<UiGithubRepositoryState>)
             = viewModel.repository(name.isNotNull(),repo)
 
-        private fun String?.isNotNull() : String = this ?: throw IllegalStateException(" Name -> GithubUserName -> User name repository is null")
+        override fun repositories(viewModel: BaseViewModel<UiGithubRepositoryState>)
+            = viewModel.data(name.isNotNull())
 
-        override fun repositoriesByState(
-            state: CollapseOrExpandState,
-            viewModel: GithubRepositoryViewModel<UiGithubRepositoryState>
-        ) {
-            message("Name $name")
-            viewModel.repositoriesByState(name.isNotNull(),state)
-        }
+        override fun currentName(): String
+            = name.isNotNull()
+
+        private fun String?.isNotNull() : String
+            = this ?: throw IllegalStateException(" Name -> GithubUserName -> User name repository is null")
     }
 }

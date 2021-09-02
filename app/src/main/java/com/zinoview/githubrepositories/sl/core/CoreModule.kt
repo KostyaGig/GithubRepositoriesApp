@@ -6,6 +6,10 @@ import com.zinoview.githubrepositories.core.Resource
 import com.zinoview.githubrepositories.data.core.GithubAppDatabase
 import com.zinoview.githubrepositories.data.core.GithubDao
 import com.zinoview.githubrepositories.data.core.Text
+import com.zinoview.githubrepositories.data.core.prefs.CollapseOrExpandStateFactory
+import com.zinoview.githubrepositories.data.core.prefs.SavedValueStateFactory
+import com.zinoview.githubrepositories.data.repositories.cache.prefs.RepositoryCachedState
+import com.zinoview.githubrepositories.data.users.cache.prefs.UserCachedState
 import com.zinoview.githubrepositories.ui.users.UiGithubExceptionMapper
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -26,6 +30,9 @@ class CoreModule {
     lateinit var exceptionMapper: Abstract.FactoryMapper<Throwable,String>
     lateinit var text: Text
 
+    lateinit var userCachedState: UserCachedState
+    lateinit var repositoryCachedState: RepositoryCachedState
+
     fun init(context: Context) {
 
         network()
@@ -36,6 +43,21 @@ class CoreModule {
         exceptionMapper = UiGithubExceptionMapper(resource)
 
         text = Text.GithubName()
+
+        val savedValueStateFactory = SavedValueStateFactory()
+        val collapseOrExpandStateFactory = CollapseOrExpandStateFactory(resource)
+
+        userCachedState = UserCachedState.Base(
+            context,
+            savedValueStateFactory,
+            collapseOrExpandStateFactory
+        )
+
+        repositoryCachedState = RepositoryCachedState.Base(
+            context,
+            savedValueStateFactory,
+            collapseOrExpandStateFactory
+        )
     }
 
     private fun network() {

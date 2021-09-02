@@ -1,4 +1,4 @@
-package com.zinoview.githubrepositories.ui.repositories.fragment
+package com.zinoview.githubrepositories.ui.core
 
 import com.zinoview.githubrepositories.R
 import com.zinoview.githubrepositories.ui.core.BaseFragment
@@ -14,7 +14,7 @@ class MockBaseFragment: BaseFragment(R.layout.failure) {
     override fun searchByQuery(searchView: androidx.appcompat.widget.SearchView)
             = throw IllegalStateException("MockBaseFragment not use this method")
 
-    override fun collapseState()
+    override fun menuCollapsedState()
             = throw IllegalStateException("MockBaseFragment not use this method")
 
     override fun dataByState(state: CollapseOrExpandState)

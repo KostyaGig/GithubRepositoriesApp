@@ -18,7 +18,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 
-      <com.zinoview.githubrepositories.ui.users.view.GithubUserProfileImageView
+      <com.zinoview.githubrepositories.ui.users.view.UserProfileImageView
           android:id="@+id/image"
           android:layout_width="50dp"
           android:layout_height="50dp"
@@ -27,7 +27,7 @@
           android:layout_marginTop="@dimen/margin_10dp"
           />
 
-      <com.zinoview.githubrepositories.ui.users.view.GithubUserNameTextView
+      <com.zinoview.githubrepositories.ui.users.view.UserNameTextView
           android:id="@+id/name"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
           android:textColor="@android:color/black"
           android:textSize="@dimen/size_16sp"/>
 
-      <com.zinoview.githubrepositories.ui.core.GithubCollapseImage
+      <com.zinoview.githubrepositories.ui.core.view.GithubCollapseImageView
           android:id="@+id/collapse_image"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -47,13 +47,13 @@
           android:layout_gravity="end"
           />
 
-      <com.zinoview.githubrepositories.ui.core.GithubLinearLayout
+      <com.zinoview.githubrepositories.ui.core.view.GithubLinearLayout
           android:id="@+id/sub_item"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:visibility="gone">
+          android:visibility="visible">
 
-          <com.zinoview.githubrepositories.ui.users.view.GithubUserBioTextView
+          <com.zinoview.githubrepositories.ui.users.view.UserBioTextView
               android:id="@+id/bio"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
@@ -65,12 +65,8 @@
               android:textSize="@dimen/size_12sp"
               android:layout_marginEnd="@dimen/margin_10dp"/>
 
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="COLLAPSE STATE"/>
 
-      </com.zinoview.githubrepositories.ui.core.GithubLinearLayout>
+      </com.zinoview.githubrepositories.ui.core.view.GithubLinearLayout>
 
 
   </LinearLayout>

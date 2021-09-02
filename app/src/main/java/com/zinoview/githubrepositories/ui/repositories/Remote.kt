@@ -2,7 +2,7 @@ package com.zinoview.githubrepositories.ui.repositories
 
 import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.domain.repositories.GithubRepositoryInteractor
-import com.zinoview.githubrepositories.ui.users.CleanDisposable
+import com.zinoview.githubrepositories.ui.core.CleanDisposable
 import com.zinoview.githubrepositories.core.GithubDisposableStore
 import com.zinoview.githubrepositories.ui.users.GithubUserRequest
 import io.reactivex.Single
@@ -40,7 +40,10 @@ interface Remote : GithubUserRequest<String> {
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe( { uiGithubRepositories ->
-                    communication.changeValue(uiGithubRepositories.map { it.map(mappers.second) })
+                    if (uiGithubRepositories.isEmpty())
+                        communication.changeValue(UiGithubRepositoryState.Empty.wrap())
+                    else
+                        communication.changeValue(uiGithubRepositories.map { it.map(mappers.second) })
                 }, { error->
                     error?.let { throwable ->
                         val messageError = mappers.third.map(throwable)

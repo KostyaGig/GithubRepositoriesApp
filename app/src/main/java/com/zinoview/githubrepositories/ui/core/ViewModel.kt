@@ -1,6 +1,6 @@
 package com.zinoview.githubrepositories.ui.core
 
-import com.zinoview.githubrepositories.data.core.Save
+import com.zinoview.githubrepositories.core.Save
 
 
 /**

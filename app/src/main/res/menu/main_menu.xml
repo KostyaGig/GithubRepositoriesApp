@@ -19,11 +19,11 @@
         <menu>
             <item
                 android:id="@+id/action_filter_by_collapse_state"
-                android:title="@string/collapse_text"
+                android:title="@string/by_collapse_text"
                 />
             <item
                 android:id="@+id/action_filter_by_expand_state"
-                android:title="@string/expand_text"
+                android:title="@string/by_expand_text"
                 />
             <item
                 android:id="@+id/action_filter_any"

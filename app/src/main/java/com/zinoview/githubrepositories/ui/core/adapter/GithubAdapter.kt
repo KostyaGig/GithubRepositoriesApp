@@ -1,4 +1,6 @@
-package com.zinoview.githubrepositories.ui.core
+package com.zinoview.githubrepositories.ui.core.adapter
+
+import com.zinoview.githubrepositories.ui.core.CommunicationModel
 
 
 /**
@@ -12,10 +14,7 @@ interface GithubAdapter<T : CommunicationModel> {
     fun update(item: T,position: Int)
 }
 
-interface CollapseOrExpandListener<T : CommunicationModel> {
 
-    fun onChangeCollapseState(item: T,position: Int)
-}
 
 interface GithubOnItemClickListener {
 

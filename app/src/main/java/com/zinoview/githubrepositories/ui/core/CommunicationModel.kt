@@ -7,14 +7,11 @@ package com.zinoview.githubrepositories.ui.core
  * k.gig@list.ru
  */
 
-interface Matcher<T : CommunicationModel> {
 
-    fun matches(model: T) : Boolean
-}
-
-interface CommunicationModel : Matcher<CommunicationModel> {
+interface CommunicationModel : CommunicationMatcher<CommunicationModel> {
 
     fun isBase() : Boolean
 
+    fun isCollapsed() : Boolean
 }
 

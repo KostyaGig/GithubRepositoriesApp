@@ -1,9 +1,10 @@
-package com.zinoview.githubrepositories.ui.core
+package com.zinoview.githubrepositories.ui.core.view
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
+import com.zinoview.githubrepositories.ui.core.view.CollapseView
 
 
 /**

@@ -4,12 +4,16 @@
     <string name="filter_text">Filter</string>
     <string name="item_state_text">Item list state</string>
     <string name="no_connection_error">No connection</string>
-    <string name="github_not_found_error">Not found</string>
+    <string name="github_not_found_error">Server not found data</string>
     <string name="github_user_generic_error">Some went wrong</string>
     <string name="local_error">Local error</string>
     <string name="users_page">Users</string>
-    <string name="repos">/repos</string>
-    <string name="collapse_text">By collapse</string>
-    <string name="expand_text">By expand</string>
+    <string name="repos">/repos/</string>
+    <string name="collapse_text">Collapse</string>
+    <string name="by_collapse_text">By collapse</string>
+    <string name="expand_text">Expand</string>
+    <string name="by_expand_text">By expand</string>
     <string name="any_text">Any</string>
+    <string name="data_by_state_not_found">Not found data by state</string>
+    <string name="private_text">private</string>
 </resources>

@@ -1,13 +1,11 @@
 package com.zinoview.githubrepositories.ui.users
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import com.zinoview.githubrepositories.R
 import com.zinoview.githubrepositories.core.Abstract
-import com.zinoview.githubrepositories.ui.core.AbstractListener
-import com.zinoview.githubrepositories.ui.core.CollapseOrExpandListener
-import com.zinoview.githubrepositories.ui.core.GithubOnItemClickListener
+import com.zinoview.githubrepositories.ui.core.AbstractViewHolderFactory
+import com.zinoview.githubrepositories.ui.core.adapter.CollapseOrExpandStateListener
+import com.zinoview.githubrepositories.ui.core.adapter.GithubOnItemClickListener
 
 
 /**
@@ -16,8 +14,9 @@ import com.zinoview.githubrepositories.ui.core.GithubOnItemClickListener
  */
 class GithubUserViewHolderFactory(
     private val listener: GithubOnItemClickListener,
-    private val collapseOrExpandListener: CollapseOrExpandListener<UiGithubUserState>
-) : Abstract.FactoryMapper<Pair<Int,ViewGroup>, GithubUserAdapter.GithubUserViewHolder> {
+    private val collapseOrExpandListener: CollapseOrExpandStateListener<UiGithubUserState>
+) : Abstract.FactoryMapper<Pair<Int,ViewGroup>, GithubUserAdapter.GithubUserViewHolder>,
+    AbstractViewHolderFactory() {
 
     override fun map(src: Pair<Int,ViewGroup>): GithubUserAdapter.GithubUserViewHolder = when(src.first) {
         1 -> GithubUserAdapter.GithubUserViewHolder.Progress(
@@ -36,6 +35,3 @@ class GithubUserViewHolderFactory(
         )
     }
 }
-
-fun Int.makeView(parent: ViewGroup) : View
-        = LayoutInflater.from(parent.context).inflate(this,parent,false)

@@ -1,4 +1,4 @@
-package com.zinoview.githubrepositories.ui.users
+package com.zinoview.githubrepositories.ui.core
 
 import com.zinoview.githubrepositories.core.GithubDisposableStore
 import io.reactivex.disposables.Disposable

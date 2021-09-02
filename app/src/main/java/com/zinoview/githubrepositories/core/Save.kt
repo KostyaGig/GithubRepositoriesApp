@@ -1,4 +1,4 @@
-package com.zinoview.githubrepositories.data.core
+package com.zinoview.githubrepositories.core
 
 
 /**

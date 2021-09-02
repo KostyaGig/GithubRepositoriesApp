@@ -18,7 +18,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 
-      <com.zinoview.githubrepositories.ui.users.view.GithubUserNameTextView
+      <com.zinoview.githubrepositories.ui.repositories.view.RepositoryNameTextView
           android:id="@+id/name"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
           android:orientation="horizontal"
           android:layout_marginTop="@dimen/margin_7dp">
 
-          <com.zinoview.githubrepositories.ui.users.view.GithubUserBioTextView
+          <com.zinoview.githubrepositories.ui.repositories.view.RepositoryLanguageTextView
               android:id="@+id/language"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
               android:textSize="@dimen/size_12sp"
               android:layout_marginEnd="@dimen/margin_10dp"/>
 
-          <com.zinoview.githubrepositories.ui.repositories.view.GithubCircleImageView
+          <com.zinoview.githubrepositories.ui.repositories.view.RepositoryLanguageColorImageView
               android:id="@+id/color_image"
               android:layout_width="15dp"
               android:layout_height="15dp"
@@ -57,7 +57,7 @@
               />
       </LinearLayout>
 
-      <com.zinoview.githubrepositories.ui.core.GithubCollapseImage
+      <com.zinoview.githubrepositories.ui.core.view.GithubCollapseImageView
           android:id="@+id/collapse_image"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -66,25 +66,13 @@
           android:layout_gravity="end"
           />
 
-      <com.zinoview.githubrepositories.ui.core.GithubLinearLayout
+      <com.zinoview.githubrepositories.ui.core.view.GithubLinearLayout
           android:id="@+id/sub_item"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:visibility="gone"
           tools:visibility="visible"
           android:orientation="vertical">
-
-          <com.zinoview.githubrepositories.ui.users.view.GithubUserBioTextView
-              android:id="@+id/bio"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              tools:text="This is bio"
-              android:layout_marginStart="@dimen/margin_10dp"
-              android:layout_marginTop="@dimen/margin_10dp"
-              android:textStyle="bold"
-              android:textColor="@android:color/black"
-              android:textSize="@dimen/size_12sp"
-              android:layout_marginEnd="@dimen/margin_10dp"/>
 
           <LinearLayout
               android:layout_width="match_parent"
@@ -94,14 +82,15 @@
               android:layout_marginTop="@dimen/margin_10dp">
 
               <TextView
+                  android:id="@+id/private_tv"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:text="private"
+                  android:text="@string/private_text"
                   android:textStyle="bold"
-                  android:textColor="@color/blue_dark"
                   />
 
-              <com.zinoview.githubrepositories.ui.users.view.GithubUserProfileImageView
+
+              <com.zinoview.githubrepositories.ui.repositories.view.RepositoryPrivateImageView
                   android:id="@+id/private_image"
                   android:layout_width="20dp"
                   android:layout_height="20dp"
@@ -116,7 +105,16 @@
 
           </LinearLayout>
 
-      </com.zinoview.githubrepositories.ui.core.GithubLinearLayout>
+          <com.zinoview.githubrepositories.ui.repositories.view.RepositoryDefaultBranchTextView
+              android:id="@+id/default_branch_tv"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              tools:text="default branch: master"
+              android:layout_marginStart="@dimen/margin_10dp"
+              android:layout_marginBottom="@dimen/margin_10dp"
+              />
+
+      </com.zinoview.githubrepositories.ui.core.view.GithubLinearLayout>
 
 
 

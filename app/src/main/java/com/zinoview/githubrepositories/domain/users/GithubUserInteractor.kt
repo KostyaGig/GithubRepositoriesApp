@@ -1,7 +1,8 @@
 package com.zinoview.githubrepositories.domain.users
 
 import com.zinoview.githubrepositories.core.Abstract
-import com.zinoview.githubrepositories.data.users.DataGithubUser
+import com.zinoview.githubrepositories.core.Save
+import com.zinoview.githubrepositories.core.SaveState
 import com.zinoview.githubrepositories.data.users.GithubUserRepository
 import com.zinoview.githubrepositories.domain.core.GithubInteractor
 import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
@@ -12,11 +13,10 @@ import io.reactivex.Single
  * @author Zinoview on 19.08.2021
  * k.gig@list.ru
  */
-interface GithubUserInteractor : GithubInteractor<DomainGithubUser> {
+interface GithubUserInteractor : GithubInteractor<DomainGithubUser>,
+    SaveState {
 
     fun users() : Single<List<DomainGithubUser>>
-
-    fun usersByState(state: CollapseOrExpandState) : Single<List<DomainGithubUser>>
 
     class Base(
         private val githubUserRepository: GithubUserRepository,
@@ -34,9 +34,7 @@ interface GithubUserInteractor : GithubInteractor<DomainGithubUser> {
                 Single.just( dataGithubUsers.map { it.map(domainGithubUserMapper) } )
         }
 
-        override fun usersByState(state: CollapseOrExpandState): Single<List<DomainGithubUser>>
-            = githubUserRepository.usersByState(state).flatMap { dataGithubUsers ->
-            Single.just(dataGithubUsers.map { it.map(domainGithubUserMapper) })
-        }
+        override fun saveState(state: CollapseOrExpandState)
+            = githubUserRepository.saveState(state)
     }
 }

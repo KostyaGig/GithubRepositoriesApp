@@ -3,10 +3,9 @@ package com.zinoview.githubrepositories.ui.users
 import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.core.Same
 import com.zinoview.githubrepositories.data.users.cache.CacheGithubUser
-import com.zinoview.githubrepositories.ui.core.AbstractView
-import com.zinoview.githubrepositories.ui.core.AbstractListener
-import com.zinoview.githubrepositories.ui.core.GithubOnItemClickListener
-import com.zinoview.githubrepositories.ui.core.message
+import com.zinoview.githubrepositories.ui.core.view.AbstractView
+import com.zinoview.githubrepositories.ui.core.adapter.AbstractListener
+import com.zinoview.githubrepositories.ui.core.adapter.GithubOnItemClickListener
 
 
 /**

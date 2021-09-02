@@ -1,10 +1,7 @@
 package com.zinoview.githubrepositories.ui.users.cache
 
 import com.zinoview.githubrepositories.R
-import com.zinoview.githubrepositories.core.Abstract
-import com.zinoview.githubrepositories.core.GithubDisposableStore
-import com.zinoview.githubrepositories.core.Resource
-import com.zinoview.githubrepositories.data.users.DataGithubUser
+import com.zinoview.githubrepositories.core.*
 import com.zinoview.githubrepositories.domain.users.GithubUserInteractor
 import com.zinoview.githubrepositories.ui.core.BaseGithubUserRequest
 import com.zinoview.githubrepositories.ui.users.*
@@ -33,7 +30,7 @@ abstract class LocalGithubUserRequest(
     uiGithubMappers.first,
     uiGithubMappers.second,
     uiGithubMappers.third
-)  {
+), SaveState {
 
      fun request() {
         communication.changeValue(UiGithubUserState.Progress.wrap())
@@ -58,26 +55,6 @@ abstract class LocalGithubUserRequest(
             }).addToDisposableStore(githubUserDisposableStore)
     }
 
-    fun usersByState(state: CollapseOrExpandState) {
-        communication.changeValue(UiGithubUserState.Progress.wrap())
-        githubUserInteractor
-            .usersByState(state)
-            .subscribeOn(Schedulers.io())
-            .flatMap { domainGithubUsers ->
-                Single.just( domainGithubUsers.map { it.map(uiGithubMappers.first) } )
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe( { uiGithubUsers ->
-                uiGithubUsers?.let { users ->
-                    if (users.isNotEmpty())
-                        communication.changeValue(users.map { it.map(uiGithubMappers.second) })
-                    else
-                        communication.changeValue(listOf(UiGithubUserState.Empty))
-                }
-            }, { error ->
-                error?.let { throwable ->
-                    communication.changeValue(UiGithubUserState.Fail(resource.string(R.string.local_error) + throwable.message).wrap())
-                }
-            }).addToDisposableStore(githubUserDisposableStore)
-    }
+    override fun saveState(state: CollapseOrExpandState)
+        = githubUserInteractor.saveState(state)
 }

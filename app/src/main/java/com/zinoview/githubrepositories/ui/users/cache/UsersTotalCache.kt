@@ -1,8 +1,9 @@
 package com.zinoview.githubrepositories.ui.users.cache
 
-import com.zinoview.githubrepositories.ui.core.UiTotalCache
-import com.zinoview.githubrepositories.ui.core.GithubAdapter
-import com.zinoview.githubrepositories.ui.repositories.UiGithubRepositoryState
+import com.zinoview.githubrepositories.ui.core.cache.UiTotalCache
+import com.zinoview.githubrepositories.ui.core.ItemsState
+import com.zinoview.githubrepositories.ui.core.adapter.GithubAdapter
+import com.zinoview.githubrepositories.ui.core.cache.StoreListTotalCache
 import com.zinoview.githubrepositories.ui.users.UiGithubUserState
 
 
@@ -12,12 +13,15 @@ import com.zinoview.githubrepositories.ui.users.UiGithubUserState
  */
 
 class UsersTotalCache(
-    list: MutableList<UiGithubUserState>,
-    replaceItem: (UiGithubUserState) -> Unit
-) : UiTotalCache.UiGithubTotalCache2<UiGithubUserState>(list,replaceItem) {
+    itemsState: ItemsState,
+    storeListTotalCache: StoreListTotalCache<UiGithubUserState>
+) : UiTotalCache.BaseUiGithubTotalCache<UiGithubUserState>(
+    itemsState,
+    storeListTotalCache
+) {
 
     override fun updateAdapterByDefault(adapter: GithubAdapter<UiGithubUserState>?) {
-        adapter?.update(listOf(UiGithubUserState.Empty))
+        adapter?.update(UiGithubUserState.Empty.wrap())
     }
 
 }

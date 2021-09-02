@@ -1,7 +1,8 @@
-package com.zinoview.githubrepositories.ui.core
+package com.zinoview.githubrepositories.ui.core.cache
 
 import com.zinoview.githubrepositories.data.core.GithubDao
-import com.zinoview.githubrepositories.data.core.Save
+import com.zinoview.githubrepositories.core.Save
+import com.zinoview.githubrepositories.ui.core.CommunicationModel
 import com.zinoview.githubrepositories.ui.repositories.CacheGithubRepositoryMapper
 import com.zinoview.githubrepositories.ui.repositories.UiGithubRepositoryState
 import com.zinoview.githubrepositories.ui.users.CacheGithubUserMapper

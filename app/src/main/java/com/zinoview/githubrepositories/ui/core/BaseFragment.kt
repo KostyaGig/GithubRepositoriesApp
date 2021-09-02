@@ -5,13 +5,13 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.annotation.LayoutRes
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import com.zinoview.githubrepositories.R
-import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.core.GAApp
-import com.zinoview.githubrepositories.ui.repositories.fragment.MockBaseFragment
+import com.zinoview.githubrepositories.data.core.prefs.CachedState
 import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
 import com.zinoview.githubrepositories.ui.users.CollapseOrExpandStateFactory
 
@@ -22,35 +22,57 @@ import com.zinoview.githubrepositories.ui.users.CollapseOrExpandStateFactory
  */
 abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId) {
 
+    private lateinit var searchView: SearchView
+
     private val activity by lazy {
         requireActivity() as MainActivity
     }
 
-    private val collapseOrExpandStateFactory = CollapseOrExpandStateFactory()
+    private val collapseOrExpandStateFactory by lazy {
+        val resource = (activity.application as GAApp).resource()
+        CollapseOrExpandStateFactory(resource)
+    }
+
 
     protected fun <T : ViewModel> viewModel(clazz: Class<T>,owner: ViewModelStoreOwner)
         = (activity.application as GAApp).viewModel(clazz,owner)
 
+    protected fun <T : CachedState> cachedState(clazz: Class<T>)
+        = (activity.application as GAApp).cachedState(clazz)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
+        message("onCreate")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        message("onStop")
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
+        message("onCreateOptionsMenu")
         val menuInflater = requireActivity().menuInflater
         menuInflater.inflate(R.menu.main_menu,menu)
 
         val searchItem = requireNotNull(menu.findItem(R.id.action_search))
-        val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
+        searchView = searchItem.actionView as SearchView
 
         searchByQuery(searchView)
 
-        searchItem.collapseState {
-            collapseState()
+        searchItem.menuCollapsedState {
+            menuCollapsedState()
         }
 
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        message("OnResume")
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -63,7 +85,7 @@ abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
         return true
     }
 
-    private fun MenuItem.collapseState(collapse: () -> Unit) {
+    private fun MenuItem.menuCollapsedState(collapse: () -> Unit) {
         this.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
                 return true
@@ -76,9 +98,22 @@ abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
         })
     }
 
-    protected fun changeTitleToolbar(stringResId: Int,text: String? = "") {
+    protected fun changeTitleToolbar(title: String) {
+        val toolbar = activity.toolbar
+        toolbar?.let {
+            it.title = title
+        }
+    }
+
+    protected fun changeTitleToolbar(text: String? = "",stringResId: Int) {
         val toolbar = activity.toolbar
         val title = "$text" + activity.resources.getString(stringResId)
+
+    }
+
+    protected fun changeTitleToolbar(stringResId: Int,text: String? = "") {
+        val toolbar = activity.toolbar
+        val title = activity.resources.getString(stringResId) + "$text"
         toolbar?.let {
             it.title = title
         }
@@ -106,9 +141,9 @@ abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
 
     abstract fun dataByState(state: CollapseOrExpandState)
 
-    abstract fun searchByQuery(searchView: androidx.appcompat.widget.SearchView)
+    abstract fun searchByQuery(searchView: SearchView)
 
-    abstract fun collapseState()
+    abstract fun menuCollapsedState()
 
     abstract fun previousFragment() : BaseFragment
 }

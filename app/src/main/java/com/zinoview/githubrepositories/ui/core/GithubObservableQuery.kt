@@ -1,7 +1,6 @@
 package com.zinoview.githubrepositories.ui.core
 
 import androidx.appcompat.widget.SearchView
-import com.zinoview.githubrepositories.ui.users.CleanDisposable
 import com.zinoview.githubrepositories.core.GithubDisposableStore
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -37,11 +36,13 @@ interface GithubObservableQuery {
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         subscriber.onNext(query!!)
+                        message("onQueryTextSubmit")
                         return false
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
                         subscriber.onNext(newText!!)
+                        message("onQueryTextChange")
                         return false
                     }
                 })

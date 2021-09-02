@@ -11,24 +11,31 @@ import io.reactivex.Single
  */
 
 interface  GithubRepositoryCacheDataSource
-    : CacheRepositoryDataSource<List<CacheGithubRepository>, CacheGithubRepository> {
+    : SaveList<CacheGithubRepository> {
 
-    fun fetchRepository(param: String,repo: String): Single<CacheGithubRepository?>
+    fun fetchRepository(param: String,repo: String,state: CollapseOrExpandState): Single<CacheGithubRepository?>
+
+    fun commonRepository(owner: String,repo: String) : CacheGithubRepository?
 
     fun repositoriesByState(owner: String,state: CollapseOrExpandState) : Single<List<CacheGithubRepository>>
+
+    fun commonListRepository(owner: String) : List<CacheGithubRepository>
 
     class Base (
         private val githubDao: GithubDao
     ) : GithubRepositoryCacheDataSource {
 
-        override fun fetchData(param: String): Single<List<CacheGithubRepository>>
-            = githubDao.repositories(param)
+        override fun fetchRepository(param: String,repo: String,state: CollapseOrExpandState): Single<CacheGithubRepository?>
+            = githubDao.repository(param,repo,state)
 
-        override fun fetchRepository(param: String,repo: String): Single<CacheGithubRepository?>
-            = githubDao.repository(param,repo)
+        override fun commonRepository(owner: String, repo: String): CacheGithubRepository?
+            = githubDao.commonRepository(owner,repo)
 
         override fun repositoriesByState(owner: String, state: CollapseOrExpandState): Single<List<CacheGithubRepository>>
             = githubDao.repositoriesByState(owner,state)
+
+        override fun commonListRepository(owner: String): List<CacheGithubRepository>
+            = githubDao.listRepository(owner)
 
         override fun saveListData(listData: List<CacheGithubRepository>)
             = githubDao.insertRepositories(listData)
