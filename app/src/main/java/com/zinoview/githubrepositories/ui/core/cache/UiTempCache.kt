@@ -3,7 +3,6 @@ package com.zinoview.githubrepositories.ui.core.cache
 import com.zinoview.githubrepositories.ui.core.CommunicationModel
 import com.zinoview.githubrepositories.ui.core.ItemsState
 import com.zinoview.githubrepositories.ui.core.adapter.GithubAdapter
-import com.zinoview.githubrepositories.ui.core.message
 import com.zinoview.githubrepositories.ui.repositories.UiGithubRepositoryState
 import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
 
@@ -13,7 +12,7 @@ import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
  * k.gig@list.ru
  */
 
-interface UiTotalCache<T : CommunicationModel> {
+interface UiTempCache<T : CommunicationModel> {
 
     fun add(items: List<T>)
 
@@ -28,7 +27,7 @@ interface UiTotalCache<T : CommunicationModel> {
     abstract class BaseUiGithubTotalCache<T : CommunicationModel>(
         private val itemsState: ItemsState,
         private val storeListTotalCache: StoreListTotalCache<T>
-    ) : UiTotalCache<T> {
+    ) : UiTempCache<T> {
 
         private var adapter: GithubAdapter<T>? = null
 
@@ -36,7 +35,6 @@ interface UiTotalCache<T : CommunicationModel> {
 
         override fun add(items: List<T>) = storeListTotalCache.updateLists(items)
 
-        //todo make update adapter by removed item
         override fun add(item: T) = storeListTotalCache.updateLists(item)
 
         override fun addAdapter(adapter: GithubAdapter<T>) {

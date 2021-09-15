@@ -16,4 +16,7 @@
     <string name="any_text">Any</string>
     <string name="data_by_state_not_found">Not found data by state</string>
     <string name="private_text">private</string>
+    <string name="file_in_waiting_download">Repository in waiting download…</string>
+    <string name="file_not_found_error">File for download repo not found</string>
+    <string name="file_is_big">big_size_file</string>
 </resources>

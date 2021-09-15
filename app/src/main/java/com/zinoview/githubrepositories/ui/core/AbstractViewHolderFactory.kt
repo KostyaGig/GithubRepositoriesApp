@@ -12,6 +12,6 @@ import android.view.ViewGroup
 
 abstract class AbstractViewHolderFactory {
 
-    fun Int.makeView(parent: ViewGroup) : View
+    protected fun Int.makeView(parent: ViewGroup) : View
         = LayoutInflater.from(parent.context).inflate(this,parent,false)
 }

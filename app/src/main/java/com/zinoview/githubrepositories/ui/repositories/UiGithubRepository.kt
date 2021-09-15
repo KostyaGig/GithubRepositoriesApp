@@ -3,6 +3,8 @@ package com.zinoview.githubrepositories.ui.repositories
 import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.core.Same
 import com.zinoview.githubrepositories.data.repositories.cache.CacheGithubRepository
+import com.zinoview.githubrepositories.ui.core.adapter.AbstractListener
+import com.zinoview.githubrepositories.ui.core.adapter.GithubOnItemClickListener
 import com.zinoview.githubrepositories.ui.core.view.AbstractView
 
 /**
@@ -20,7 +22,9 @@ open class UiGithubRepository(
 ) : Abstract.Object.Ui.GithubRepository<UiGithubRepositoryState>,
     Abstract.FactoryMapper<List<AbstractView>,Unit>,
     Abstract.UniqueMapper<CacheGithubRepository,Boolean>,
-    Same<UiGithubRepository> {
+    AbstractListener<GithubOnItemClickListener<Pair<String,String>>>,
+    Same<UiGithubRepository>,
+    ModelState<UiGithubRepository> {
 
     class Mock :
         UiGithubRepository(
@@ -43,9 +47,17 @@ open class UiGithubRepository(
     override fun mapTo(isCollapsed: Boolean) : CacheGithubRepository
         = CacheGithubRepository(name, private,language,owner,urlRepository, defaultBranch, isCollapsed)
 
+    override fun modelWithChangedState(): UiGithubRepository
+        = UiGithubRepository(name, private, language, owner, urlRepository, defaultBranch, isCollapsed.not())
+
+    override fun notifyAboutItemClick(listener: GithubOnItemClickListener<Pair<String, String>>)
+        = listener.onItemClick(Pair(owner,name))
+
     override fun same(element: UiGithubRepository): Boolean
         = element.same(name, language)
 
     private fun same(name: String,language: String)
         = this.name == name && this.language == language
+
+
 }

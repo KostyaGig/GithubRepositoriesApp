@@ -1,10 +1,10 @@
 package com.zinoview.githubrepositories.data.users.cache.prefs
 
 import android.content.Context
-import com.zinoview.githubrepositories.core.Abstract
-import com.zinoview.githubrepositories.core.Save
 import com.zinoview.githubrepositories.data.core.prefs.AbstractCachedState
 import com.zinoview.githubrepositories.data.core.prefs.CachedState
+import com.zinoview.githubrepositories.data.core.prefs.CollapseOrExpandStateFactory
+import com.zinoview.githubrepositories.data.core.prefs.SavedValueStateFactory
 import com.zinoview.githubrepositories.data.users.cache.CacheGithubUser
 import com.zinoview.githubrepositories.data.users.cache.GithubUserCacheDataSource
 import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
@@ -24,8 +24,8 @@ interface UserCachedState : CachedState {
 
     class Base(
         context: Context,
-        private val savedValueStateFactory: Abstract.FactoryMapper<CollapseOrExpandState,String>,
-        private val collapseOrExpandStateFactory: Abstract.FactoryMapper<String,CollapseOrExpandState>
+        private val savedValueStateFactory: SavedValueStateFactory,
+        private val collapseOrExpandStateFactory: CollapseOrExpandStateFactory
     ) : UserCachedState, AbstractCachedState() {
 
         private val statePreferences = context.getSharedPreferences(USERS_PREFERENCES_NAME,Context.MODE_PRIVATE)

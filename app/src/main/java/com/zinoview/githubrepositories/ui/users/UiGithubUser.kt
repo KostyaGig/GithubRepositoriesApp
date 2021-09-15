@@ -20,7 +20,7 @@ open class UiGithubUser(
     private val isCollapsed: Boolean
 ) : Abstract.Object.Ui.GithubUser<UiGithubUserState>,
     Abstract.FactoryMapper<List<AbstractView>,Unit>,
-    AbstractListener<GithubOnItemClickListener>,
+    AbstractListener<GithubOnItemClickListener<String>>,
     Abstract.UniqueMapper<CacheGithubUser,Boolean>,
     Same<UiGithubUser> {
 
@@ -40,7 +40,7 @@ open class UiGithubUser(
     override fun mapTo(isCollapsed: Boolean) : CacheGithubUser
         = CacheGithubUser(name, bio, profileImageUrl, isCollapsed)
 
-    override fun notifyAboutItemClick(listener: GithubOnItemClickListener)
+    override fun notifyAboutItemClick(listener: GithubOnItemClickListener<String>)
         = listener.onItemClick(name)
 
     override fun same(element: UiGithubUser) : Boolean

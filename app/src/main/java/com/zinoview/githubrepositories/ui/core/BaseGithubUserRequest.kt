@@ -1,7 +1,6 @@
 package com.zinoview.githubrepositories.ui.core
 
-import com.zinoview.githubrepositories.core.Abstract
-import com.zinoview.githubrepositories.core.GithubDisposableStore
+import com.zinoview.githubrepositories.core.DisposableStore
 import com.zinoview.githubrepositories.domain.users.GithubUserInteractor
 import com.zinoview.githubrepositories.ui.users.*
 import io.reactivex.Single
@@ -17,10 +16,8 @@ import io.reactivex.schedulers.Schedulers
 abstract class BaseGithubUserRequest (
     private val githubUserInteractor: GithubUserInteractor,
     private val communication: GithubUserCommunication,
-    private val githubUserDisposableStore: GithubDisposableStore,
-    private val uiGithubUserMapper: Abstract.UserMapper<UiGithubUser>,
-    private val uiGithubUserStateMapper: Abstract.UserMapper<UiGithubUserState>,
-    private val exceptionMapper: Abstract.FactoryMapper<Throwable,String>
+    private val githubUserDisposableStore: DisposableStore,
+    private val uiMappersStore: UserMappersStore
 ) : GithubUserRequest<String>, CleanDisposable {
 
     override fun data(param: String) {
@@ -29,21 +26,21 @@ abstract class BaseGithubUserRequest (
             .data(param)
             .subscribeOn(Schedulers.io())
             .flatMap { domainGithubUser ->
-                Single.just(domainGithubUser.map(uiGithubUserMapper))
+                Single.just(domainGithubUser.map(uiMappersStore.uiUserMapper()))
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ uiGithubUser ->
                 uiGithubUser?.let { user ->
-                    communication.changeValue(user.map(uiGithubUserStateMapper).wrap())
+                    communication.changeValue(user.map(uiMappersStore.uiUserStateMapper()).wrap())
                 }
             }, { error ->
                 error?.let { throwable ->
-                    val messageError = exceptionMapper.map(throwable)
+                    val messageError = uiMappersStore.uiGithubExceptionMapper().map(throwable)
                     communication.changeValue(UiGithubUserState.Fail(messageError).wrap())
                 }
             }).addToDisposableStore(githubUserDisposableStore)
     }
 
-    override fun Disposable.addToDisposableStore(store: GithubDisposableStore)
+    override fun Disposable.addToDisposableStore(store: DisposableStore)
         = store.add(this)
 }

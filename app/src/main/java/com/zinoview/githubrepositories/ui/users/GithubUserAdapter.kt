@@ -4,7 +4,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zinoview.githubrepositories.R
-import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.ui.core.adapter.CollapseOrExpandStateListener
 import com.zinoview.githubrepositories.ui.core.adapter.GithubAdapter
 import com.zinoview.githubrepositories.ui.core.adapter.GithubOnItemClickListener
@@ -21,8 +20,8 @@ import com.zinoview.githubrepositories.ui.users.view.UserProfileImageView
  * k.gig@list.ru
  */
 class GithubUserAdapter(
-    private val githubUserItemViewTypeFactory: Abstract.FactoryMapper<UiGithubUserState,Int>,
-    private val githubUserViewHolderFactory: Abstract.FactoryMapper<Pair<Int,ViewGroup>,GithubUserViewHolder>,
+    private val githubUserItemViewTypeFactory: GithubUserItemViewTypeFactory,
+    private val githubUserViewHolderFactory: GithubUserViewHolderFactory,
     ) : RecyclerView.Adapter<GithubUserAdapter.GithubUserViewHolder>(),
     GithubAdapter<UiGithubUserState> {
 
@@ -59,7 +58,7 @@ class GithubUserAdapter(
 
         class Base(
             itemView: View,
-            private val onItemClickListener: GithubOnItemClickListener,
+            private val onItemClickListener: GithubOnItemClickListener<String>,
             private val collapseOrExpandListener: CollapseOrExpandStateListener<UiGithubUserState>
         ) : GithubUserViewHolder(itemView) {
 

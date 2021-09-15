@@ -21,7 +21,7 @@ sealed class UiGithubUserState :
     Abstract.FactoryMapper<List<AbstractView>,Unit>,
     CommunicationModel,
     AbstractListener.CollapseOrExpandListener<
-            GithubOnItemClickListener,
+            GithubOnItemClickListener<String>,
             CollapseOrExpandStateListener<UiGithubUserState>
             >,
     Same<UiGithubUser> {
@@ -41,7 +41,8 @@ sealed class UiGithubUserState :
 
     open fun mapCollapseOrExpandState(src: List<CollapseView>) = Unit
 
-    override fun notifyAboutItemClick(listener: GithubOnItemClickListener) = Unit
+    override fun notifyAboutItemClick(listener: GithubOnItemClickListener<String>)
+        = Unit
 
     override fun notifyAboutCollapseOrExpand(
         listener: CollapseOrExpandStateListener<UiGithubUserState>,
@@ -84,7 +85,7 @@ sealed class UiGithubUserState :
             }
         }
 
-        override fun notifyAboutItemClick(listener: GithubOnItemClickListener)
+        override fun notifyAboutItemClick(listener: GithubOnItemClickListener<String>)
             = uiGithubUser.notifyAboutItemClick(listener)
 
         override fun notifyAboutCollapseOrExpand(

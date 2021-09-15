@@ -1,11 +1,15 @@
 package com.zinoview.githubrepositories.ui.repositories
 
 
-import com.zinoview.githubrepositories.core.GithubDisposableStore
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import com.zinoview.githubrepositories.core.DisposableStore
 import com.zinoview.githubrepositories.core.SaveState
 import com.zinoview.githubrepositories.ui.core.*
 import com.zinoview.githubrepositories.ui.core.cache.SaveCache
 import com.zinoview.githubrepositories.ui.repositories.cache.Local
+import com.zinoview.githubrepositories.ui.repositories.download.DownloadRepositoryCommunication
+import com.zinoview.githubrepositories.ui.repositories.download.UiGithubDownloadFileState
 import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
 
 
@@ -18,14 +22,18 @@ interface GithubRepositoryViewModel<T : CommunicationModel> : ViewModel<T>, Save
 
     fun repository(userName: String,repo: String)
 
+    fun downloadRepository(owner: String, repo: String)
+
+    fun downloadRepoObserve(owner: LifecycleOwner,observer: Observer<List<UiGithubDownloadFileState>>)
     class Base(
         private val githubRepositoryRemoteRequest: Remote,
         private val githubRepositoryLocalRequest: Local,
-        communication: GithubRepositoryCommunication,
-        githubRepositoryDisposableStore: GithubDisposableStore,
+        repoCommunication: GithubRepositoryCommunication,
+        private val repoDownloadCommunication: DownloadRepositoryCommunication,
+        githubRepositoryDisposableStore: DisposableStore,
         saveCache: SaveCache<UiGithubRepositoryState>
     ) : BaseViewModel<UiGithubRepositoryState>(
-        communication,
+        repoCommunication,
         githubRepositoryDisposableStore,
         githubRepositoryRemoteRequest,
         saveCache
@@ -36,5 +44,13 @@ interface GithubRepositoryViewModel<T : CommunicationModel> : ViewModel<T>, Save
 
         override fun saveState(state: CollapseOrExpandState)
             = githubRepositoryLocalRequest.saveState(state)
+
+        override fun downloadRepository(owner: String, repo: String)
+            = githubRepositoryRemoteRequest.downloadRepository(owner, repo)
+
+        override fun downloadRepoObserve(
+            owner: LifecycleOwner,
+            observer: Observer<List<UiGithubDownloadFileState>>
+        ) = repoDownloadCommunication.observe(owner,observer)
     }
 }

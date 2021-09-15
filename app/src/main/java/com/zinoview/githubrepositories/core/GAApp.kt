@@ -1,9 +1,12 @@
 package com.zinoview.githubrepositories.core
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.work.Configuration
+import androidx.work.WorkManager
 import com.zinoview.githubrepositories.data.core.prefs.CachedState
 import com.zinoview.githubrepositories.data.repositories.cache.prefs.RepositoryCachedState
 import com.zinoview.githubrepositories.data.users.cache.prefs.UserCachedState
@@ -11,6 +14,7 @@ import com.zinoview.githubrepositories.data.users.cache.prefs.UserCachedState
 import com.zinoview.githubrepositories.sl.core.CoreModule
 import com.zinoview.githubrepositories.sl.core.DependencyContainer
 import com.zinoview.githubrepositories.sl.core.ViewModelFactory
+import com.zinoview.githubrepositories.ui.repositories.download.async.FileWorkerFactory
 
 
 /**
@@ -29,12 +33,24 @@ class GAApp : Application() {
             coreModule
         ))
     }
+
+    private val workManagerFactory by lazy {
+        FileWorkerFactory(coreModule.cachedFile)
+    }
     override fun onCreate() {
         super.onCreate()
 
         coreModule.init(this)
         userCachedState = coreModule.userCachedState
         repositoryCachedState = coreModule.repositoryCachedState
+
+        val workManagerConfiguration = Configuration.Builder()
+            .setWorkerFactory(workManagerFactory)
+            .setMinimumLoggingLevel(Log.INFO)
+            .build()
+
+        WorkManager.initialize(this,workManagerConfiguration)
+
     }
 
     fun <T : ViewModel> viewModel(clazz: Class<T>,owner: ViewModelStoreOwner)
@@ -44,4 +60,5 @@ class GAApp : Application() {
         = CachedStateFactory<T>(userCachedState, repositoryCachedState).map(clazz)
 
     fun resource() = coreModule.resource
+
 }

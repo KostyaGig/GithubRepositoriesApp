@@ -13,8 +13,7 @@ import java.lang.IllegalArgumentException
 class CachedStateFactory<T : CachedState>(
     private val userCachedState: UserCachedState,
     private val repositoryCachedState: RepositoryCachedState
-)
-    : Abstract.FactoryMapper<Class<T>, CachedState>  {
+) : Abstract.FactoryMapper<Class<T>, CachedState>  {
 
     override fun map(src: Class<T>): CachedState = when(src) {
         UserCachedState.Base::class.java -> userCachedState

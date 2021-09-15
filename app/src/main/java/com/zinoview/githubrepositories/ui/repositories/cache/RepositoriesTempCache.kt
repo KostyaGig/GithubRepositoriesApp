@@ -1,6 +1,6 @@
 package com.zinoview.githubrepositories.ui.repositories.cache
 
-import com.zinoview.githubrepositories.ui.core.cache.UiTotalCache
+import com.zinoview.githubrepositories.ui.core.cache.UiTempCache
 import com.zinoview.githubrepositories.ui.core.ItemsState
 import com.zinoview.githubrepositories.ui.core.adapter.GithubAdapter
 import com.zinoview.githubrepositories.ui.core.cache.StoreListTotalCache
@@ -12,10 +12,10 @@ import com.zinoview.githubrepositories.ui.repositories.UiGithubRepositoryState
  * k.gig@list.ru
  */
 
-class RepositoriesTotalCache(
+class RepositoriesTempCache(
     itemsState: ItemsState,
     storeListTotalCache: StoreListTotalCache<UiGithubRepositoryState>
-) : UiTotalCache.BaseUiGithubTotalCache<UiGithubRepositoryState>(
+) : UiTempCache.BaseUiGithubTotalCache<UiGithubRepositoryState>(
     itemsState,
     storeListTotalCache,
 ) {

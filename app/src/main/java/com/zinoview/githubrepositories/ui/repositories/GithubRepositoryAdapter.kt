@@ -4,9 +4,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zinoview.githubrepositories.R
-import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.ui.core.adapter.CollapseOrExpandStateListener
 import com.zinoview.githubrepositories.ui.core.adapter.GithubAdapter
+import com.zinoview.githubrepositories.ui.core.adapter.GithubOnItemClickListener
 import com.zinoview.githubrepositories.ui.core.view.ErrorTextView
 import com.zinoview.githubrepositories.ui.core.view.GithubCollapseImageView
 import com.zinoview.githubrepositories.ui.core.view.GithubLinearLayout
@@ -18,8 +18,8 @@ import com.zinoview.githubrepositories.ui.repositories.view.*
  * k.gig@list.ru
  */
 class GithubRepositoryAdapter(
-    private val githubRepositoryItemViewTypeFactory: Abstract.FactoryMapper<UiGithubRepositoryState,Int>,
-    private val githubRepositoryViewHolderFactory: Abstract.FactoryMapper<Pair<Int,ViewGroup>,GithubRepositoryViewHolder>
+    private val githubRepositoryItemViewTypeFactory: GithubRepositoryItemViewTypeFactory,
+    private val githubRepositoryViewHolderFactory: GithubRepositoryViewHolderFactory
 ) : RecyclerView.Adapter<GithubRepositoryAdapter.GithubRepositoryViewHolder>(),
     GithubAdapter<UiGithubRepositoryState> {
 
@@ -59,6 +59,7 @@ class GithubRepositoryAdapter(
 
             class Base(
                 itemView: View,
+                private val onItemClickListener: GithubOnItemClickListener<Pair<String,String>>,
                 private val collapseOrExpandListener: CollapseOrExpandStateListener<UiGithubRepositoryState>
             ) : GithubRepositoryViewHolder(itemView) {
 
@@ -91,6 +92,10 @@ class GithubRepositoryAdapter(
 
                     collapseImage.setOnClickListener {
                         state.notifyAboutCollapseOrExpand(collapseOrExpandListener,adapterPosition)
+                    }
+
+                    itemView.setOnClickListener {
+                        state.notifyAboutItemClick(onItemClickListener)
                     }
                 }
             }

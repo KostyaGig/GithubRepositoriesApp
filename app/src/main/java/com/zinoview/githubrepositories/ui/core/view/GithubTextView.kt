@@ -2,6 +2,8 @@ package com.zinoview.githubrepositories.ui.core.view
 
 import android.content.Context
 import android.util.AttributeSet
+import com.zinoview.githubrepositories.data.core.Text
+import com.zinoview.githubrepositories.ui.core.message
 import java.lang.IllegalArgumentException
 
 
@@ -34,7 +36,16 @@ abstract class GithubTextView : androidx.appcompat.widget.AppCompatTextView, Abs
         defaultBranch: String,
         isCollapsed: Boolean
     ) = when(githubViewType()) {
-        is GithubViewType.RepositoryName -> setText(name)
+        is GithubViewType.RepositoryName -> {
+            if (isCollapsed) {
+                val text = Text.GithubName()
+                val shortName = text.subText(name)
+                setText(shortName)
+            } else {
+                setText(name)
+            }
+        }
+
         is GithubViewType.RepositoryLanguage -> setText(language)
         is GithubViewType.RepositoryDefaultBranch -> setText(defaultBranch)
         is GithubViewType.Error -> setText(name)

@@ -1,6 +1,6 @@
 package com.zinoview.githubrepositories.data.repositories.cloud
 
-import com.zinoview.githubrepositories.data.core.GithubDataSource
+import com.zinoview.githubrepositories.data.core.MutableGithubDataSource
 import io.reactivex.Single
 
 
@@ -8,7 +8,7 @@ import io.reactivex.Single
  * @author Zinoview on 21.08.2021
  * k.gig@list.ru
  */
-interface GithubRepositoryCloudDataSource : GithubDataSource<List<CloudGithubRepository>,Unit> {
+interface GithubRepositoryCloudDataSource : MutableGithubDataSource<List<CloudGithubRepository>,Unit> {
 
     fun repository(name: String,repo: String) : Single<CloudGithubRepository>
 

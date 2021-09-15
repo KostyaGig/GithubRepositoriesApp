@@ -1,6 +1,6 @@
 package com.zinoview.githubrepositories.ui.core
 
-import com.zinoview.githubrepositories.core.GithubDisposableStore
+import com.zinoview.githubrepositories.core.DisposableStore
 import io.reactivex.disposables.Disposable
 
 
@@ -11,5 +11,5 @@ import io.reactivex.disposables.Disposable
 
 interface CleanDisposable {
 
-    fun Disposable.addToDisposableStore(store: GithubDisposableStore)
+    fun Disposable.addToDisposableStore(store: DisposableStore)
 }

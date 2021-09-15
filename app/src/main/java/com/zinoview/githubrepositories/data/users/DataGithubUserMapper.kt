@@ -12,6 +12,6 @@ class DataGithubUserMapper(
 ) : Abstract.UserMapper<DataGithubUser> {
 
     override fun map(name: String, bio: String, imageUrl: String,isCollapsed: Boolean): DataGithubUser
-        =  DataGithubUser(text.subString(name),bio,imageUrl,isCollapsed)
+        =  DataGithubUser(text.subText(name),bio,imageUrl,isCollapsed)
 
 }

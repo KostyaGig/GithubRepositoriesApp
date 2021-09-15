@@ -1,7 +1,7 @@
 package com.zinoview.githubrepositories.sl.repositories
 
 import com.zinoview.githubrepositories.data.repositories.DataGithubRepositoryMapper
-import com.zinoview.githubrepositories.data.repositories.GithubRepositoryRepository
+import com.zinoview.githubrepositories.data.repositories.GithubRepoRepository
 import com.zinoview.githubrepositories.data.repositories.cache.CacheGithubRepositoryMapper
 import com.zinoview.githubrepositories.data.repositories.cache.GithubRepositoryCacheDataSource
 import com.zinoview.githubrepositories.data.repositories.cloud.GithubRepositoryCloudDataSource
@@ -12,9 +12,20 @@ import com.zinoview.githubrepositories.sl.core.BaseModule
 import com.zinoview.githubrepositories.sl.core.CoreModule
 import com.zinoview.githubrepositories.ui.core.BaseViewModel
 import com.zinoview.githubrepositories.ui.repositories.*
-import com.zinoview.githubrepositories.core.GithubDisposableStore
+import com.zinoview.githubrepositories.core.DisposableStore
+import com.zinoview.githubrepositories.data.repositories.download.DownloadRepoRepository
+import com.zinoview.githubrepositories.data.repositories.download.cloud.GithubDownloadRepoCloudDataSource
+import com.zinoview.githubrepositories.data.repositories.download.cloud.GithubDownloadRepoService
+import com.zinoview.githubrepositories.data.repositories.download.file.File
+import com.zinoview.githubrepositories.data.repositories.download.file.Folder
+import com.zinoview.githubrepositories.data.repositories.download.file.SizeFile
+import com.zinoview.githubrepositories.domain.core.DomainDownloadExceptionMapper
+import com.zinoview.githubrepositories.domain.repositories.download.DomainDownloadRepositoryMapper
 import com.zinoview.githubrepositories.ui.core.cache.SaveCache
 import com.zinoview.githubrepositories.ui.repositories.cache.Local
+import com.zinoview.githubrepositories.ui.repositories.download.DownloadRepositoryCommunication
+import com.zinoview.githubrepositories.ui.repositories.download.UiDownloadExceptionMapper
+import com.zinoview.githubrepositories.ui.repositories.download.UiDownloadRepositoryMapper
 import io.reactivex.disposables.CompositeDisposable
 
 
@@ -27,38 +38,60 @@ class GithubRepositoryModule(
 ) : BaseModule<BaseViewModel<UiGithubRepositoryState>> {
 
     override fun viewModel(): BaseViewModel<UiGithubRepositoryState> {
-        val communication = GithubRepositoryCommunication()
-        val disposableStore = GithubDisposableStore.Base(CompositeDisposable())
+        val repoCommunication = GithubRepositoryCommunication()
+        val repoDownloadCommunication = DownloadRepositoryCommunication()
+        val disposableStore = DisposableStore.Base(CompositeDisposable())
 
-        val mappers = Triple(
+        val repositoryMappersStore = RepositoryMappersStore.Base(
             UiGithubRepositoryMapper(),
             UiGithubRepositoryStateMapper(),
+            UiDownloadRepositoryMapper(
+                coreModule.resource,
+                UiDownloadExceptionMapper.Base(coreModule.resource)
+            ),
             coreModule.exceptionMapper
         )
 
         val interactor = GithubRepositoryInteractor.Base(
-            GithubRepositoryRepository.Base(
+            GithubRepoRepository.Base(
                 GithubRepositoryCacheDataSource.Base(
                     coreModule.githubDao
                 ),
                 GithubRepositoryCloudDataSource.Base(
-                    coreModule.service(GithubRepositoryService::class.java)
+                    coreModule.networkService(GithubRepositoryService::class.java)
                 ),
                 CacheGithubRepositoryMapper(),
-                DataGithubRepositoryMapper(coreModule.text),
+                DataGithubRepositoryMapper(),
                 coreModule.repositoryCachedState
             ),
             DomainGithubRepositoryMapper(),
+            DownloadRepoRepository.Base(
+                GithubDownloadRepoCloudDataSource.Base(
+                    coreModule.networkService(GithubDownloadRepoService::class.java)
+                ),
+                File.ZipFile(
+                    Folder.Base(
+                        coreModule.fileWriter,
+                        coreModule.cachedFile
+                    )
+                ),
+                SizeFile.Base()
+            ),
+            DomainDownloadRepositoryMapper(
+                DomainDownloadExceptionMapper.Base()
+            )
         )
         return GithubRepositoryViewModel.Base(
             Remote.Base(
                 interactor,
-                communication,
+                repoCommunication,
+                repoDownloadCommunication,
                 disposableStore,
-                mappers
+                repositoryMappersStore
             ),
             Local.Base(interactor),
-            communication,
+            repoCommunication,
+            repoDownloadCommunication,
             disposableStore,
             SaveCache.Repository(coreModule.githubDao,com.zinoview.githubrepositories.ui.repositories.CacheGithubRepositoryMapper.Base())
         )

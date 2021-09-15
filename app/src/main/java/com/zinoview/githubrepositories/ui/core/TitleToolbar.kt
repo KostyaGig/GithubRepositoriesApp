@@ -1,7 +1,6 @@
 package com.zinoview.githubrepositories.ui.core
 
-import androidx.appcompat.widget.Toolbar
-import com.zinoview.githubrepositories.ui.repositories.Name
+import com.zinoview.githubrepositories.ui.repositories.TempGithubUserName
 
 
 /**
@@ -12,7 +11,7 @@ interface TitleToolbar {
 
     fun title() : String
 
-    fun title(name: Name) : String
+    fun title(name: TempGithubUserName) : String
 
     class Base(
         private val itemsState: ItemsState
@@ -21,7 +20,7 @@ interface TitleToolbar {
         override fun title(): String
             = "(${itemsState.currentState().asString()})"
 
-        override fun title(name: Name)
+        override fun title(name: TempGithubUserName)
             = name.currentName() + title()
     }
 }

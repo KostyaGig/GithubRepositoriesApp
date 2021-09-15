@@ -30,7 +30,7 @@ abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
 
     private val collapseOrExpandStateFactory by lazy {
         val resource = (activity.application as GAApp).resource()
-        CollapseOrExpandStateFactory(resource)
+        CollapseOrExpandStateFactory.Base(resource)
     }
 
 

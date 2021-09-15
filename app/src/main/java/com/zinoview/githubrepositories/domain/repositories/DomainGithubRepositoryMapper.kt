@@ -20,5 +20,4 @@ class DomainGithubRepositoryMapper : Abstract.RepositoryMapper<DomainGithubRepos
         isCollapsed: Boolean
     ): DomainGithubRepository
         = DomainGithubRepository(name, private, language, owner, urlRepository, defaultBranch, isCollapsed)
-
 }

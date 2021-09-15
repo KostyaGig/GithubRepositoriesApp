@@ -4,7 +4,7 @@ package com.zinoview.githubrepositories.ui.core
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import com.zinoview.githubrepositories.core.GithubDisposableStore
+import com.zinoview.githubrepositories.core.DisposableStore
 import com.zinoview.githubrepositories.core.SaveState
 import com.zinoview.githubrepositories.ui.core.cache.SaveCache
 import com.zinoview.githubrepositories.ui.users.GithubUserRequest
@@ -16,7 +16,7 @@ import com.zinoview.githubrepositories.ui.users.GithubUserRequest
  */
 abstract class BaseViewModel<T : CommunicationModel> (
     private val communication: Communication.Base<T>,
-    private val disposableStore: GithubDisposableStore,
+    private val disposableStore: DisposableStore,
     private val githubUserRequest: GithubUserRequest<String>,
     private val saveCache: SaveCache<T>
 ) : ViewModel(),

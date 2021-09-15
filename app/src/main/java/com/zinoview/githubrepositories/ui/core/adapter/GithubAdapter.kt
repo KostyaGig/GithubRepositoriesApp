@@ -16,7 +16,7 @@ interface GithubAdapter<T : CommunicationModel> {
 
 
 
-interface GithubOnItemClickListener {
+interface GithubOnItemClickListener<T> {
 
-    fun onItemClick(githubUserName: String)
+    fun onItemClick(data: T)
 }

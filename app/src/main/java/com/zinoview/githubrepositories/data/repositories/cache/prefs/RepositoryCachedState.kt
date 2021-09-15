@@ -4,6 +4,8 @@ import android.content.Context
 import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.data.core.prefs.AbstractCachedState
 import com.zinoview.githubrepositories.data.core.prefs.CachedState
+import com.zinoview.githubrepositories.data.core.prefs.CollapseOrExpandStateFactory
+import com.zinoview.githubrepositories.data.core.prefs.SavedValueStateFactory
 import com.zinoview.githubrepositories.data.repositories.cache.CacheGithubRepository
 import com.zinoview.githubrepositories.data.repositories.cache.GithubRepositoryCacheDataSource
 import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
@@ -23,8 +25,8 @@ interface RepositoryCachedState : CachedState {
 
     class Base(
         context: Context,
-        private val savedValueStateFactory: Abstract.FactoryMapper<CollapseOrExpandState,String>,
-        private val collapseOrExpandStateFactory: Abstract.FactoryMapper<String,CollapseOrExpandState>
+        private val savedValueStateFactory: SavedValueStateFactory,
+        private val collapseOrExpandStateFactory: CollapseOrExpandStateFactory
     ) : RepositoryCachedState, AbstractCachedState() {
 
         private val statePreferences = context.getSharedPreferences(REPOSITORY_PREFERENCES_NAME,Context.MODE_PRIVATE)

@@ -1,12 +1,13 @@
 package com.zinoview.githubrepositories.sl.users
 
-import com.zinoview.githubrepositories.core.GithubDisposableStore
+import com.zinoview.githubrepositories.core.DisposableStore
 import com.zinoview.githubrepositories.data.users.DataGithubUserMapper
 import com.zinoview.githubrepositories.data.users.GithubUserRepository
 import com.zinoview.githubrepositories.data.users.cache.CacheGithubUserMapper
 import com.zinoview.githubrepositories.data.users.cache.GithubUserCacheDataSource
 import com.zinoview.githubrepositories.data.users.cloud.GithubUserCloudDataSource
 import com.zinoview.githubrepositories.data.users.cloud.GithubUserService
+import com.zinoview.githubrepositories.domain.core.DomainDownloadExceptionMapper
 import com.zinoview.githubrepositories.domain.users.DomainGithubUserMapper
 import com.zinoview.githubrepositories.domain.users.GithubUserInteractor
 import com.zinoview.githubrepositories.sl.core.BaseModule
@@ -30,7 +31,7 @@ class GithubUserModule(
         val githubUserInteractor = GithubUserInteractor.Base(
             GithubUserRepository.Base(
                 GithubUserCloudDataSource.Base(
-                    coreModule.service(GithubUserService::class.java)
+                    coreModule.networkService(GithubUserService::class.java)
                 ),
                 GithubUserCacheDataSource.Base(
                     coreModule.githubDao
@@ -38,31 +39,31 @@ class GithubUserModule(
                 DataGithubUserMapper(coreModule.text),
                 CacheGithubUserMapper(),
                 coreModule.userCachedState),
-            DomainGithubUserMapper()
+            DomainGithubUserMapper(),
+            DomainDownloadExceptionMapper.Base()
         )
         val communication = GithubUserCommunication()
-        val disposableStore = GithubDisposableStore.Base(CompositeDisposable())
+        val disposableStore = DisposableStore.Base(CompositeDisposable())
 
-        val mappers = Triple(
+        val userMappersStore = UserMappersStore.Base(
             UiGithubUserMapper(),
             UiGithubUserStateMapper(),
             coreModule.exceptionMapper
         )
+
         return GithubUserViewModel.Base(
             Remote(
                 githubUserInteractor,
                 communication,
                 disposableStore,
-                mappers.first,
-                mappers.second,
-                mappers.third
+                userMappersStore
             ),
             Local(
                 githubUserInteractor,
                 communication,
                 disposableStore,
                 coreModule.resource,
-                mappers
+                userMappersStore
             ),
             disposableStore,
             communication,

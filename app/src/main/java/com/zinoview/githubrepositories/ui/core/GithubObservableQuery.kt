@@ -1,7 +1,7 @@
 package com.zinoview.githubrepositories.ui.core
 
 import androidx.appcompat.widget.SearchView
-import com.zinoview.githubrepositories.core.GithubDisposableStore
+import com.zinoview.githubrepositories.core.DisposableStore
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -22,7 +22,7 @@ interface GithubObservableQuery {
     )
 
     class Base(
-        private val githubUserDisposableStore: GithubDisposableStore
+        private val githubUserDisposableStore: DisposableStore
     ) : GithubObservableQuery, CleanDisposable {
 
         override fun query(
@@ -70,7 +70,7 @@ interface GithubObservableQuery {
                 ).addToDisposableStore(githubUserDisposableStore)
         }
 
-        override fun Disposable.addToDisposableStore(store: GithubDisposableStore)
+        override fun Disposable.addToDisposableStore(store: DisposableStore)
             = store.add(this)
 
         private companion object {

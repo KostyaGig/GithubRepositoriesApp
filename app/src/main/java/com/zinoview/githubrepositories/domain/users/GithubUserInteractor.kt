@@ -1,10 +1,10 @@
 package com.zinoview.githubrepositories.domain.users
 
 import com.zinoview.githubrepositories.core.Abstract
-import com.zinoview.githubrepositories.core.Save
 import com.zinoview.githubrepositories.core.SaveState
 import com.zinoview.githubrepositories.data.users.GithubUserRepository
 import com.zinoview.githubrepositories.domain.core.GithubInteractor
+import com.zinoview.githubrepositories.domain.core.DomainDownloadExceptionMapper
 import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
 import io.reactivex.Single
 
@@ -20,12 +20,17 @@ interface GithubUserInteractor : GithubInteractor<DomainGithubUser>,
 
     class Base(
         private val githubUserRepository: GithubUserRepository,
-        private val domainGithubUserMapper: Abstract.UserMapper<DomainGithubUser>
+        private val domainGithubUserMapper: Abstract.UserMapper<DomainGithubUser>,
+        private val domainDownloadExceptionMapper: DomainDownloadExceptionMapper
     ) : GithubUserInteractor {
 
         override fun data(query: String): Single<DomainGithubUser>{
-            return githubUserRepository.user(query).flatMap {dataGithubUser ->
-                Single.just(dataGithubUser.map(domainGithubUserMapper))
+            return try {
+                githubUserRepository.user(query).flatMap {dataGithubUser ->
+                    Single.just(dataGithubUser.map(domainGithubUserMapper))
+                }
+            } catch (e: Exception) {
+                throw domainDownloadExceptionMapper.map(e)
             }
         }
 

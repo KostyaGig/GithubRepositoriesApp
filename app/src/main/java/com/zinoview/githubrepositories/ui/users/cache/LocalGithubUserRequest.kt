@@ -17,19 +17,14 @@ import io.reactivex.schedulers.Schedulers
 abstract class LocalGithubUserRequest(
     private val githubUserInteractor: GithubUserInteractor,
     private val communication: GithubUserCommunication,
-    private val githubUserDisposableStore: GithubDisposableStore,
+    private val githubUserDisposableStore: DisposableStore,
     private val resource: Resource,
-    private val uiGithubMappers: Triple<
-            Abstract.UserMapper<UiGithubUser>,
-            Abstract.UserMapper<UiGithubUserState>,
-            Abstract.FactoryMapper<Throwable,String>>
+    private val userMappersStore: UserMappersStore
 ) : BaseGithubUserRequest(
     githubUserInteractor,
     communication,
     githubUserDisposableStore,
-    uiGithubMappers.first,
-    uiGithubMappers.second,
-    uiGithubMappers.third
+    userMappersStore
 ), SaveState {
 
      fun request() {
@@ -38,13 +33,13 @@ abstract class LocalGithubUserRequest(
             .users()
             .subscribeOn(Schedulers.io())
             .flatMap { domainGithubUsers ->
-                Single.just( domainGithubUsers.map { it.map(uiGithubMappers.first) } )
+                Single.just( domainGithubUsers.map { it.map(userMappersStore.uiUserMapper()) } )
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ uiGithubUsers ->
                 uiGithubUsers?.let { users ->
                     if (users.isNotEmpty())
-                        communication.changeValue(users.map { it.map(uiGithubMappers.second) })
+                        communication.changeValue(users.map { it.map(userMappersStore.uiUserStateMapper()) })
                     else
                         communication.changeValue(listOf(UiGithubUserState.Empty))
                 }

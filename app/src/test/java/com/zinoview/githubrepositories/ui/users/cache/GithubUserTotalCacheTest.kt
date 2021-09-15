@@ -1,6 +1,6 @@
 package com.zinoview.githubrepositories.ui.users.cache
 
-import com.zinoview.githubrepositories.ui.core.cache.UiTotalCache
+import com.zinoview.githubrepositories.ui.core.cache.UiTempCache
 import com.zinoview.githubrepositories.ui.core.*
 import org.junit.Assert.*
 import org.junit.Test
@@ -57,7 +57,7 @@ class GithubUserTotalCacheTest {
     }
 
     private inner class TestTotalCache(private val stringList: MutableList<String>) :
-        UiTotalCache<TestCommunicationModel> {
+        UiTempCache<TestCommunicationModel> {
 
         private val list = ArrayList<TestCommunicationModel>()
 

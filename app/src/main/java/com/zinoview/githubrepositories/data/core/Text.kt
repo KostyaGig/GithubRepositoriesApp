@@ -7,10 +7,10 @@ package com.zinoview.githubrepositories.data.core
  */
 interface Text {
 
-    fun subString(text: String) : String
+    fun subText(text: String) : String
 
     class GithubName : Text {
-        override fun subString(text: String) = if (text.length > 15) {
+        override fun subText(text: String) = if (text.length > 15) {
             "${text.substring(0,15)}.."
         } else {
             text

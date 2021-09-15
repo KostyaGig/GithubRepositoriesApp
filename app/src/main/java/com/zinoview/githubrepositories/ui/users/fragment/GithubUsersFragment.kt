@@ -5,9 +5,9 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
 import com.zinoview.githubrepositories.R
-import com.zinoview.githubrepositories.core.GithubDisposableStore
+import com.zinoview.githubrepositories.core.DisposableStore
 import com.zinoview.githubrepositories.data.users.cache.prefs.UserCachedState
-import com.zinoview.githubrepositories.ui.core.cache.UiTotalCache
+import com.zinoview.githubrepositories.ui.core.cache.UiTempCache
 import com.zinoview.githubrepositories.ui.core.*
 import com.zinoview.githubrepositories.ui.repositories.fragment.GithubRepositoriesFragment
 import com.zinoview.githubrepositories.ui.users.*
@@ -15,7 +15,7 @@ import com.zinoview.githubrepositories.ui.core.MockBaseFragment
 import com.zinoview.githubrepositories.ui.core.adapter.CollapseOrExpandStateListener
 import com.zinoview.githubrepositories.ui.core.adapter.GithubOnItemClickListener
 import com.zinoview.githubrepositories.ui.core.cache.StoreListTotalCache
-import com.zinoview.githubrepositories.ui.users.cache.UsersTotalCache
+import com.zinoview.githubrepositories.ui.users.cache.UsersTempCache
 import io.reactivex.disposables.CompositeDisposable
 
 
@@ -26,9 +26,9 @@ import io.reactivex.disposables.CompositeDisposable
 
 class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
 
-    private lateinit var githubUserTotalCache: UiTotalCache<UiGithubUserState>
+    private lateinit var githubUserTotalCache: UiTempCache<UiGithubUserState>
     private lateinit var adapter: GithubUserAdapter
-    private lateinit var githubQueryDisposableStore: GithubDisposableStore
+    private lateinit var githubQueryDisposableStore: DisposableStore
 
     private lateinit var titleToolbar: TitleToolbar
 
@@ -44,7 +44,7 @@ class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
-        githubQueryDisposableStore = GithubDisposableStore.Base(CompositeDisposable())
+        githubQueryDisposableStore = DisposableStore.Base(CompositeDisposable())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,7 +53,7 @@ class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
         titleToolbar = TitleToolbar.Base(itemsState)
 
         changeTitleToolbar(R.string.users_page,titleToolbar.title())
-        githubUserTotalCache = UsersTotalCache(
+        githubUserTotalCache = UsersTempCache(
             itemsState,
             StoreListTotalCache.Base(
                 ArrayList(),
@@ -64,8 +64,8 @@ class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
         })
 
         adapter = GithubUserAdapter(
-            GithubUserItemViewTypeFactory(),
-            GithubUserViewHolderFactory(object : GithubOnItemClickListener {
+            GithubUserItemViewTypeFactory.Base(),
+            GithubUserViewHolderFactory.Base(object : GithubOnItemClickListener<String> {
                 override fun onItemClick(githubUserName: String) {
                     val bundle = Bundle().apply {
                         putString(GITHUB_USER_NAME_EXTRA,githubUserName)
@@ -98,7 +98,6 @@ class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
         }
 
         //Example: current selection state Expanded i change state и надо удалять его сразу из списка
-
         githubUserViewModel.users()
     }
 

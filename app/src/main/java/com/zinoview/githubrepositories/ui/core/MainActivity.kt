@@ -12,6 +12,10 @@ fun Any.message(message: String) {
     Log.d("GithubTest",message)
 }
 
+fun Any.message2(message: String) {
+    Log.d("GithubTest2",message)
+}
+
 class MainActivity : AppCompatActivity() {
 
     val toolbar by lazy {

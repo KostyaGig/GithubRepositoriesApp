@@ -3,7 +3,10 @@ package com.zinoview.githubrepositories.core
 import com.zinoview.githubrepositories.data.repositories.DataGithubRepository
 import com.zinoview.githubrepositories.data.users.DataGithubUser
 import com.zinoview.githubrepositories.domain.repositories.DomainGithubRepository
+import com.zinoview.githubrepositories.domain.repositories.download.DomainDownloadFile
 import com.zinoview.githubrepositories.domain.users.DomainGithubUser
+import com.zinoview.githubrepositories.ui.repositories.download.UiDownloadFile
+import okhttp3.ResponseBody
 
 
 /**
@@ -35,12 +38,14 @@ abstract class Abstract {
 
             interface GithubUser : Domain<DomainGithubUser,UserMapper<DomainGithubUser>>
             interface GithubRepository : Domain<DomainGithubRepository,RepositoryMapper<DomainGithubRepository>>
+            interface GithubDownloadRepository : Domain<DomainDownloadFile, DownloadFileMapper<DomainDownloadFile>>
         }
 
         interface Ui<T,M : Mapper> : Object<T,M> {
 
             interface GithubUser<T> : Ui<T,UserMapper<T>>
             interface GithubRepository<T> : Ui<T,RepositoryMapper<T>>
+            interface GithubDownloadRepository<T> : Ui<T,DownloadFileMapper<UiDownloadFile>>
         }
     }
 
@@ -61,6 +66,14 @@ abstract class Abstract {
             defaultBranch: String,
             isCollapsed: Boolean
         ) : T
+    }
+
+    interface DownloadFileMapper<T> : Mapper {
+
+        fun map() : T
+        fun map(size: Long) : T
+        fun map(data: ResponseBody) : T
+        fun map(e: Exception) : T
     }
 
     interface FactoryMapper<S,R> {

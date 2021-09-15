@@ -9,7 +9,6 @@ import com.zinoview.githubrepositories.ui.core.adapter.CollapseOrExpandStateList
 import com.zinoview.githubrepositories.ui.core.adapter.GithubOnItemClickListener
 import com.zinoview.githubrepositories.ui.core.view.AbstractView
 import com.zinoview.githubrepositories.ui.core.view.CollapseView
-import java.lang.IllegalStateException
 
 
 /**
@@ -22,9 +21,10 @@ sealed class UiGithubRepositoryState :
     Abstract.FactoryMapper<List<AbstractView>,Unit>,
     CommunicationModel,
     AbstractListener.CollapseOrExpandListener<
-            GithubOnItemClickListener, CollapseOrExpandStateListener<UiGithubRepositoryState>
+            GithubOnItemClickListener<Pair<String,String>>, CollapseOrExpandStateListener<UiGithubRepositoryState>
             >,
-    Same<UiGithubRepository> {
+    Same<UiGithubRepository>,
+    ModelState<UiGithubRepositoryState> {
 
     override fun wrap(): List<UiGithubRepositoryState>
         = listOf(Default)
@@ -43,8 +43,8 @@ sealed class UiGithubRepositoryState :
 
     override fun same(element: UiGithubRepository): Boolean = false
 
-    override fun notifyAboutItemClick(listener: GithubOnItemClickListener)
-        = throw IllegalStateException("UiGithubRepoState notifyAboutItemClick not use")
+    override fun notifyAboutItemClick(listener: GithubOnItemClickListener<Pair<String,String>>)
+        = Unit
 
     override fun notifyAboutCollapseOrExpand(
         listener: CollapseOrExpandStateListener<UiGithubRepositoryState>,
@@ -52,6 +52,9 @@ sealed class UiGithubRepositoryState :
     ) = Unit
 
     override fun isCollapsed(): Boolean = true
+
+    override fun modelWithChangedState(): UiGithubRepositoryState
+        = Default
 
     open fun mapCollapseOrExpandState(src: List<CollapseView>) = Unit
 
@@ -87,15 +90,20 @@ sealed class UiGithubRepositoryState :
         override fun map(mapper: CacheGithubRepositoryMapper): CacheGithubRepository
             = mapper.map(isCollapsedState,uiGithubRepository)
 
+        override fun notifyAboutItemClick(listener: GithubOnItemClickListener<Pair<String,String>>)
+            = uiGithubRepository.notifyAboutItemClick(listener)
+
         override fun notifyAboutCollapseOrExpand(
             listener: CollapseOrExpandStateListener<UiGithubRepositoryState>,
             position: Int
-        ) = listener.onChangeCollapseState(newState(),position)
+        ) = listener.onChangeCollapseState(modelWithChangedState(),position)
 
         override fun isCollapsed(): Boolean = isCollapsedState
 
-        private fun newState(): Base =
-            Base(uiGithubRepository, isCollapsedState.not())
+        override fun modelWithChangedState(): UiGithubRepositoryState {
+            val uiGithubRepositoryWithNewState = uiGithubRepository.modelWithChangedState()
+            return Base(uiGithubRepositoryWithNewState, isCollapsedState.not())
+        }
 
         override fun matches(model: CommunicationModel): Boolean  =
             if (model is UiGithubRepositoryState)

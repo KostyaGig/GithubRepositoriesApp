@@ -1,7 +1,7 @@
 package com.zinoview.githubrepositories.ui.users
 
 import com.zinoview.githubrepositories.core.Abstract
-import com.zinoview.githubrepositories.core.GithubDisposableStore
+import com.zinoview.githubrepositories.core.DisposableStore
 import com.zinoview.githubrepositories.domain.users.GithubUserInteractor
 import com.zinoview.githubrepositories.ui.core.BaseGithubUserRequest
 
@@ -14,15 +14,11 @@ import com.zinoview.githubrepositories.ui.core.BaseGithubUserRequest
 class Remote(
     githubUserInteractor: GithubUserInteractor,
     communication: GithubUserCommunication,
-    githubUserDisposableStore: GithubDisposableStore,
-    uiGithubUserMapper: Abstract.UserMapper<UiGithubUser>,
-    uiGithubUserStateMapper: Abstract.UserMapper<UiGithubUserState>,
-    exceptionMapper: Abstract.FactoryMapper<Throwable,String>,
+    githubUserDisposableStore: DisposableStore,
+    uiMappersStore: UserMappersStore
 ) : BaseGithubUserRequest(
     githubUserInteractor,
     communication,
     githubUserDisposableStore,
-    uiGithubUserMapper,
-    uiGithubUserStateMapper,
-    exceptionMapper
+    uiMappersStore
 )

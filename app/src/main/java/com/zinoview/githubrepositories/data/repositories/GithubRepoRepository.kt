@@ -15,10 +15,11 @@ import io.reactivex.Single
  * @author Zinoview on 19.08.2021
  * k.gig@list.ru
  */
-interface GithubRepositoryRepository : SaveState,
+interface GithubRepoRepository : SaveState,
     DataByNotFoundState<DataGithubRepository> {
 
     fun repository(userName: String, repo: String): Single<DataGithubRepository>
+
 
     fun repositories(userName: String): Single<List<DataGithubRepository>>
 
@@ -28,7 +29,7 @@ interface GithubRepositoryRepository : SaveState,
         private val cacheGithubRepositoryMapper: CacheGithubRepositoryMapper,
         private val dataGithubRepositoryMapper: Abstract.RepositoryMapper<DataGithubRepository>,
         private val repositoryCachedState: RepositoryCachedState
-    ) : GithubRepositoryRepository {
+    ) : GithubRepoRepository {
 
         override fun repository(owner: String, repo: String): Single<DataGithubRepository> {
             val commonRepository = githubRepositoryCacheDataSource.commonRepository(owner,repo)

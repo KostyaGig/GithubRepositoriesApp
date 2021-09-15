@@ -1,7 +1,6 @@
 package com.zinoview.githubrepositories.sl.core
 
 import android.content.Context
-import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.core.Resource
 import com.zinoview.githubrepositories.data.core.GithubAppDatabase
 import com.zinoview.githubrepositories.data.core.GithubDao
@@ -9,9 +8,12 @@ import com.zinoview.githubrepositories.data.core.Text
 import com.zinoview.githubrepositories.data.core.prefs.CollapseOrExpandStateFactory
 import com.zinoview.githubrepositories.data.core.prefs.SavedValueStateFactory
 import com.zinoview.githubrepositories.data.repositories.cache.prefs.RepositoryCachedState
+import com.zinoview.githubrepositories.data.repositories.download.file.CachedFile
+import com.zinoview.githubrepositories.data.repositories.download.file.FileWriter
 import com.zinoview.githubrepositories.data.users.cache.prefs.UserCachedState
 import com.zinoview.githubrepositories.ui.users.UiGithubExceptionMapper
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -26,12 +28,16 @@ class CoreModule {
 
     lateinit var retrofit: Retrofit
     lateinit var resource: Resource
+    lateinit var client: OkHttpClient
     lateinit var githubDao: GithubDao
-    lateinit var exceptionMapper: Abstract.FactoryMapper<Throwable,String>
+    lateinit var exceptionMapper: UiGithubExceptionMapper
     lateinit var text: Text
 
     lateinit var userCachedState: UserCachedState
     lateinit var repositoryCachedState: RepositoryCachedState
+
+    lateinit var fileWriter: FileWriter<ResponseBody>
+    lateinit var cachedFile: CachedFile
 
     fun init(context: Context) {
 
@@ -40,12 +46,15 @@ class CoreModule {
         resource = Resource.Base(context)
 
         githubDao = GithubAppDatabase.database(context).dao()
-        exceptionMapper = UiGithubExceptionMapper(resource)
+        exceptionMapper = UiGithubExceptionMapper.Base(resource)
 
         text = Text.GithubName()
 
-        val savedValueStateFactory = SavedValueStateFactory()
-        val collapseOrExpandStateFactory = CollapseOrExpandStateFactory(resource)
+        fileWriter = FileWriter.Base()
+        cachedFile = CachedFile.Base(fileWriter)
+
+        val savedValueStateFactory = SavedValueStateFactory.Base()
+        val collapseOrExpandStateFactory = CollapseOrExpandStateFactory.Base(resource)
 
         userCachedState = UserCachedState.Base(
             context,
@@ -61,7 +70,7 @@ class CoreModule {
     }
 
     private fun network() {
-        val client =
+         client =
             OkHttpClient.Builder()
                 .addInterceptor(HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY
@@ -76,9 +85,10 @@ class CoreModule {
             .build()
     }
 
-    fun <T> service(clazz: Class<T>) = retrofit.create(clazz)
+    fun <T> networkService(clazz: Class<T>) = retrofit.create(clazz)
 
     private companion object {
         const val BASE_URL = "https://api.github.com/"
+
     }
 }

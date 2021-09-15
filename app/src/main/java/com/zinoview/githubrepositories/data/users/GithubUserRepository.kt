@@ -41,11 +41,19 @@ interface GithubUserRepository : SaveState,DataByNotFoundState<DataGithubUser> {
                     if (userByQuery != null) {
                         dataByNotFoundState()
                     }
-                    githubUserCloudDataSource.fetchData(query)
-                        .flatMap { cloudGithubUser -> githubUserCacheDataSource.saveData( cloudGithubUser.map(cacheGithubUserMapper) )
-                            Single.just(cloudGithubUser.map(dataGithubUserMapper))
-                        }
+                    userByQueryFromCloud(query)
                 }
+        }
+
+        private fun userByQueryFromCloud(query: String) : Single<DataGithubUser> {
+            return try {
+                githubUserCloudDataSource.fetchData(query)
+                    .flatMap { cloudGithubUser -> githubUserCacheDataSource.saveData( cloudGithubUser.map(cacheGithubUserMapper) )
+                        Single.just(cloudGithubUser.map(dataGithubUserMapper))
+                    }
+            } catch (e: Exception) {
+                throw e
+            }
         }
 
         override fun users(): Single<List<DataGithubUser>>

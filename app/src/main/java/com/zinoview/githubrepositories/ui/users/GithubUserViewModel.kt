@@ -1,6 +1,6 @@
 package com.zinoview.githubrepositories.ui.users
 
-import com.zinoview.githubrepositories.core.GithubDisposableStore
+import com.zinoview.githubrepositories.core.DisposableStore
 import com.zinoview.githubrepositories.core.SaveState
 import com.zinoview.githubrepositories.ui.core.*
 import com.zinoview.githubrepositories.ui.core.cache.SaveCache
@@ -20,7 +20,7 @@ interface GithubUserViewModel<T : CommunicationModel> : ViewModel<T>, SaveState 
     class Base(
         githubUserRemoteRequest: BaseGithubUserRequest,
         private val githubUserLocalRequest: LocalGithubUserRequest,
-        githubUserDisposableStore: GithubDisposableStore,
+        githubUserDisposableStore: DisposableStore,
         communication: GithubUserCommunication,
         saveCache: SaveCache<UiGithubUserState>
     ) : BaseViewModel<UiGithubUserState>(
