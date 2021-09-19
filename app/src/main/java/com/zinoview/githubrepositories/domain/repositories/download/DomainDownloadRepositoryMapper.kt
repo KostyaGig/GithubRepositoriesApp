@@ -1,6 +1,7 @@
 package com.zinoview.githubrepositories.domain.repositories.download
 
 import com.zinoview.githubrepositories.core.Abstract
+import com.zinoview.githubrepositories.data.repositories.download.file.Kbs
 import com.zinoview.githubrepositories.domain.core.DomainDownloadExceptionMapper
 import okhttp3.ResponseBody
 
@@ -10,14 +11,14 @@ import okhttp3.ResponseBody
  * k.gig@list.ru
  */
 class DomainDownloadRepositoryMapper(
-    private val exceptionMapper: DomainDownloadExceptionMapper
+    private val exceptionMapper: DomainDownloadExceptionMapper,
 ) : Abstract.DownloadFileMapper<DomainDownloadFile> {
 
     override fun map(): DomainDownloadFile
         = DomainDownloadFile.Exist
 
-    override fun map(size: Long): DomainDownloadFile
-        = DomainDownloadFile.Big(size)
+    override fun map(size: Int,data: ResponseBody): DomainDownloadFile
+        = DomainDownloadFile.Big(size,data)
 
     override fun map(data: ResponseBody): DomainDownloadFile
         = DomainDownloadFile.WaitingToDownload(data)

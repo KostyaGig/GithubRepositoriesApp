@@ -13,7 +13,7 @@ import com.zinoview.githubrepositories.ui.users.UiGithubUserState
  * @author Zinoview on 27.08.2021
  * k.gig@list.ru
  */
-interface SaveCache<T : CommunicationModel> : Save<List<T>> {
+interface SaveCache<T : CommunicationModel.ItemCommunicationModel> : Save<List<T>> {
 
     class User(
         private val dao: GithubDao,

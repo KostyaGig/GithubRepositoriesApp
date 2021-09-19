@@ -70,7 +70,9 @@ class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
                     val bundle = Bundle().apply {
                         putString(GITHUB_USER_NAME_EXTRA,githubUserName)
                     }
-                    val githubRepositoriesFragment = GithubRepositoriesFragment().apply {
+                    val githubRepositoriesFragment = GithubRepositoriesFragment(
+                        requireActivity() as MainActivity
+                    ).apply {
                         arguments = bundle
                     }
                     val transaction = requireActivity().supportFragmentManager.beginTransaction()

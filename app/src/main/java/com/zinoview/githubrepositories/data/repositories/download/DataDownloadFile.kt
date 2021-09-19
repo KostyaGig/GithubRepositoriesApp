@@ -19,11 +19,12 @@ sealed class DataDownloadFile : Abstract.Object.Domain.GithubDownloadRepository 
     }
 
     class Big(
-        private val size: Long
+        private val size: Int,
+        private val data: ResponseBody
     ) : DataDownloadFile() {
 
         override fun map(mapper: Abstract.DownloadFileMapper<DomainDownloadFile>): DomainDownloadFile
-            = mapper.map(size)
+            = mapper.map(size,data)
     }
 
     class WaitingToDownload(

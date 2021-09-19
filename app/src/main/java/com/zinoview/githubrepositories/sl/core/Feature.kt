@@ -9,5 +9,7 @@ sealed class Feature {
 
     object Repository : Feature()
 
+    object WriteFile : Feature()
+
     object User : Feature()
 }

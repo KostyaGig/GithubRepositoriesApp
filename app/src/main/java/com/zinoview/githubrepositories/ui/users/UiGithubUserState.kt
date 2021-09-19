@@ -19,7 +19,7 @@ sealed class UiGithubUserState :
     Abstract.Object<CacheGithubUser,CacheGithubUserMapper>,
     ListWrapper<UiGithubUserState>,
     Abstract.FactoryMapper<List<AbstractView>,Unit>,
-    CommunicationModel,
+    CommunicationModel.ItemCommunicationModel,
     AbstractListener.CollapseOrExpandListener<
             GithubOnItemClickListener<String>,
             CollapseOrExpandStateListener<UiGithubUserState>
@@ -51,7 +51,7 @@ sealed class UiGithubUserState :
 
     override fun isCollapsed(): Boolean = true
 
-    override fun matches(model: CommunicationModel): Boolean = false
+    override fun matches(model: CommunicationModel.ItemCommunicationModel): Boolean = false
 
     override fun same(element: UiGithubUser): Boolean = false
 
@@ -97,7 +97,7 @@ sealed class UiGithubUserState :
 
         private fun newState(): Base = Base(uiGithubUser, isCollapsedState.not())
 
-        override fun matches(model: CommunicationModel): Boolean =
+        override fun matches(model: CommunicationModel.ItemCommunicationModel): Boolean =
             if (model is UiGithubUserState)
                 model.same(uiGithubUser)
              else

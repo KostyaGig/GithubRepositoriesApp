@@ -14,7 +14,7 @@ import com.zinoview.githubrepositories.ui.users.GithubUserRequest
  * @author Zinoview on 23.08.2021
  * k.gig@list.ru
  */
-abstract class BaseViewModel<T : CommunicationModel> (
+abstract class BaseViewModel<T : CommunicationModel.ItemCommunicationModel> (
     private val communication: Communication.Base<T>,
     private val disposableStore: DisposableStore,
     private val githubUserRequest: GithubUserRequest<String>,

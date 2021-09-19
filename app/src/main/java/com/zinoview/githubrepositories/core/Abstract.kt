@@ -71,7 +71,7 @@ abstract class Abstract {
     interface DownloadFileMapper<T> : Mapper {
 
         fun map() : T
-        fun map(size: Long) : T
+        fun map(size: Int,data: ResponseBody) : T
         fun map(data: ResponseBody) : T
         fun map(e: Exception) : T
     }

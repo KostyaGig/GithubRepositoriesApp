@@ -33,7 +33,6 @@ abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
         CollapseOrExpandStateFactory.Base(resource)
     }
 
-
     protected fun <T : ViewModel> viewModel(clazz: Class<T>,owner: ViewModelStoreOwner)
         = (activity.application as GAApp).viewModel(clazz,owner)
 

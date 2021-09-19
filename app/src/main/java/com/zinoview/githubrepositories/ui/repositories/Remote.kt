@@ -3,8 +3,11 @@ package com.zinoview.githubrepositories.ui.repositories
 import com.zinoview.githubrepositories.domain.repositories.GithubRepositoryInteractor
 import com.zinoview.githubrepositories.ui.core.CleanDisposable
 import com.zinoview.githubrepositories.core.DisposableStore
+import com.zinoview.githubrepositories.domain.core.DomainDownloadExceptionMapper
 import com.zinoview.githubrepositories.ui.core.message
 import com.zinoview.githubrepositories.ui.repositories.download.DownloadRepositoryCommunication
+import com.zinoview.githubrepositories.ui.repositories.download.DownloadRepositoryExceptionMappersStore
+import com.zinoview.githubrepositories.ui.repositories.download.UiDownloadExceptionMapper
 import com.zinoview.githubrepositories.ui.repositories.download.UiGithubDownloadFileState
 import com.zinoview.githubrepositories.ui.users.GithubUserRequest
 import io.reactivex.Single
@@ -29,6 +32,7 @@ interface Remote : GithubUserRequest<String> {
         private val downloadGithubRepoCommunication: DownloadRepositoryCommunication,
         private val githubRepositoryDisposableStore: DisposableStore,
         private val repositoryMappersStore: RepositoryMappersStore,
+        private val downloadRepositoryExceptionMappersStore: DownloadRepositoryExceptionMappersStore
         ) : Remote, CleanDisposable {
 
         override fun data(owner: String) {
@@ -85,7 +89,10 @@ interface Remote : GithubUserRequest<String> {
                     downloadGithubRepoCommunication.changeValue(uiDownloadRepository.mapTo(Unit).wrap())
                 }, { error->
                     error?.let { throwable ->
-                        message("Remote download repo with error ${throwable::class.java}")
+                        val uiException = downloadRepositoryExceptionMappersStore.domainDownloadExceptionMapper().map(throwable)
+                        val errorMessage = downloadRepositoryExceptionMappersStore.uiDownloadExceptionMapper().map(uiException)
+
+                        downloadGithubRepoCommunication.changeValue(UiGithubDownloadFileState.Failure(errorMessage).wrap())
                     }
                 }).addToDisposableStore(githubRepositoryDisposableStore)
         }

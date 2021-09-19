@@ -5,7 +5,7 @@
     <string name="item_state_text">Item list state</string>
     <string name="no_connection_error">No connection</string>
     <string name="github_not_found_error">Server not found data</string>
-    <string name="github_user_generic_error">Some went wrong</string>
+    <string name="generic_error">Some went wrong</string>
     <string name="local_error">Local error</string>
     <string name="users_page">Users</string>
     <string name="repos">/repos/</string>
@@ -16,7 +16,10 @@
     <string name="any_text">Any</string>
     <string name="data_by_state_not_found">Not found data by state</string>
     <string name="private_text">private</string>
-    <string name="file_in_waiting_download">Repository in waiting download…</string>
+    <string name="download_text">Download…</string>
     <string name="file_not_found_error">File for download repo not found</string>
-    <string name="file_is_big">big_size_file</string>
+    <string name="file_is_big">Download big file?</string>
+    <string name="waiting_while_previous_fle_will_be_saved">Previous file saved…</string>
+    <string name="server_error">Server not working</string>
+    <string name="saved_file_text">File was saved</string>
 </resources>

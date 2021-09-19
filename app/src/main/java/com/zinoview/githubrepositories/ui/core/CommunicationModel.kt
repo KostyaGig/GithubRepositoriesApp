@@ -6,11 +6,13 @@ package com.zinoview.githubrepositories.ui.core
  * k.gig@list.ru
  */
 
-//todo создать отдельно CommunicationModel и отдельно,к примеру, CommunicationModelState(название продумать) в нем будут эти 2 нижних метода а значит в UiGithubDownloadFileState пропадут ненужгные методы
-interface CommunicationModel : CommunicationMatcher<CommunicationModel> {
+interface CommunicationModel {
 
-    fun isBase() : Boolean
+    interface ItemCommunicationModel : CommunicationModel, CommunicationMatcher<ItemCommunicationModel> {
 
-    fun isCollapsed() : Boolean
+        fun isBase() : Boolean
+
+        fun isCollapsed() : Boolean
+    }
 }
 

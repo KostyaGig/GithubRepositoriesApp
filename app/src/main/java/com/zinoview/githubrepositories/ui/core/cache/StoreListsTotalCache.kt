@@ -11,7 +11,7 @@ import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
  * k.gig@list.ru
  */
 
-interface StoreListTotalCache<T : CommunicationModel>  {
+interface StoreListTotalCache<T : CommunicationModel.ItemCommunicationModel>  {
 
     fun updateLists(items: List<T>)
 
@@ -21,7 +21,7 @@ interface StoreListTotalCache<T : CommunicationModel>  {
 
     fun isEmptyTotalCache(state: CollapseOrExpandState) : Boolean
 
-    class Base<T : CommunicationModel>(
+    class Base<T : CommunicationModel.ItemCommunicationModel>(
         private val listAnyStateTotalCache: MutableList<T>,
         private val listCollapsedTotalCache: MutableList<T>,
         private val listExpandedTotalCache: MutableList<T>,

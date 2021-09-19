@@ -8,7 +8,6 @@ import com.zinoview.githubrepositories.domain.repositories.download.exceptions.N
 import com.zinoview.githubrepositories.ui.core.message
 import io.reactivex.exceptions.CompositeException
 import retrofit2.adapter.rxjava2.HttpException
-import java.net.UnknownHostException
 
 
 /**
@@ -33,7 +32,7 @@ interface UiGithubExceptionMapper : Abstract.FactoryMapper<Throwable, String> {
             is DataByStateNotFoundException, is CompositeException -> resource.string(R.string.data_by_state_not_found)
             else -> {
                 message("Some went wrong exc: ${src::class.java}")
-                resource.string(R.string.github_user_generic_error)
+                resource.string(R.string.generic_error)
             }
         }
 

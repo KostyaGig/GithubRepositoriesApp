@@ -16,14 +16,13 @@ import com.zinoview.githubrepositories.core.DisposableStore
 import com.zinoview.githubrepositories.data.repositories.download.DownloadRepoRepository
 import com.zinoview.githubrepositories.data.repositories.download.cloud.GithubDownloadRepoCloudDataSource
 import com.zinoview.githubrepositories.data.repositories.download.cloud.GithubDownloadRepoService
-import com.zinoview.githubrepositories.data.repositories.download.file.File
-import com.zinoview.githubrepositories.data.repositories.download.file.Folder
-import com.zinoview.githubrepositories.data.repositories.download.file.SizeFile
+import com.zinoview.githubrepositories.data.repositories.download.file.*
 import com.zinoview.githubrepositories.domain.core.DomainDownloadExceptionMapper
 import com.zinoview.githubrepositories.domain.repositories.download.DomainDownloadRepositoryMapper
 import com.zinoview.githubrepositories.ui.core.cache.SaveCache
 import com.zinoview.githubrepositories.ui.repositories.cache.Local
 import com.zinoview.githubrepositories.ui.repositories.download.DownloadRepositoryCommunication
+import com.zinoview.githubrepositories.ui.repositories.download.DownloadRepositoryExceptionMappersStore
 import com.zinoview.githubrepositories.ui.repositories.download.UiDownloadExceptionMapper
 import com.zinoview.githubrepositories.ui.repositories.download.UiDownloadRepositoryMapper
 import io.reactivex.disposables.CompositeDisposable
@@ -72,10 +71,12 @@ class GithubRepositoryModule(
                 File.ZipFile(
                     Folder.Base(
                         coreModule.fileWriter,
-                        coreModule.cachedFile
+                        coreModule.cachedFile,
+                        CheckFileByExist.Base()
                     )
                 ),
-                SizeFile.Base()
+                SizeFile.Base(),
+                Kbs.Base()
             ),
             DomainDownloadRepositoryMapper(
                 DomainDownloadExceptionMapper.Base()
@@ -87,7 +88,11 @@ class GithubRepositoryModule(
                 repoCommunication,
                 repoDownloadCommunication,
                 disposableStore,
-                repositoryMappersStore
+                repositoryMappersStore,
+                DownloadRepositoryExceptionMappersStore.Base(
+                    DomainDownloadExceptionMapper.Base(),
+                    UiDownloadExceptionMapper.Base(coreModule.resource)
+                )
             ),
             Local.Base(interactor),
             repoCommunication,

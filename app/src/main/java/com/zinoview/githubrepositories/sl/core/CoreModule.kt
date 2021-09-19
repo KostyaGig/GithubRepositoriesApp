@@ -8,8 +8,7 @@ import com.zinoview.githubrepositories.data.core.Text
 import com.zinoview.githubrepositories.data.core.prefs.CollapseOrExpandStateFactory
 import com.zinoview.githubrepositories.data.core.prefs.SavedValueStateFactory
 import com.zinoview.githubrepositories.data.repositories.cache.prefs.RepositoryCachedState
-import com.zinoview.githubrepositories.data.repositories.download.file.CachedFile
-import com.zinoview.githubrepositories.data.repositories.download.file.FileWriter
+import com.zinoview.githubrepositories.data.repositories.download.file.*
 import com.zinoview.githubrepositories.data.users.cache.prefs.UserCachedState
 import com.zinoview.githubrepositories.ui.users.UiGithubExceptionMapper
 import okhttp3.OkHttpClient
@@ -50,8 +49,18 @@ class CoreModule {
 
         text = Text.GithubName()
 
-        fileWriter = FileWriter.Base()
-        cachedFile = CachedFile.Base(fileWriter)
+        fileWriter = FileWriter.Base(
+            Kbs.Base(),
+            PercentageOfNumber.Base()
+        )
+
+        cachedFile = CachedFile.Base(
+            AsyncFileWriter.Base(
+                fileWriter,
+                WritingFIleExceptionMapper.Base(resource),
+                resource
+            )
+        )
 
         val savedValueStateFactory = SavedValueStateFactory.Base()
         val collapseOrExpandStateFactory = CollapseOrExpandStateFactory.Base(resource)

@@ -3,6 +3,7 @@ package com.zinoview.githubrepositories.sl.core
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.zinoview.githubrepositories.ui.repositories.GithubRepositoryViewModel
+import com.zinoview.githubrepositories.ui.repositories.download.WriteFileViewModel
 import com.zinoview.githubrepositories.ui.users.GithubUserViewModel
 import java.lang.IllegalArgumentException
 
@@ -18,6 +19,7 @@ class ViewModelFactory(
     private val featuresByClass = HashMap<Class<*>,Feature>().apply {
         put(GithubUserViewModel.Base::class.java,Feature.User)
         put(GithubRepositoryViewModel.Base::class.java,Feature.Repository)
+        put(WriteFileViewModel.Base::class.java,Feature.WriteFile)
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

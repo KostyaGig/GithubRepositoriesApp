@@ -17,15 +17,15 @@ class UiDownloadRepositoryMapper(
     override fun map(): UiDownloadFile
         = UiDownloadFile.Exist
 
-    override fun map(size: Long): UiDownloadFile
+    override fun map(size: Int,data: ResponseBody): UiDownloadFile
         = UiDownloadFile.Big(
             resource,
-            size
+            size,
+            data
         )
 
     override fun map(data: ResponseBody): UiDownloadFile
         = UiDownloadFile.WaitingToDownload(
-            resource,
             data
         )
 

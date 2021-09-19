@@ -21,7 +21,8 @@ interface Folder : Save<ResponseBody> {
 
     class Base(
         private val fileWriter: FileWriter<ResponseBody>,
-        private val cachedFile: CachedFile
+        private val cachedFile: CachedFile,
+        private val checkFileByExist: CheckFileByExist
     ) : Folder {
 
         private val baseFolder by lazy {
@@ -48,8 +49,10 @@ interface Folder : Save<ResponseBody> {
         override fun saveData(data: ResponseBody)
             = fileWriter.write(zipFile.absolutePath,data)
 
-        override fun fileIsNotExist(owner: String,repo: String): Boolean
-            = File( "$baseFolder/$owner _ $repo$ZIP_TYPE_FILE").exists().not()
+        override fun fileIsNotExist(owner: String,repo: String): Boolean {
+            val path = "$baseFolder/$owner _ $repo$ZIP_TYPE_FILE"
+            return checkFileByExist.isNotExist(path)
+        }
 
         private companion object {
             const val BASE_PATH = "GithubRepositories/Downloads"

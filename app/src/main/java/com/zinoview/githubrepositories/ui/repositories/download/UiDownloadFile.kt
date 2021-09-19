@@ -22,26 +22,24 @@ sealed class UiDownloadFile :
 
     class Big(
         private val resource: Resource,
-        private val size: Long
+        private val size: Int,
+        private val data: ResponseBody
     ) : UiDownloadFile() {
 
         override fun mapTo(param: Unit): UiGithubDownloadFileState
             = UiGithubDownloadFileState.Big(
                 size,
-                resource.string(R.string.file_is_big)
+                resource.string(R.string.file_is_big),
+                data
             )
     }
 
     class WaitingToDownload(
-        private val resource: Resource,
-        private val data: ResponseBody,
+        private val data: ResponseBody
     ) : UiDownloadFile() {
 
         override fun mapTo(param: Unit): UiGithubDownloadFileState
-            = UiGithubDownloadFileState.WaitingToDownload(
-                data,
-                resource.string(R.string.file_in_waiting_download)
-            )
+            = UiGithubDownloadFileState.WaitingToDownload(data)
     }
 
     class Failure(

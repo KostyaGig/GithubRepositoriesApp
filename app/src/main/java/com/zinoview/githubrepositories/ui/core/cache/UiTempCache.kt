@@ -12,7 +12,7 @@ import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
  * k.gig@list.ru
  */
 
-interface UiTempCache<T : CommunicationModel> {
+interface UiTempCache<T : CommunicationModel.ItemCommunicationModel> {
 
     fun add(items: List<T>)
 
@@ -24,7 +24,7 @@ interface UiTempCache<T : CommunicationModel> {
 
     fun updateCurrentItemsState(state: CollapseOrExpandState)
 
-    abstract class BaseUiGithubTotalCache<T : CommunicationModel>(
+    abstract class BaseUiGithubTotalCache<T : CommunicationModel.ItemCommunicationModel>(
         private val itemsState: ItemsState,
         private val storeListTotalCache: StoreListTotalCache<T>
     ) : UiTempCache<T> {

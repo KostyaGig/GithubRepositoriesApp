@@ -7,7 +7,7 @@ import com.zinoview.githubrepositories.ui.core.CommunicationModel
  * @author Zinoview on 24.08.2021
  * k.gig@list.ru
  */
-interface GithubAdapter<T : CommunicationModel> {
+interface GithubAdapter<T : CommunicationModel.ItemCommunicationModel> {
 
     fun update(list: List<T>)
 

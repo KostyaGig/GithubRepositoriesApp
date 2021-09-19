@@ -3,13 +3,13 @@ package com.zinoview.githubrepositories.ui.repositories.fragment
 import android.Manifest
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.work.WorkManager
 import com.zinoview.githubrepositories.R
 import com.zinoview.githubrepositories.core.DisposableStore
-import com.zinoview.githubrepositories.core.GAApp
+import com.zinoview.githubrepositories.core.Save
 import com.zinoview.githubrepositories.data.repositories.cache.prefs.RepositoryCachedState
 import com.zinoview.githubrepositories.ui.core.*
 import com.zinoview.githubrepositories.ui.core.adapter.CollapseOrExpandStateListener
@@ -18,11 +18,12 @@ import com.zinoview.githubrepositories.ui.core.cache.StoreListTotalCache
 import com.zinoview.githubrepositories.ui.core.cache.UiTempCache
 import com.zinoview.githubrepositories.ui.repositories.*
 import com.zinoview.githubrepositories.ui.repositories.cache.RepositoriesTempCache
+import com.zinoview.githubrepositories.ui.repositories.download.SnackBarWrapper
 import com.zinoview.githubrepositories.ui.repositories.download.TempRepository
-import com.zinoview.githubrepositories.ui.repositories.download.UiGithubDownloadFileState
 import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
 import com.zinoview.githubrepositories.ui.users.fragment.GithubUsersFragment
 import io.reactivex.disposables.CompositeDisposable
+import okhttp3.ResponseBody
 
 
 /**
@@ -30,7 +31,9 @@ import io.reactivex.disposables.CompositeDisposable
  * k.gig@list.ru
  */
 
-class GithubRepositoriesFragment : BaseFragment(R.layout.github_repository_fragment) {
+class GithubRepositoriesFragment(
+    private val activity: Save<ResponseBody>
+) : BaseFragment(R.layout.github_repository_fragment) {
 
     private lateinit var adapter: GithubRepositoryAdapter
     private lateinit var githubQueryDisposableStore: DisposableStore
@@ -109,24 +112,21 @@ class GithubRepositoriesFragment : BaseFragment(R.layout.github_repository_fragm
                 adapter.update(uiGithubRepositoryState)
             }
 
-            val workManager = WorkManager.getInstance(requireContext())
+            val snackBarWrapper = SnackBarWrapper.Base(
+                view
+            ) { bigFileState ->
+                bigFileState.saveData(activity)
+            }
 
             githubRepositoryViewModel.downloadRepoObserve(this) { uiGithubDownloadRepositoryState ->
-                uiGithubDownloadRepositoryState.forEach {
-                    it.map(workManager)
+                uiGithubDownloadRepositoryState.forEach { uiDownloadFileState ->
+                    uiDownloadFileState.handleState(snackBarWrapper,activity)
                 }
             }
 
             githubUserName.repositories(githubRepositoryViewModel)
         }
 
-        //TODO просто протестить получаем ли мы размерность данных в ворк ьэнэджере,щас закончился лимит
-        //todo поулчить инстанс фабрики workmanager'a,затем протестить сохранение файла
-        //todo посомтреть можно ли передать нашему ,недавно созданному workmanager'у в конструктор FileWriter для записи в файл
-        //В качестве входящих данных (inputData) в ворк manager передавать responseBody,назодящийся в стэйте WaitingDownload
-        //Нужно отслеживать состояние прогресса,успеха,фэйла
-        //Также сделать update загрузки файла
-        //Решить проблему с InputStream (закрывать его)
     }
 
     private fun requestAccessWriteExternalStoragePermission() {

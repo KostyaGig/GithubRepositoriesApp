@@ -1,8 +1,5 @@
 package com.zinoview.githubrepositories.data.repositories.download.file
 
-import com.zinoview.githubrepositories.ui.core.message
-import com.zinoview.githubrepositories.ui.core.message2
-
 
 /**
  * @author Zinoview on 07.09.2021
@@ -10,21 +7,19 @@ import com.zinoview.githubrepositories.ui.core.message2
  */
 interface SizeFile {
 
-    fun isBigSizeFile(size: Long) : Boolean
+    fun isBigSizeFile(size: Int) : Boolean
 
     class Base : SizeFile {
 
-        override fun isBigSizeFile(size: Long): Boolean {
-            val result = size > BIG_FILE_SIZE
-            message2("size file compare: $size result $result")
-            return result
+        override fun isBigSizeFile(size: Int): Boolean {
+            return size > BIG_FILE_SIZE
         }
 
         /**
-         * BIG_SIZE_FILE > 10Mb
+         * BIG_SIZE_FILE > 80 KBs
          */
         private companion object {
-            const val BIG_FILE_SIZE = 10000000L
+            const val BIG_FILE_SIZE = 80
         }
     }
 }

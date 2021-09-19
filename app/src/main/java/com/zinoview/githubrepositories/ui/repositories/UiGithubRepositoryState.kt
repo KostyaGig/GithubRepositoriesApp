@@ -19,7 +19,7 @@ sealed class UiGithubRepositoryState :
     Abstract.Object<CacheGithubRepository,CacheGithubRepositoryMapper>,
     ListWrapper<UiGithubRepositoryState>,
     Abstract.FactoryMapper<List<AbstractView>,Unit>,
-    CommunicationModel,
+    CommunicationModel.ItemCommunicationModel,
     AbstractListener.CollapseOrExpandListener<
             GithubOnItemClickListener<Pair<String,String>>, CollapseOrExpandStateListener<UiGithubRepositoryState>
             >,
@@ -39,7 +39,7 @@ sealed class UiGithubRepositoryState :
         UiGithubRepository.Mock()
     )
 
-    override fun matches(model: CommunicationModel): Boolean = false
+    override fun matches(model: CommunicationModel.ItemCommunicationModel): Boolean = false
 
     override fun same(element: UiGithubRepository): Boolean = false
 
@@ -105,7 +105,7 @@ sealed class UiGithubRepositoryState :
             return Base(uiGithubRepositoryWithNewState, isCollapsedState.not())
         }
 
-        override fun matches(model: CommunicationModel): Boolean  =
+        override fun matches(model: CommunicationModel.ItemCommunicationModel): Boolean  =
             if (model is UiGithubRepositoryState)
                 model.same(uiGithubRepository)
              else

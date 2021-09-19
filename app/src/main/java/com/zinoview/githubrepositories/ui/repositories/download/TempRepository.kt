@@ -22,7 +22,6 @@ interface TempRepository {
     ) : TempRepository{
 
         override fun download(viewModel: GithubRepositoryViewModel<UiGithubRepositoryState>) {
-            message("Download by temp repo owner - $owner repo - $repo")
             if (isNotEmpty()) {
                 viewModel.downloadRepository(owner, repo)
             }

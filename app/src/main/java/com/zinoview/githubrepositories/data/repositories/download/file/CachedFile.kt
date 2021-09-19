@@ -1,5 +1,6 @@
 package com.zinoview.githubrepositories.data.repositories.download.file
 
+import io.reactivex.Observable
 import okhttp3.ResponseBody
 import java.io.File
 
@@ -10,12 +11,12 @@ import java.io.File
  */
 interface CachedFile {
 
-    fun writeToFile(data: ResponseBody)
-
     fun cacheFile(file: File)
 
+    fun write(data: ResponseBody) : Observable<WriteFileResult>
+
     class Base(
-        private val fileWriter: FileWriter<ResponseBody>
+        private val asyncFileWriter: AsyncFileWriter
     ) : CachedFile {
 
         private var cacheFile: File = File(MOCK_PATH)
@@ -24,8 +25,8 @@ interface CachedFile {
             cacheFile = file
         }
 
-        override fun writeToFile(data: ResponseBody)
-            = fileWriter.write(cacheFile.absolutePath,data)
+        override fun write(data: ResponseBody): Observable<WriteFileResult>
+            = asyncFileWriter.writeToFile(cacheFile.absolutePath,data)
     }
 
     private companion object {
