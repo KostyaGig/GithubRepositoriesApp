@@ -16,7 +16,8 @@ import io.reactivex.Single
 interface GithubUserInteractor : GithubInteractor<DomainGithubUser>,
     SaveState {
 
-    fun users() : Single<List<DomainGithubUser>>
+    fun users(): Single<List<DomainGithubUser>>
+
 
     class Base(
         private val githubUserRepository: GithubUserRepository,
@@ -24,9 +25,9 @@ interface GithubUserInteractor : GithubInteractor<DomainGithubUser>,
         private val domainDownloadExceptionMapper: DomainDownloadExceptionMapper
     ) : GithubUserInteractor {
 
-        override fun data(query: String): Single<DomainGithubUser>{
+        override fun data(query: String): Single<DomainGithubUser> {
             return try {
-                githubUserRepository.user(query).flatMap {dataGithubUser ->
+                githubUserRepository.user(query).flatMap { dataGithubUser ->
                     Single.just(dataGithubUser.map(domainGithubUserMapper))
                 }
             } catch (e: Exception) {
@@ -34,12 +35,13 @@ interface GithubUserInteractor : GithubInteractor<DomainGithubUser>,
             }
         }
 
-        override fun users(): Single<List<DomainGithubUser>>
-            = githubUserRepository.users().flatMap { dataGithubUsers ->
-                Single.just( dataGithubUsers.map { it.map(domainGithubUserMapper) } )
-        }
+        override fun users(): Single<List<DomainGithubUser>> =
+            githubUserRepository.users().flatMap { dataGithubUsers ->
+                Single.just(dataGithubUsers.map { it.map(domainGithubUserMapper) })
+            }
 
-        override fun saveState(state: CollapseOrExpandState)
-            = githubUserRepository.saveState(state)
+
+        override fun saveState(state: CollapseOrExpandState) =
+            githubUserRepository.saveState(state)
     }
 }

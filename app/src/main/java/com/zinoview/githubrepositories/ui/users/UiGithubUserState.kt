@@ -103,11 +103,13 @@ sealed class UiGithubUserState :
              else
                 false
 
-        override fun same(element: UiGithubUser): Boolean
-            = uiGithubUser.same(element)
+        override fun same(element: UiGithubUser): Boolean {
+            return uiGithubUser.same(element)
+        }
 
         override fun sameCollapsed(isCollapsed: Boolean): Boolean
             = this.isCollapsedState == isCollapsed
+
 
         override fun hashCode(): Int {
             return super.hashCode()

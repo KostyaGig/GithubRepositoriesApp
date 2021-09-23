@@ -22,7 +22,7 @@ interface GithubUserViewModel<T : CommunicationModel> : ViewModel<T>, SaveState 
         private val githubUserLocalRequest: LocalGithubUserRequest,
         githubUserDisposableStore: DisposableStore,
         communication: GithubUserCommunication,
-        saveCache: SaveCache<UiGithubUserState>
+        saveCache: SaveCache<UiGithubUserState>,
     ) : BaseViewModel<UiGithubUserState>(
         communication,
         githubUserDisposableStore,

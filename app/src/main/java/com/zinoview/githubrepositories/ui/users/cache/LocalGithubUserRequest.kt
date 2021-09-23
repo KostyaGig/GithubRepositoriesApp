@@ -50,6 +50,7 @@ abstract class LocalGithubUserRequest(
             }).addToDisposableStore(githubUserDisposableStore)
     }
 
+
     override fun saveState(state: CollapseOrExpandState)
         = githubUserInteractor.saveState(state)
 }

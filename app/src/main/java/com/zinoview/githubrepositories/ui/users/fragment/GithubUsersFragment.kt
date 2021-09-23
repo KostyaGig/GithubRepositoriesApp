@@ -15,6 +15,7 @@ import com.zinoview.githubrepositories.ui.core.MockBaseFragment
 import com.zinoview.githubrepositories.ui.core.adapter.CollapseOrExpandStateListener
 import com.zinoview.githubrepositories.ui.core.adapter.GithubOnItemClickListener
 import com.zinoview.githubrepositories.ui.core.cache.StoreListTotalCache
+import com.zinoview.githubrepositories.ui.core.cache.list.*
 import com.zinoview.githubrepositories.ui.users.cache.UsersTempCache
 import io.reactivex.disposables.CompositeDisposable
 
@@ -58,7 +59,17 @@ class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
             StoreListTotalCache.Base(
                 ArrayList(),
                 ArrayList(),
-                ArrayList()
+                ArrayList(),
+                StoreFilters.Base<UiGithubUserState>(
+                    Filter.BaseElements(),
+                    Filter.CollapsedElements(),
+                    Filter.ExpandedElements()
+                ),
+                ContainsItem.Base(),
+                ListOperation.Base(
+                    ContainsItem.Base(),
+                    IndexItem.Base()
+                )
         ) { replacedItem ->
             githubUserViewModel.saveData(replacedItem.wrap())
         })
@@ -94,12 +105,12 @@ class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.github_user_recycler_view)
         recyclerView.adapter = adapter
 
+
         githubUserViewModel.observe(this) { githubUserUiState ->
             githubUserTotalCache.add(githubUserUiState)
             adapter.update(githubUserUiState)
         }
 
-        //Example: current selection state Expanded i change state и надо удалять его сразу из списка
         githubUserViewModel.users()
     }
 
@@ -116,7 +127,7 @@ class GithubUsersFragment : BaseFragment(R.layout.github_user_fragment) {
             { searchQuery ->
                 githubUserViewModel.user(searchQuery)
             }, {
-                //if empty query show recyclerview with data
+                //if empty query: show recyclerview with data
                 githubUserTotalCache.updateAdapter()
             }
         )

@@ -16,11 +16,13 @@ import com.zinoview.githubrepositories.ui.core.adapter.CollapseOrExpandStateList
 import com.zinoview.githubrepositories.ui.core.adapter.GithubOnItemClickListener
 import com.zinoview.githubrepositories.ui.core.cache.StoreListTotalCache
 import com.zinoview.githubrepositories.ui.core.cache.UiTempCache
+import com.zinoview.githubrepositories.ui.core.cache.list.*
 import com.zinoview.githubrepositories.ui.repositories.*
 import com.zinoview.githubrepositories.ui.repositories.cache.RepositoriesTempCache
 import com.zinoview.githubrepositories.ui.repositories.download.SnackBarWrapper
 import com.zinoview.githubrepositories.ui.repositories.download.TempRepository
 import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
+import com.zinoview.githubrepositories.ui.users.UiGithubUserState
 import com.zinoview.githubrepositories.ui.users.fragment.GithubUsersFragment
 import io.reactivex.disposables.CompositeDisposable
 import okhttp3.ResponseBody
@@ -61,6 +63,7 @@ class GithubRepositoriesFragment(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        message2("arguments null == ${arguments == null}")
         githubQueryDisposableStore = DisposableStore.Base(CompositeDisposable())
     }
 
@@ -74,7 +77,17 @@ class GithubRepositoriesFragment(
             StoreListTotalCache.Base(
                 ArrayList(),
                 ArrayList(),
-                ArrayList()
+                ArrayList(),
+                StoreFilters.Base<UiGithubRepositoryState>(
+                    Filter.BaseElements(),
+                    Filter.CollapsedElements(),
+                    Filter.ExpandedElements()
+                ),
+                ContainsItem.Base(),
+                ListOperation.Base(
+                    ContainsItem.Base(),
+                    IndexItem.Base()
+                )
             ) { replacedItem ->
                 githubRepositoryViewModel.saveData(replacedItem.wrap())
             })

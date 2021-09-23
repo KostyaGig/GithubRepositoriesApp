@@ -61,6 +61,7 @@ interface GithubUserRepository : SaveState,DataByNotFoundState<DataGithubUser> {
                 Single.just(cacheGithubUsers.map { it.map(dataGithubUserMapper) })
         }
 
+
         override fun dataByNotFoundState(): Single<List<DataGithubUser>>
             = throw DataByStateNotFoundException()
 
