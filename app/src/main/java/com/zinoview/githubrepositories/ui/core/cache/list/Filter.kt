@@ -2,7 +2,9 @@ package com.zinoview.githubrepositories.ui.core.cache.list
 
 import com.zinoview.githubrepositories.ui.core.CommunicationModel
 
-interface Filter<T : CommunicationModel.ItemCommunicationModel> {
+
+
+interface Filter<T> {
 
     fun filter(src: List<T>) : List<T>
 
@@ -24,6 +26,19 @@ interface Filter<T : CommunicationModel.ItemCommunicationModel> {
 
         override fun filter(src: List<T>): List<T> {
             return src.filter { it.isCollapsed().not() }
+        }
+    }
+
+    class TestLengthStringFilter : Filter<String> {
+
+        override fun filter(src: List<String>): List<String> {
+            return src.filter {
+                it.length > MIN_LENGTH_STRING
+            }
+        }
+
+        private companion object {
+            const val MIN_LENGTH_STRING = 5
         }
     }
 }

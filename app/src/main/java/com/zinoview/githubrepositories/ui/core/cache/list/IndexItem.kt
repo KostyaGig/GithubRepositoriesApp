@@ -1,9 +1,10 @@
 package com.zinoview.githubrepositories.ui.core.cache.list
 
-import androidx.room.Index
 import com.zinoview.githubrepositories.ui.core.CommunicationModel
+import java.lang.IllegalStateException
 
-interface IndexItem<T : CommunicationModel.ItemCommunicationModel> {
+
+interface IndexItem<T> {
 
     fun indexByItem(src: List<T>, item: T) : Int
 
@@ -22,5 +23,17 @@ interface IndexItem<T : CommunicationModel.ItemCommunicationModel> {
             }
             return index
         }
+    }
+
+    class Test : IndexItem<String> {
+
+        override fun indexByItem(src: List<String>, item: String): Int {
+            return src.indexOf(item)
+        }
+
+        override fun indexByItemState(src: List<String>, item: String)
+            = throw IllegalStateException("IndexItem.Test not use indexByItemState()")
+
+
     }
 }

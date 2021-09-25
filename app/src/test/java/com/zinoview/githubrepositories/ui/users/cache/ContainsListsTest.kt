@@ -28,7 +28,7 @@ class ContainsListsTest {
     private data class TestUserCollapseState(
         private val name: String,
         private val isCollapsed: Boolean
-    ) : TestUser{
+    ) : TestUser {
 
         override fun equals(other: Any?): Boolean {
             val testUserCollapseState = other as TestUserCollapseState

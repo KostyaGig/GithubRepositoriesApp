@@ -21,6 +21,6 @@ interface ProgressSavedData {
                 = onProgressUpdate.invoke(progressInPercentage())
 
         private fun progressInPercentage(): Int
-                = percentageOfNumber.take(fileSize,savedKBs)
+            = percentageOfNumber.take(fileSize,savedKBs)
     }
 }

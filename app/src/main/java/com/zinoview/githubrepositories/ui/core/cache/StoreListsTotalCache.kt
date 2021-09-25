@@ -32,7 +32,7 @@ interface StoreListTotalCache<T : CommunicationModel.ItemCommunicationModel>  {
         private val containsElement: ContainsItem<T>,
         private val listOperation: ListOperation<T>,
         private val wasReplaced: (T) -> Unit
-    ) : StoreListTotalCache<T>, ListTotalCacheFunctions<T>() {
+    ) : StoreListTotalCache<T> {
 
         override fun updateLists(items: List<T>) {
             val baseItems = storeFilters.filterByBase(items)

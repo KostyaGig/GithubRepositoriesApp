@@ -2,6 +2,7 @@ package com.zinoview.githubrepositories.core
 
 import android.content.Context
 import androidx.annotation.StringRes
+import com.zinoview.githubrepositories.R
 
 
 /**
@@ -18,5 +19,16 @@ interface Resource {
 
         override fun string(stringResId: Int): String
             = context.resources.getString(stringResId)
+    }
+
+    class Test : Resource {
+
+        override fun string(stringResId: Int): String {
+            return when(stringResId) {
+                R.string.no_connection_error -> "No connection"
+                else -> "Generic error"
+            }
+        }
+
     }
 }

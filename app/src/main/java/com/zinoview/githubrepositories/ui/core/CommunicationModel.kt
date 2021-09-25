@@ -8,8 +8,7 @@ package com.zinoview.githubrepositories.ui.core
 
 interface CommunicationModel {
 
-    interface ItemCommunicationModel : CommunicationModel, CommunicationMatcher<ItemCommunicationModel> {
-
+    interface ItemCommunicationModel : CommunicationModel, Matcher.CommunicationMatcher<ItemCommunicationModel> {
         fun isBase() : Boolean
 
         fun isCollapsed() : Boolean

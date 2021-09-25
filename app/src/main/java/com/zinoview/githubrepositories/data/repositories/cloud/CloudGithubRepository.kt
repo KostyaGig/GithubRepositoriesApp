@@ -11,6 +11,8 @@ import com.zinoview.githubrepositories.core.Abstract
 
 //todo make suppelements for all Repo model for fields (language,urlRepository,defaultBranch)
 //А то очень огромные классы
+
+
 class CloudGithubRepository(
     @SerializedName("name")
     private val name: String,
@@ -48,7 +50,5 @@ class CloudGithubRepository(
                 true
             )
         }
-
-
 }
 

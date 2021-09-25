@@ -17,6 +17,7 @@ sealed class UiGithubDownloadFileState :
 
     open fun handleState(snackBarWrapper: SnackBarWrapper,save: Save<ResponseBody>) = Unit
 
+    open fun errorMessage() : String = ""
     object Progress : UiGithubDownloadFileState() {
 
         override fun wrap(): List<UiGithubDownloadFileState> = listOf(this)
@@ -64,6 +65,8 @@ sealed class UiGithubDownloadFileState :
 
         override fun handleState(snackBarWrapper: SnackBarWrapper, save: Save<ResponseBody>)
             = snackBarWrapper.show("Error: $message")
+
+        override fun errorMessage(): String = message
     }
 
 }

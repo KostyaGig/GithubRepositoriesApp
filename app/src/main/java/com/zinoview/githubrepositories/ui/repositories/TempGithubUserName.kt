@@ -38,4 +38,24 @@ interface TempGithubUserName {
         private fun String?.isNotNull() : String
             = this ?: throw IllegalStateException(" Name -> GithubUserName -> User name repository is null")
     }
+
+    class Test : TempGithubUserName {
+
+        private var name: String = "default name"
+
+        override fun addName(name: String?) {
+            this.name = name!!
+        }
+
+        override fun searchRepository(
+            repo: String,
+            viewModel: GithubRepositoryViewModel<UiGithubRepositoryState>
+        ) = throw java.lang.IllegalStateException("TempGithubUserName.Test not use searchRepository()")
+
+        override fun repositories(viewModel: BaseViewModel<UiGithubRepositoryState>)
+            = throw java.lang.IllegalStateException("TempGithubUserName.Test not use repositories()")
+
+        override fun currentName(): String
+            = name
+    }
 }

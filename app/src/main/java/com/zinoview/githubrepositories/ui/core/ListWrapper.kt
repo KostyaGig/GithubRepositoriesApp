@@ -9,4 +9,10 @@ package com.zinoview.githubrepositories.ui.core
 interface ListWrapper<T> {
 
     fun wrap() : List<T>
+
+    class TestModel : ListWrapper<TestModel> {
+
+        override fun wrap(): List<TestModel>
+            = listOf(this)
+    }
 }

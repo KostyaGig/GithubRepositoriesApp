@@ -14,6 +14,7 @@ sealed class UiDownloadFile :
     Abstract.UniqueMapper<UiGithubDownloadFileState,Unit>
 {
 
+
     object Exist : UiDownloadFile() {
 
         override fun mapTo(param: Unit): UiGithubDownloadFileState

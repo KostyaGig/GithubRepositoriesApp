@@ -2,6 +2,7 @@ package com.zinoview.githubrepositories.domain.users
 
 import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.core.SaveState
+import com.zinoview.githubrepositories.data.users.DataGithubUser
 import com.zinoview.githubrepositories.data.users.GithubUserRepository
 import com.zinoview.githubrepositories.domain.core.GithubInteractor
 import com.zinoview.githubrepositories.domain.core.DomainDownloadExceptionMapper
@@ -20,7 +21,7 @@ interface GithubUserInteractor : GithubInteractor<DomainGithubUser>,
 
 
     class Base(
-        private val githubUserRepository: GithubUserRepository,
+        private val githubUserRepository: GithubUserRepository<Single<DataGithubUser>,Single<List<DataGithubUser>>>,
         private val domainGithubUserMapper: Abstract.UserMapper<DomainGithubUser>,
         private val domainDownloadExceptionMapper: DomainDownloadExceptionMapper
     ) : GithubUserInteractor {

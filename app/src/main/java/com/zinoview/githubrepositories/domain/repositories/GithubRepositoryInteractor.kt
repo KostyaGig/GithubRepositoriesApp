@@ -2,7 +2,9 @@ package com.zinoview.githubrepositories.domain.repositories
 
 import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.core.SaveState
+import com.zinoview.githubrepositories.data.repositories.DataGithubRepository
 import com.zinoview.githubrepositories.data.repositories.GithubRepoRepository
+import com.zinoview.githubrepositories.data.repositories.download.DataDownloadFile
 import com.zinoview.githubrepositories.data.repositories.download.DownloadRepoRepository
 import com.zinoview.githubrepositories.domain.core.GithubInteractor
 import com.zinoview.githubrepositories.domain.repositories.download.DomainDownloadFile
@@ -23,9 +25,9 @@ interface GithubRepositoryInteractor : GithubInteractor<List<DomainGithubReposit
     fun downloadRepository(owner: String, repo: String) : Single<DomainDownloadFile>
 
     class Base(
-        private val githubRepositoryRepository: GithubRepoRepository,
+        private val githubRepositoryRepository: GithubRepoRepository<Single<DataGithubRepository>, Single<List<DataGithubRepository>>>,
         private val domainGithubRepositoryMapper: Abstract.RepositoryMapper<DomainGithubRepository>,
-        private val downloadRepoRepository: DownloadRepoRepository,
+        private val downloadRepoRepository: DownloadRepoRepository<Single<DataDownloadFile>>,
         private val domainDownloadRepositoryMapper: DomainDownloadRepositoryMapper
     ) : GithubRepositoryInteractor {
 

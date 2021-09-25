@@ -3,7 +3,6 @@ package com.zinoview.githubrepositories.data.repositories.cache
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import com.zinoview.githubrepositories.core.Abstract
-import com.zinoview.githubrepositories.data.core.CacheModel
 import com.zinoview.githubrepositories.data.repositories.DataGithubRepository
 
 
@@ -28,7 +27,7 @@ data class CacheGithubRepository(
     val defaultBranch: String,
     @ColumnInfo(name = "collapse")
     val isCollapsed: Boolean
-) : Abstract.Object.Data.GithubRepository, CacheModel {
+) : Abstract.Object.Data.GithubRepository {
 
     override fun map(mapper: Abstract.RepositoryMapper<DataGithubRepository>): DataGithubRepository
         = mapper.map(repo,lock,language,owner,urlRepository,defaultBranch, isCollapsed)

@@ -8,16 +8,17 @@ import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
  * @author Zinoview on 30.08.2021
  * k.gig@list.ru
  */
-interface ItemsState {
 
-    fun updateState(state: CollapseOrExpandState)
+interface ItemsState<T> {
 
-    fun currentState() : CollapseOrExpandState
+    fun updateState(state: T)
+
+    fun currentState() : T
 
     class Base(
         cachedState: CachedState,
         private var currentItemsState: CollapseOrExpandState = CollapseOrExpandState.Empty
-    ) : ItemsState {
+    ) : ItemsState<CollapseOrExpandState> {
 
         init {
             currentItemsState = cachedState.currentState()
@@ -28,6 +29,21 @@ interface ItemsState {
         }
 
         override fun currentState() = currentItemsState
+    }
 
+    class Test : ItemsState<Test.TestItemsState> {
+
+        private var currentState: TestItemsState = TestItemsState.UNKNOWN
+
+
+        override fun updateState(state: TestItemsState) {
+            currentState = state
+        }
+
+        override fun currentState(): TestItemsState = currentState
+
+        enum class TestItemsState {
+            GOOD,BAD,UNKNOWN
+        }
     }
 }

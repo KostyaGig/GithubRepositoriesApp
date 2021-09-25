@@ -18,7 +18,7 @@ interface CheckFileByExist {
         }
 
         private fun checkSizeFile(file: File) : Boolean
-            = file.length().toInt() <= 0
+            = file.length().toInt() <= SIZE_NOT_EXIST_FILE
 
         private companion object {
             const val SIZE_NOT_EXIST_FILE = 0

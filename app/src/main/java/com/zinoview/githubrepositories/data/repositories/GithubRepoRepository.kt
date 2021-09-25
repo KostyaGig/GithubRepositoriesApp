@@ -6,30 +6,34 @@ import com.zinoview.githubrepositories.data.core.DataByNotFoundState
 import com.zinoview.githubrepositories.data.repositories.cache.CacheGithubRepositoryMapper
 import com.zinoview.githubrepositories.data.repositories.cache.GithubRepositoryCacheDataSource
 import com.zinoview.githubrepositories.data.repositories.cache.prefs.RepositoryCachedState
+import com.zinoview.githubrepositories.data.repositories.cloud.CloudGithubRepository
 import com.zinoview.githubrepositories.data.repositories.cloud.GithubRepositoryCloudDataSource
 import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
 import io.reactivex.Single
+import java.lang.IllegalStateException
 
 
 /**
  * @author Zinoview on 19.08.2021
  * k.gig@list.ru
  */
-interface GithubRepoRepository : SaveState,
+
+
+interface GithubRepoRepository<T,E> : SaveState,
     DataByNotFoundState<DataGithubRepository> {
 
-    fun repository(userName: String, repo: String): Single<DataGithubRepository>
+    fun repository(userName: String, repo: String): T
 
 
-    fun repositories(userName: String): Single<List<DataGithubRepository>>
+    fun repositories(userName: String): E
 
     class Base(
         private val githubRepositoryCacheDataSource: GithubRepositoryCacheDataSource,
-        private val githubRepositoryCloudDataSource: GithubRepositoryCloudDataSource,
+        private val githubRepositoryCloudDataSource: GithubRepositoryCloudDataSource<Single<CloudGithubRepository>,Single<List<CloudGithubRepository>>>,
         private val cacheGithubRepositoryMapper: CacheGithubRepositoryMapper,
         private val dataGithubRepositoryMapper: Abstract.RepositoryMapper<DataGithubRepository>,
         private val repositoryCachedState: RepositoryCachedState
-    ) : GithubRepoRepository {
+    ) : GithubRepoRepository<Single<DataGithubRepository>,Single<List<DataGithubRepository>>> {
 
         override fun repository(owner: String, repo: String): Single<DataGithubRepository> {
             val commonRepository = githubRepositoryCacheDataSource.commonRepository(owner,repo)
@@ -87,5 +91,23 @@ interface GithubRepoRepository : SaveState,
 
         override fun saveState(state: CollapseOrExpandState)
             = repositoryCachedState.saveState(state)
+    }
+
+    class Test(
+        private val testCloudDataSource: GithubRepositoryCloudDataSource<GithubRepositoryCloudDataSource.Test.TestCloudRepository,List<GithubRepositoryCloudDataSource.Test.TestCloudRepository>>
+    ) : GithubRepoRepository<GithubRepositoryCloudDataSource.Test.TestCloudRepository,List<GithubRepositoryCloudDataSource.Test.TestCloudRepository>> {
+
+        override fun repository(userName: String, repo: String): GithubRepositoryCloudDataSource.Test.TestCloudRepository
+            = testCloudDataSource.repository(userName,"Java")
+
+        override fun repositories(userName: String): List<GithubRepositoryCloudDataSource.Test.TestCloudRepository>
+            = testCloudDataSource.fetchData(userName)
+
+        override fun saveState(state: CollapseOrExpandState)
+            = throw IllegalStateException("TestCloudRepository not use saveState()")
+
+        override fun dataByNotFoundState(): Single<List<DataGithubRepository>>
+            = throw IllegalStateException("TestCloudRepository not use dataByNotFoundState()")
+
     }
 }

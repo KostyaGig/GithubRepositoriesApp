@@ -5,6 +5,7 @@ import com.zinoview.githubrepositories.ui.core.ItemsState
 import com.zinoview.githubrepositories.ui.core.adapter.GithubAdapter
 import com.zinoview.githubrepositories.ui.core.cache.StoreListTotalCache
 import com.zinoview.githubrepositories.ui.repositories.UiGithubRepositoryState
+import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
 
 
 /**
@@ -13,7 +14,7 @@ import com.zinoview.githubrepositories.ui.repositories.UiGithubRepositoryState
  */
 
 class RepositoriesTempCache(
-    itemsState: ItemsState,
+    itemsState: ItemsState<CollapseOrExpandState>,
     storeListTotalCache: StoreListTotalCache<UiGithubRepositoryState>
 ) : UiTempCache.BaseUiGithubTotalCache<UiGithubRepositoryState>(
     itemsState,

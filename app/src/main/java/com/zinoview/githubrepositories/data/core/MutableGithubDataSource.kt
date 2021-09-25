@@ -10,6 +10,6 @@ import io.reactivex.Single
  */
 interface MutableGithubDataSource<T,D> : Save<D> {
 
-    fun fetchData(param: String) : Single<T>
+    fun fetchData(param: String) : T
 
 }

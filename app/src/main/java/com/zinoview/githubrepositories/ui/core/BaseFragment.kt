@@ -42,18 +42,10 @@ abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
-        message("onCreate")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        message("onStop")
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
-        message("onCreateOptionsMenu")
         val menuInflater = requireActivity().menuInflater
         menuInflater.inflate(R.menu.main_menu,menu)
 
@@ -67,11 +59,6 @@ abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
         }
 
         super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        message("OnResume")
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -97,19 +84,6 @@ abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
         })
     }
 
-    protected fun changeTitleToolbar(title: String) {
-        val toolbar = activity.toolbar
-        toolbar?.let {
-            it.title = title
-        }
-    }
-
-    protected fun changeTitleToolbar(text: String? = "",stringResId: Int) {
-        val toolbar = activity.toolbar
-        val title = "$text" + activity.resources.getString(stringResId)
-
-    }
-
     protected fun changeTitleToolbar(stringResId: Int,text: String? = "") {
         val toolbar = activity.toolbar
         val title = activity.resources.getString(stringResId) + "$text"
@@ -117,8 +91,6 @@ abstract class BaseFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId)
             it.title = title
         }
     }
-
-
 
     fun onBackPressed() : Boolean {
         val previousFragment = previousFragment()

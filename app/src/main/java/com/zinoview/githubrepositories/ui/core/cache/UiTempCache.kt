@@ -25,7 +25,7 @@ interface UiTempCache<T : CommunicationModel.ItemCommunicationModel> {
     fun updateCurrentItemsState(state: CollapseOrExpandState)
 
     abstract class BaseUiGithubTotalCache<T : CommunicationModel.ItemCommunicationModel>(
-        private val itemsState: ItemsState,
+        private val itemsState: ItemsState<CollapseOrExpandState>,
         private val storeListTotalCache: StoreListTotalCache<T>
     ) : UiTempCache<T> {
 
