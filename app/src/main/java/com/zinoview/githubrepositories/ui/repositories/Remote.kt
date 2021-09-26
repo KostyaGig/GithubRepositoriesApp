@@ -3,11 +3,8 @@ package com.zinoview.githubrepositories.ui.repositories
 import com.zinoview.githubrepositories.domain.repositories.GithubRepositoryInteractor
 import com.zinoview.githubrepositories.ui.core.CleanDisposable
 import com.zinoview.githubrepositories.core.DisposableStore
-import com.zinoview.githubrepositories.domain.core.DomainDownloadExceptionMapper
-import com.zinoview.githubrepositories.ui.core.message
 import com.zinoview.githubrepositories.ui.repositories.download.DownloadRepositoryCommunication
 import com.zinoview.githubrepositories.ui.repositories.download.DownloadRepositoryExceptionMappersStore
-import com.zinoview.githubrepositories.ui.repositories.download.UiDownloadExceptionMapper
 import com.zinoview.githubrepositories.ui.repositories.download.UiGithubDownloadFileState
 import com.zinoview.githubrepositories.ui.users.GithubUserRequest
 import io.reactivex.Single

@@ -1,8 +1,6 @@
 package com.zinoview.githubrepositories.data.repositories
 
 import com.zinoview.githubrepositories.core.Abstract
-import com.zinoview.githubrepositories.data.core.Text
-import com.zinoview.githubrepositories.ui.core.message
 
 
 /**

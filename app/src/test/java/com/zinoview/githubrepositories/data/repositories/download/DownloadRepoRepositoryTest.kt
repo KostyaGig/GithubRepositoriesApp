@@ -47,7 +47,7 @@ class DownloadRepoRepositoryTest {
     fun test_failure_download_repository() {
 
         repository?.setException(UnknownHostException())
-        repository?.setCount(2)
+        repository?.setCount(1)
 
         var expected = true
         val actual = repository?.download("owner","repo")

@@ -3,7 +3,6 @@ package com.zinoview.githubrepositories.ui.core.cache
 import com.zinoview.githubrepositories.ui.core.CommunicationModel
 import com.zinoview.githubrepositories.ui.core.adapter.GithubAdapter
 import com.zinoview.githubrepositories.ui.core.cache.list.*
-import com.zinoview.githubrepositories.ui.core.message
 import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
 
 

@@ -39,9 +39,33 @@ interface Communication<T> {
 
         class Test : TestCommunication<String> {
 
+            interface TestLiveData<T> {
+
+                fun observe()
+
+                fun value() : T
+
+                fun value(value: T)
+
+                class Base<T>(defaultValue: T?) : TestLiveData<T> {
+
+                    private var lastValue: T? = defaultValue
+
+                    override fun observe() = Unit
+
+                    override fun value(): T = lastValue!!
+
+                    override fun value(value: T) {
+                        lastValue = value
+                    }
+                }
+            }
+
+
+
             private var countObserve = 0
 
-            private val liveData = MutableLiveData<String>("Default value")
+            private val liveData = TestLiveData.Base<String>("Default value")
 
             override fun observe(owner: LifecycleOwner, observer: Observer<String>)
                 = throw IllegalStateException("Communication.TestCommunication not use observe()")
@@ -51,11 +75,11 @@ interface Communication<T> {
             }
 
             override fun changeValue(value: String) {
-                liveData.value = value
+                liveData.value(value)
             }
 
             override fun lastValue(): String  {
-                return liveData.value!!
+                return liveData.value()
             }
 
             override fun countObserve(): Int

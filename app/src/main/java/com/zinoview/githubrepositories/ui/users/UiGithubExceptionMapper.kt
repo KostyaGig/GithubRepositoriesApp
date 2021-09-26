@@ -5,7 +5,6 @@ import com.zinoview.githubrepositories.core.Abstract
 import com.zinoview.githubrepositories.core.Resource
 import com.zinoview.githubrepositories.data.repositories.DataByStateNotFoundException
 import com.zinoview.githubrepositories.domain.repositories.download.exceptions.NoConnectionException
-import com.zinoview.githubrepositories.ui.core.message
 import io.reactivex.exceptions.CompositeException
 import retrofit2.adapter.rxjava2.HttpException
 
@@ -31,7 +30,6 @@ interface UiGithubExceptionMapper : Abstract.FactoryMapper<Throwable, String> {
             is HttpException, is retrofit2.HttpException -> resource.string(R.string.github_not_found_error)
             is DataByStateNotFoundException, is CompositeException -> resource.string(R.string.data_by_state_not_found)
             else -> {
-                message("Some went wrong exc: ${src::class.java}")
                 resource.string(R.string.generic_error)
             }
         }

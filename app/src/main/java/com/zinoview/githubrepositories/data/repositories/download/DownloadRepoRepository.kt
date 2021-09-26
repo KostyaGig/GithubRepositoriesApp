@@ -3,15 +3,12 @@ package com.zinoview.githubrepositories.data.repositories.download
 import com.zinoview.githubrepositories.data.repositories.download.cloud.GithubDownloadRepoCloudDataSource
 import com.zinoview.githubrepositories.data.repositories.download.file.Kbs
 import com.zinoview.githubrepositories.data.repositories.download.file.SizeFile
-import com.zinoview.githubrepositories.domain.repositories.download.exceptions.NoConnectionException
-import com.zinoview.githubrepositories.ui.core.message
 import io.reactivex.Single
 import okhttp3.MediaType
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.BufferedSource
 import java.lang.IllegalStateException
-import java.net.UnknownHostException
 
 
 /**

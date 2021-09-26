@@ -1,11 +1,7 @@
 package com.zinoview.githubrepositories.ui.core
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -17,18 +13,8 @@ import com.zinoview.githubrepositories.ui.repositories.download.SnackBarWrapper
 import com.zinoview.githubrepositories.ui.repositories.download.ViewWrapper
 import com.zinoview.githubrepositories.ui.repositories.download.WriteFileViewModel
 import com.zinoview.githubrepositories.ui.users.fragment.GithubUsersFragment
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
 
-//todo remove it
-fun Any.message(message: String) {
-    Log.d("GithubTest",message)
-}
-
-fun Any.message2(message: String) {
-    Log.d("GithubTest2",message)
-}
 
 class MainActivity : AppCompatActivity(), Save<ResponseBody> {
 

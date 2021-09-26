@@ -3,7 +3,6 @@ package com.zinoview.githubrepositories.ui.repositories.fragment
 import android.Manifest
 import android.os.Bundle
 import android.view.View
-import android.widget.FrameLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +21,6 @@ import com.zinoview.githubrepositories.ui.repositories.cache.RepositoriesTempCac
 import com.zinoview.githubrepositories.ui.repositories.download.SnackBarWrapper
 import com.zinoview.githubrepositories.ui.repositories.download.TempRepository
 import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
-import com.zinoview.githubrepositories.ui.users.UiGithubUserState
 import com.zinoview.githubrepositories.ui.users.fragment.GithubUsersFragment
 import io.reactivex.disposables.CompositeDisposable
 import okhttp3.ResponseBody
@@ -63,7 +61,6 @@ class GithubRepositoriesFragment(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        message2("arguments null == ${arguments == null}")
         githubQueryDisposableStore = DisposableStore.Base(CompositeDisposable())
     }
 

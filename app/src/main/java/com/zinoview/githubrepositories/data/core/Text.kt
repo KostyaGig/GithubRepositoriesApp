@@ -11,7 +11,7 @@ interface Text {
 
     class GithubName : Text {
         override fun subText(text: String) = if (text.length > 15) {
-            "${text.substring(0,15)}.."
+            "${text.substring(0,15)}..."
         } else {
             text
         }
@@ -19,7 +19,7 @@ interface Text {
 
     class Test : Text {
         override fun subText(text: String) = if (text.length > 15) {
-            "${text.substring(0,15)}.."
+            "${text.substring(0,15)}..."
         } else {
             text
         }

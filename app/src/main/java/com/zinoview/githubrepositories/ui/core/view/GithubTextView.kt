@@ -3,7 +3,6 @@ package com.zinoview.githubrepositories.ui.core.view
 import android.content.Context
 import android.util.AttributeSet
 import com.zinoview.githubrepositories.data.core.Text
-import com.zinoview.githubrepositories.ui.core.message
 import java.lang.IllegalArgumentException
 
 

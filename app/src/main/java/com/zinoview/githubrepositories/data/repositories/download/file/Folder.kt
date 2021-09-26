@@ -2,7 +2,6 @@ package com.zinoview.githubrepositories.data.repositories.download.file
 
 import android.os.Environment
 import com.zinoview.githubrepositories.core.Save
-import com.zinoview.githubrepositories.ui.core.message
 import okhttp3.ResponseBody
 import java.io.File
 

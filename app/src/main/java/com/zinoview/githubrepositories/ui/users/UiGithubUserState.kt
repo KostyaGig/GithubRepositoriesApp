@@ -118,7 +118,6 @@ sealed class UiGithubUserState :
         override fun equals(other: Any?): Boolean {
             val oth = other as Base
             val result = oth.same(uiGithubUser) && oth.sameCollapsed(isCollapsedState)
-            message("result equals $result")
             return result
         }
     }

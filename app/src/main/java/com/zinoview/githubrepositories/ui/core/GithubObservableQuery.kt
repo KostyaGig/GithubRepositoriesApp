@@ -36,13 +36,11 @@ interface GithubObservableQuery {
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         subscriber.onNext(query!!)
-                        message("onQueryTextSubmit")
                         return false
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
                         subscriber.onNext(newText!!)
-                        message("onQueryTextChange")
                         return false
                     }
                 })
@@ -64,7 +62,6 @@ interface GithubObservableQuery {
                         }
                     },
                     {
-                        message("GithubObservableQuery onError ${it.message}")
                         throw it
                     }
                 ).addToDisposableStore(githubUserDisposableStore)

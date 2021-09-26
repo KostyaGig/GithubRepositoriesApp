@@ -24,7 +24,7 @@ class PercentageOfNumberTest {
 
         val number1 = 100
         val number2 = 50
-        val expected = 0.5
+        val expected = 50
         val actual = percentageOfNumber?.take(number1, number2)
         assertEquals(expected, actual)
     }
@@ -33,7 +33,7 @@ class PercentageOfNumberTest {
     fun success_taking_percentage_of_number_more() {
         val number1 = 90
         val number2 = 30
-        val expected = 0.3
+        val expected = 33
         val actual = percentageOfNumber?.take(number1, number2)
         assertEquals(expected, actual)
     }

@@ -1,6 +1,5 @@
 package com.zinoview.githubrepositories.ui.repositories.download
 
-import com.zinoview.githubrepositories.ui.core.message
 import com.zinoview.githubrepositories.ui.repositories.GithubRepositoryViewModel
 import com.zinoview.githubrepositories.ui.repositories.UiGithubRepositoryState
 

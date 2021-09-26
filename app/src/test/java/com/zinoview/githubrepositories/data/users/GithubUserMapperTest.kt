@@ -28,7 +28,7 @@ class GithubUserMapperTest {
         val name = "Bib"
         val bio = ""
 
-        val expected = "Bib-This is bio bib"
+        val expected = "Bib-"
         val actual = TestMapper().map(name,bio,"",true)
 
         assertEquals(expected, actual)

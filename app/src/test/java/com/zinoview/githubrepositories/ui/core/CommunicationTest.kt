@@ -17,7 +17,6 @@ class CommunicationTest {
     @Before
     fun setUp() {
         communication = Communication.TestCommunication.Test()
-
     }
 
     @Test

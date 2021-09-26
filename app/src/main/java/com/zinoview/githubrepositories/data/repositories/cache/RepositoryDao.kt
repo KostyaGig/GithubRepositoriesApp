@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.zinoview.githubrepositories.ui.core.message
 import com.zinoview.githubrepositories.ui.users.CollapseOrExpandState
 import io.reactivex.Single
 
@@ -37,7 +36,6 @@ interface RepositoryDao {
     fun commonRepository(owner: String,query: String) : CacheGithubRepository?
 
     fun repository(owner: String,query: String,state: CollapseOrExpandState) : Single<CacheGithubRepository?> {
-        message("dao repo ${state::class.java}")
         return when (state) {
             is CollapseOrExpandState.Collapsed -> {
                 repositoryByIsCollapsedState(owner,query)

@@ -12,7 +12,7 @@ class FilterTest {
     @Test
     fun test_filter_string_by_length() {
 
-        val strings = listOf("Common string","HIS,lsplapw,lofiko,mena","01isjnf","[ps")
+        val strings = listOf("Common string","HIS","lsplapw","lofiko","mena","01isjnf","[ps")
         val testLengthStringFilter = Filter.TestLengthStringFilter()
 
         val expectedSize = 4
