@@ -70,6 +70,8 @@ Users        |  Repositories
 
 Поведение ui слоя в зависимости от пришедшего состояния вы можете лицезреть ниже
 
+
+
 Big   |  WaitingToDownload | Exist | Failure
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 ![](https://media.giphy.com/media/kGPaPmnyCGVJZFKx88/giphy.gif)  |  ![](https://media.giphy.com/media/XTPBx1b2WGTXpKvW8w/giphy.gif) |  ![](https://media.giphy.com/media/j30zaaM0oOFNUvHEHg/giphy.gif) |  ![](https://media.giphy.com/media/CmG7gzHuyC1TQ0ANpE/giphy.gif)
