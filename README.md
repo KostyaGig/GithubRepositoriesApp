@@ -89,7 +89,7 @@ All the important kotlin classes coveraged [Junit - tests](https://www.tutorials
 
 The history of creation features the application we be able to see [here](https://github.com/KostyaGig/GithubRepositoriesApp/commits/master)<br />
 
-Main stack
+Main stack<br />
 **1. Map the data through layers (data,domain,presentation)** <br />
 **2. MVVM is android architecture patter** <br />
 **3. Retrofit for network requests** <br />
