@@ -1,8 +1,12 @@
 
 # GithubRepositoriesApp
+
 Приложение,способное найти любого пользователя гитхаба по его имени,отобразить все его репозитории, а также скачать понравившийся репозиторий
 
+GuithubRepositoriesApp be able to find anything github user by his name and show all his repositories
+
 Приложение сделано с помощью api github на базе чистой архитектуры (**Clean Architecture**) cоблюдая принципы ООП,а также SOLID <br />
+
 Для всех необходимых классов были написаны unit-тесты. Написаны user story и test cases
 
 Историю создания проекта можно посмотреть по коммитам либо по веткам
@@ -76,6 +80,47 @@ Users        |  Repositories
 Big   |  WaitingToDownload | Exist | Failure
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 ![](https://media.giphy.com/media/kGPaPmnyCGVJZFKx88/giphy.gif)  |  ![](https://media.giphy.com/media/XTPBx1b2WGTXpKvW8w/giphy.gif) |  ![](https://media.giphy.com/media/j30zaaM0oOFNUvHEHg/giphy.gif) |  ![](https://media.giphy.com/media/CmG7gzHuyC1TQ0ANpE/giphy.gif)
+
+
+## The Enlgish description
+
+The apllication use an [API github](https://docs.github.com/en/rest)<br />
+All the important kotlin classes coveraged [Junit - tests](https://www.tutorialspoint.com/junit/junit_test_framework.htm)<br />
+
+The history of creation features the application we be able to see [here](https://github.com/KostyaGig/GithubRepositoriesApp/commits/master)<br />
+
+Main stack
+**1. Map the data through layers (data,domain,presentation)** <br />
+**2. MVVM is android architecture patter** <br />
+**3. Retrofit for network requests** <br />
+**4. RxJava for asynchronous work** <br />
+**5. Room for local store the data**<br />
+**6. Glide for download image by url** <br />
+**7. The pattern Service locator for provide the dependencies**
+**8. Clean architecture**
+
+### The short description every feature of the application<br/>
+
+#### The first feature is "GA01_users"<br/>
+Fetching the github user by his name from the Internet and showing the infromation about him using recycler view<br/>
+
+#### The second feature is "GA02_local_users". <br/>
+Fetching the github user by his name for the local storage using Room<br/>
+
+#### The third "GA03 repositories" and fourth "GA04 repositories" features was included together.<br/>
+Fething the repositories clicked github user from the Internet and showing its using recycler view. Fetched github user's repositories caching into the Room<br/>
+The following fething github user's repositories will read from the local storage 
+
+#### The fifth feature is "GA05_collapse_item" Collapsed and Expanded recycler view's items<br/>
+Was implement the opportunity to showing the user's detail information and hiding it<br/>
+When the item of recycler view has a collapsed state then we see the little information about a github user<br/>
+When the item has an expanded state then we be able to see github user's detail infromation like a bio<br/>
+
+#### The follow feature is "GA06_filter_items" filter recycler view's items by collapsed and expanded<br/>
+
+#### The last feature is "GA07_download_repository"<br/>
+GithubRepositoriesApp has an opportunity to download and saved the interesting repositories other users<br/>
+The users of this application be able to save all interesting repositories into an internal memory of device and learn the code other users offline!<br/>
 
 
 
