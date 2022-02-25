@@ -96,7 +96,7 @@ Main stack<br />
 **4. RxJava for asynchronous work** <br />
 **5. Room for local store the data**<br />
 **6. Glide for download image by url** <br />
-**7. The pattern Service locator for provide the dependencies**
+**7. The pattern Service locator for provide the dependencies**<br />
 **8. Clean architecture**
 
 ### The short description every feature of the application<br/>
