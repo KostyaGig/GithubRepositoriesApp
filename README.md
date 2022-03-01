@@ -87,7 +87,7 @@ Big   |  WaitingToDownload | Exist | Failure
 The apllication use an [API github](https://docs.github.com/en/rest)<br />
 All the important kotlin classes coveraged [Junit - tests](https://www.tutorialspoint.com/junit/junit_test_framework.htm)<br />
 
-The history of creation features the application we be able to see [here](https://github.com/KostyaGig/GithubRepositoriesApp/commits/master)<br />
+The history of creation features the application we'll be able to see [here](https://github.com/KostyaGig/GithubRepositoriesApp/commits/master)<br />
 
 Main stack<br />
 **1. Map the data through layers (data,domain,presentation)** <br />
